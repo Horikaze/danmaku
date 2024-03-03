@@ -1,5 +1,6 @@
 import { FaHome, FaInfo, FaSearch } from "react-icons/fa";
 import NavbarElement from "./NavbarElement";
+import ProfileLink from "./ProfileLink";
 const navItems = [
   {
     href: "/",
@@ -30,7 +31,7 @@ export default function NavBar() {
           <NavbarElement key={e.href} {...e} />
         ))}
       </div>
-      <div>asa</div>
+      <ProfileLink />
     </nav>
   );
 }
