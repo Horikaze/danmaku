@@ -7,40 +7,50 @@ import { FaUser, FaSignInAlt } from "react-icons/fa";
 export default function ProfileLink() {
   const [isOpen, setIsOpen] = useState(false);
   return (
-    <div className="relative" onClick={() => setIsOpen((prev) => !prev)}>
-      <div className="flex gap-x-1 items-center hover:bg-hover transition-all py-1 px-3 rounded-md cursor-pointer">
-        <div className="size-12 rounded-full bg-background" />
-        <p>Username</p>
+    <>
+      <div className="relative z-20" onClick={() => setIsOpen((prev) => !prev)}>
+        <div className="flex gap-x-1 items-center hover:bg-hover transition-all py-1 px-3 rounded-md cursor-pointer">
+          <div className="size-12 rounded-full bg-background" />
+          <p className="hidden md:block">Username</p>
+        </div>
+        <AnimatePresence mode="wait">
+          {isOpen ? (
+            <motion.div
+              key={"navDropdown"}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ type: "just", duration: 0.1 }}
+              className="absolute rounded-md w-full flex flex-col p-3 bg-primary drop-shadow-md items-stretch text-center transition-all min-w-36 right-0"
+            >
+              <Link
+                href={"/profile"}
+                className="py-2 hover:bg-hover relative rounded-md transition-all"
+              >
+                <FaUser className="absolute size-5 ml-2" />
+                <p>Profile</p>
+              </Link>
+              <div
+                onClick={() => {
+                  console.log("clicked");
+                }}
+                className="py-2 hover:bg-hover rounded-md cursor-pointer relative  transition-all"
+              >
+                <FaSignInAlt className="absolute size-5 ml-2" />
+                <p>Logout</p>
+              </div>
+            </motion.div>
+          ) : null}
+        </AnimatePresence>
       </div>
-      <AnimatePresence mode="wait">
-        {isOpen ? (
-          <motion.div
-            key={"navDropdown"}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ type: "just", duration: 0.1 }}
-            className="absolute rounded-md w-full flex flex-col p-3 bg-primary drop-shadow-md items-stretch text-center transition-all semi"
-          >
-            <Link
-              href={"/profile"}
-              className="py-2 hover:bg-hover relative rounded-md"
-            >
-              <FaUser className="absolute size-5 ml-2" />
-              <p>Profile</p>
-            </Link>
-            <div
-              onClick={() => {
-                console.log("clicked");
-              }}
-              className="py-2 hover:bg-hover rounded-md cursor-pointer relative"
-            >
-              <FaSignInAlt className="absolute size-5 ml-2" />
-              <p>Logout</p>
-            </div>
-          </motion.div>
-        ) : null}
-      </AnimatePresence>
-    </div>
+      {isOpen ? (
+        <div
+          className="fixed w-full h-[calc(100vh)] top-0 left-0 z-10"
+          onClick={() => {
+            setIsOpen(false);
+          }}
+        />
+      ) : null}
+    </>
   );
 }
