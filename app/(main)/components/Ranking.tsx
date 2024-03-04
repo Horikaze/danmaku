@@ -9,8 +9,8 @@ export default function Ranking() {
   const [currentTab, setCurrentTab] = useState(tabs[0]);
 
   return (
-    <div className="bg-primary flex flex-col h-[500px] w-full drop-shadow-md p-3 font-light text-lg gap-y-3">
-      <div className="flex justify-center space-x-1">
+    <div className="bg-primary flex flex-col h-[500px] w-full drop-shadow-md p-3 gap-y-3">
+      <div className="flex justify-center space-x-1 font-light">
         {tabs.map((e) => (
           <button
             onClick={() => setCurrentTab(e)}

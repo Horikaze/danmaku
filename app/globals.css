@@ -6,6 +6,7 @@ html,
 body {
   @apply text-white;
   background-color: #2f3136;
+  height: 100vh;
 }
 ::-webkit-scrollbar {
   display: none;

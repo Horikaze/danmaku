@@ -19,7 +19,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={montserrat.className}>
         <NavBar />
-        <main className="px-2 md:px-4 lg:px-24 xl:px-36 2xl:px-72 pt-20">
+        <main className="px-2 md:px-4 lg:px-24 xl:px-36 2xl:px-72 pt-20 w-full h-full">
           {children}
         </main>
       </body>
