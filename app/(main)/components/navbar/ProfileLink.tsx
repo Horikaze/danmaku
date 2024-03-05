@@ -1,6 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
+import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";
 import { FaUser, FaSignInAlt } from "react-icons/fa";
@@ -32,7 +33,7 @@ export default function ProfileLink() {
               </Link>
               <div
                 onClick={() => {
-                  console.log("clicked");
+                  signOut();
                 }}
                 className="py-2 hover:bg-hover rounded-md cursor-pointer relative  transition-all"
               >

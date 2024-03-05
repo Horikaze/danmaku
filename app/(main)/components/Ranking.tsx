@@ -1,8 +1,8 @@
 "use client";
-import Divider from "@/app/mainComponents/Divider";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import RankingElement from "./RankingElement";
+import { Divider } from "@/app/mainComponents/Divider";
 const tabs = ["Points", "1cc", "Challenge"];
 const myArray = Array.from({ length: 10 }, (_, index) => index + 1);
 export default function Ranking() {

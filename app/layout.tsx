@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
 import NavBar from "./(main)/components/navbar/NavBar";
-
+import { NextAuthProvider } from "./lib/AuthContext";
+import { Toaster } from "react-hot-toast";
 const montserrat = Montserrat({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -17,12 +18,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={montserrat.className}>
-        <NavBar />
-        <main className="px-2 md:px-4 lg:px-24 xl:px-36 2xl:px-72 pt-20 w-full h-full">
-          {children}
-        </main>
-      </body>
+      <NextAuthProvider>
+        <body className={montserrat.className}>
+          <Toaster position="top-center" />
+          <NavBar />
+          <main className="px-2 md:px-4 lg:px-24 xl:px-36 2xl:px-72 pt-20 w-full h-full">
+            {children}
+          </main>
+        </body>
+      </NextAuthProvider>
     </html>
   );
 }
