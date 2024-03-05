@@ -1,18 +1,25 @@
 "use client";
 
+import ProfileImage from "@/app/mainComponents/ProfileImage";
 import { AnimatePresence, motion } from "framer-motion";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";
-import { FaUser, FaSignInAlt } from "react-icons/fa";
-export default function ProfileLink() {
+import { FaSignInAlt, FaUser } from "react-icons/fa";
+type ProfileLinkProps = {
+  nickname: string;
+  imageUrl: string;
+};
+export default function ProfileLink({ imageUrl, nickname }: ProfileLinkProps) {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <>
       <div className="relative z-20" onClick={() => setIsOpen((prev) => !prev)}>
-        <div className="flex gap-x-1 items-center hover:bg-hover transition-all py-1 px-3 rounded-md cursor-pointer">
-          <div className="size-12 rounded-full bg-background" />
-          <p className="hidden md:block">Username</p>
+        <div className="flex gap-x-2 items-center hover:bg-hover transition-all py-1 px-3 rounded-md cursor-pointer">
+          <div className="size-12 rounded-full bg-background relative overflow-hidden">
+            <ProfileImage imageUrl={imageUrl} />
+          </div>
+          <p className="hidden md:block min-w-[4rem] text-end">{nickname}</p>
         </div>
         <AnimatePresence mode="wait">
           {isOpen ? (
@@ -21,7 +28,7 @@ export default function ProfileLink() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ type: "just", duration: 0.1 }}
+              transition={{ type: "just", duration: 0.15 }}
               className="absolute rounded-md w-full flex flex-col p-3 bg-primary drop-shadow-md items-stretch text-center transition-all min-w-36 right-0"
             >
               <Link
