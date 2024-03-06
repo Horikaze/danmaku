@@ -10,7 +10,7 @@ const buttonVariants = cva("rounded-full text-black", {
         "border-white border-2 border-solid text-white hover:bg-white hover:text-black transition-all",
     },
     size: {
-      default: "py-1.5 px-4",
+      default: "py-1 px-4",
     },
   },
   defaultVariants: {

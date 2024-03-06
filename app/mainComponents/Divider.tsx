@@ -7,7 +7,7 @@ export interface DividerProps
 const Divider = forwardRef<HTMLDivElement, DividerProps>(
   ({ className }, ref) => {
     return (
-      <div ref={ref} className={cn("w-full h-[1px] bg-white/20", className)} />
+      <div ref={ref} className={cn("grow h-[1px] bg-white/20", className)} />
     );
   }
 );

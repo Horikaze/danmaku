@@ -1,23 +1,10 @@
 import { format, fromUnixTime } from "date-fns";
+import { ScoreObject, emptyScoreObject } from "../types/Replay";
 
-export type ScoreObject = {
-  EASY: { score?: number; id?: string; CC?: number; char?: string };
-  NORMAL: { score?: number; id?: string; CC?: number; char?: string };
-  HARD: { score?: number; id?: string; CC?: number; char?: string };
-  LUNATIC: { score?: number; id?: string; CC?: number; char?: string };
-  EXTRA: { score?: number; id?: string; CC?: number; char?: string };
-  PHANTASM: { score?: number; id?: string; CC?: number; char?: string };
-  [key: string]: { score?: number; id?: string; CC?: number; char?: string };
-};
 
-export const emptyScoreObject: ScoreObject = {
-  EASY: { score: 0, id: "", CC: 0, char: "" },
-  NORMAL: { score: 0, id: "", CC: 0, char: "" },
-  HARD: { score: 0, id: "", CC: 0, char: "" },
-  LUNATIC: { score: 0, id: "", CC: 0, char: "" },
-  EXTRA: { score: 0, id: "", CC: 0, char: "" },
-  PHANTASM: { score: 0, id: "", CC: 0, char: "" },
-};
+
+
+
 export const emptyScoreObjectString = JSON.stringify(emptyScoreObject);
 export const parseRankingString = (scoreString: string): ScoreObject => {
   return JSON.parse(scoreString);
@@ -40,26 +27,6 @@ export const getCharacterFromData = (
   return `${characters} ${shotType}`;
 };
 
-export const convertUnixDate = (date: number) => {
-  try {
-    if (!date) {
-      return "";
-    }
-    return format(fromUnixTime(date / 1000), "dd-MM-yyyy");
-  } catch (error) {
-    console.log(error);
-  }
-};
-export const convertUnixDateHours = (date: number) => {
-  try {
-    if (!date) {
-      return "";
-    }
-    return format(fromUnixTime(date / 1000), "HH:mm-dd-MM-yyyy");
-  } catch (error) {
-    console.log(error);
-  }
-};
 
 export const getCharacterFromDataWithoutType = (
   characters: string | string[]

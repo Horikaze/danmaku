@@ -16,7 +16,7 @@ export default function ProfileLink({ imageUrl, nickname }: ProfileLinkProps) {
     <>
       <div className="relative z-20" onClick={() => setIsOpen((prev) => !prev)}>
         <div className="flex gap-x-2 items-center hover:bg-hover transition-all py-1 px-3 rounded-md cursor-pointer">
-          <div className="size-12 rounded-full bg-background relative overflow-hidden">
+          <div className="size-10 rounded-full bg-background relative overflow-hidden">
             <ProfileImage imageUrl={imageUrl} />
           </div>
           <p className="hidden md:block min-w-[4rem] text-end">{nickname}</p>
