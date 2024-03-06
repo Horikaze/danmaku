@@ -8,6 +8,7 @@ import ProfileImage from "@/app/mainComponents/ProfileImage";
 import Settings from "./Settings";
 import UpdateImages from "./UpdateImages";
 import Image from "next/image";
+
 export default async function MainProfile({
   tab,
   userId,
@@ -38,7 +39,7 @@ export default async function MainProfile({
     }
   };
   return (
-    <div className="flex flex-col w-full gap-y-3">
+    <div className="flex flex-col gap-y-3">
       <div className="w-full relative">
         {user.profileBanner ? (
           <>
@@ -75,7 +76,7 @@ export default async function MainProfile({
               <UpdateImages endpoint="profileImage" />
             </div>
           </div>
-          <div className="grow ">
+          <div className="flex-1">
             <div className="flex items-center justify-between">
               <h2 className="text-2xl font-semibold">{user.nickname}</h2>
               {user.discord ? (
@@ -86,22 +87,31 @@ export default async function MainProfile({
               ) : null}
             </div>
             <Divider />
-            <div className="flex flex-col md:flex-row p-2 justify-between text-tsecond space-y-0.5">
-              <div className="text-sm  space-y-0.5">
+            <div className="flex flex-col md:flex-row p-2 justify-between text-tsecond space-y-0.5 break-all">
+              <div className="text-sm">
                 <p> CC Count: {user.CCCount}</p>
                 <p> Points: {user.points}</p>
                 <p> Event points: {user.event}</p>
               </div>
 
-              <p className="text-xs text-start ">
-                Joined: {convertUnixDateHours(user.joindate as any)}
-              </p>
+              <div className="text-xs text-start md:block hidden w-1/2 flex-col items-end space-y-0.5 ">
+                <p>Joined: {convertUnixDateHours(user.joindate as any)}</p>
+                <p>Favorite game: {user.favoriteGame}</p>
+                {user.bio ? <p> Bio: {user.bio}</p> : null}
+              </div>
             </div>
           </div>
         </div>
+        <div className="text-xs text-start w-full md:hidden text-tsecond block md:w-1/2 flex-col items-start space-y-0.5 mb-2.5 break-all">
+          <p>Joined: {convertUnixDateHours(user.joindate as any)}</p>
+          <p>Favorite game: {user.favoriteGame}</p>
+          {user.bio ? <p> Bio: {user.bio}</p> : null}
+        </div>
         <ProfileController currentTab={tab} />
         <Divider className="m-5" />
-        <TabComponent />
+        <div className="flex justify-center items-center w-full md:px-4 lg:px-24 xl:px-36 2xl:px-72">
+          <TabComponent />
+        </div>
       </div>
     </div>
   );

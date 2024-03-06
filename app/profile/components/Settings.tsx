@@ -22,9 +22,9 @@ export default function Settings() {
         toast.error(`${status}`);
         console.log(e);
       }}
-      className="flex flex-col items-center md:px-20"
+      className="flex flex-col items-center w-full"
     >
-      <div className="max-w-[500px] w-full justify-between gap-y-4 flex flex-col">
+      <div className="w-full justify-between gap-y-4 flex flex-col">
         <div className="grid w-full gap-1.5">
           <p>Nickname</p>
           <InputText type="text" placeholder="Nickname" name="nickname" />
@@ -51,6 +51,15 @@ export default function Settings() {
               </option>
             ))}
           </select>
+        </div>
+        <div className="grid w-full gap-1.5">
+          <p>Bio</p>
+          <textarea
+            placeholder="Write something about yourself..."
+            name="bio"
+            maxLength={250}
+            className="outline-white/20 focus:outline-white transition-all outline-none border-none resize-none bg-primary py-1.5 px-4 rounded-md"
+          />
         </div>
         <div className="flex justify-between">
           <ButtonInput variant={"outline"} type="reset">
