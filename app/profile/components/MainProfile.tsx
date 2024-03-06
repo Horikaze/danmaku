@@ -8,6 +8,7 @@ import ProfileImage from "@/app/mainComponents/ProfileImage";
 import Settings from "./Settings";
 import UpdateImages from "./UpdateImages";
 import Image from "next/image";
+import SendReplay from "./SendReplay";
 
 export default async function MainProfile({
   tab,
@@ -30,12 +31,10 @@ export default async function MainProfile({
         return <ReplayTable userId={userId} />;
       case "settings":
         return <Settings />;
+      case "send":
+        return <SendReplay />;
       default:
-        return (
-          <div>
-            <p>{tab}</p>
-          </div>
-        );
+        return <ReplayTable userId={userId} />;
     }
   };
   return (

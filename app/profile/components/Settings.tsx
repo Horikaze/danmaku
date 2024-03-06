@@ -5,7 +5,7 @@ import { ButtonInput } from "@/app/mainComponents/InputButton";
 import { InputText } from "@/app/mainComponents/InputText";
 import { useSession } from "next-auth/react";
 import toast from "react-hot-toast";
-import { changeUserAction } from "../profileActions";
+import { changeUserAction } from "../actions/profileActions";
 
 export default function Settings() {
   const { data: session, update } = useSession();

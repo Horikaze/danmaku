@@ -1,5 +1,5 @@
 "use client";
-import { registerUserAction } from "@/app/profile/profileActions";
+import { registerUserAction } from "@/app/profile/actions/profileActions";
 import { Divider } from "@/app/mainComponents/Divider";
 import { ButtonInput } from "@/app/mainComponents/InputButton";
 import { InputText } from "@/app/mainComponents/InputText";

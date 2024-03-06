@@ -1,11 +1,11 @@
 "use server";
 import prisma from "@/app/lib/prismadb";
 import bcrypt from "bcrypt";
-import { emptyScoreObjectString } from "../lib/getRankingData";
 import * as z from "zod";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]/auth";
+import { authOptions } from "../../api/auth/[...nextauth]/auth";
 import { revalidatePath } from "next/cache";
+import { emptyScoreObjectString } from "@/app/lib/utils";
 
 const registerSchema = z.object({
   nickname: z

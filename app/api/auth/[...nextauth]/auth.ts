@@ -1,6 +1,5 @@
-import { emptyScoreObjectString } from "@/app/lib/getRankingData";
 import prisma from "@/app/lib/prismadb";
-
+import { emptyScoreObjectString } from "@/app/lib/utils";
 import bcrypt from "bcrypt";
 import { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
