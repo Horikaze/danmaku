@@ -1,10 +1,13 @@
 "use server";
 import prisma from "@/app/lib/prismadb";
 import bcrypt from "bcrypt";
-import { emptyScoreObjectString } from "../getRankingData";
+import { emptyScoreObjectString } from "../lib/getRankingData";
 import * as z from "zod";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../api/auth/[...nextauth]/auth";
+import { revalidatePath } from "next/cache";
 
-const formSchema = z.object({
+const registerSchema = z.object({
   nickname: z
     .string()
     .min(3, { message: "The name must be at least 3 characters." })
@@ -23,7 +26,7 @@ export const registerUserAction = async (formData: FormData) => {
       nickname: formData.get("nickname") as string,
       password: formData.get("password") as string,
     };
-    const result = formSchema.safeParse(newUser);
+    const result = registerSchema.safeParse(newUser);
     if (!result.success) {
       let errorMessage = "";
       result.error.issues.forEach((issue) => {
@@ -70,6 +73,66 @@ export const registerUserAction = async (formData: FormData) => {
     };
   } catch (error) {
     console.log(error, "REGISTERATION ERROR");
-    return { status: "Registration error" };
+    return { status: "Internal Error" };
+  }
+};
+const changeSchema = z.object({
+  nickname: z.string().min(3).max(15).optional().or(z.literal("")),
+  password: z.string().min(3).max(15).optional().or(z.literal("")),
+  discord: z.string().min(3).max(15).optional().or(z.literal("")),
+  game: z.string().min(2).max(15).optional().or(z.literal("")),
+  bio: z.string().min(2).max(250).optional().or(z.literal("")),
+});
+export const changeUserAction = async (formData: FormData) => {
+  try {
+    const session = await getServerSession(authOptions);
+
+    if (!session) {
+      return { status: "Unauthorized" };
+    }
+
+    const formDataValues: { [key: string]: any } = {};
+    for (const [key, value] of formData.entries()) {
+      formDataValues[key] = value;
+    }
+    const result = changeSchema.safeParse(formDataValues);
+    if (!result.success) {
+      let errorMessage = "";
+      result.error.issues.forEach((issue) => {
+        errorMessage =
+          errorMessage + issue.path[0] + ": " + issue.message + " ";
+      });
+      return { status: errorMessage };
+    }
+    const { nickname, password, discord, game, bio } = formDataValues;
+
+    const fieldsToChange: Record<string, any> = {};
+    if (password !== "") {
+      const hashedPassword = await bcrypt.hash(password, 12);
+      fieldsToChange["hashedPassword"] = hashedPassword;
+    }
+    if (nickname !== "") {
+      fieldsToChange["nickname"] = nickname;
+    }
+    if (discord !== "") {
+      fieldsToChange["discord"] = discord;
+    }
+    if (game !== "") {
+      fieldsToChange["favoriteGame"] = game;
+    }
+    if (bio !== "") {
+      fieldsToChange["bio"] = bio;
+    }
+    await prisma.profile.update({
+      where: {
+        email: session?.user.info.email,
+      },
+      data: fieldsToChange,
+    });
+    revalidatePath("/profile");
+    return { status: "Success", nickname: nickname };
+  } catch (error) {
+    console.log(error, "CHANGE PROFILE ERROR");
+    return { status: "Internal Error" };
   }
 };

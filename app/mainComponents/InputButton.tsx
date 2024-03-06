@@ -2,7 +2,7 @@ import { forwardRef } from "react";
 import { cn } from "../lib/utils";
 import { cva, type VariantProps } from "class-variance-authority";
 
-const buttonVariants = cva("rounded-full text-black", {
+export const buttonVariants = cva("rounded-full text-black", {
   variants: {
     variant: {
       default: "bg-white text-black",

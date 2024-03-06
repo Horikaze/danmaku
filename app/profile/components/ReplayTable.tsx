@@ -1,24 +1,9 @@
+import { games618 } from "@/app/constants/games";
 import prisma from "@/app/lib/prismadb";
 import { ScoreObject } from "@/app/types/Replay";
 type ReplayTableProps = {
   userId: string;
 };
-const games = [
-  "EOSD",
-  "PCB",
-  "IN",
-  "POFV",
-  "MOF",
-  "SA",
-  "UFO",
-  "GFW",
-  "TD",
-  "DDC",
-  "LOLK",
-  "HSIFS",
-  "WBAWC",
-  "UM",
-];
 const difficultyLevels = ["EASY", "NORMAL", "HARD", "LUNATIC", "EXTRA"];
 export default async function ReplayTable({ userId }: ReplayTableProps) {
   const tableData = await prisma.ranking.findFirst({
@@ -50,7 +35,7 @@ export default async function ReplayTable({ userId }: ReplayTableProps) {
         </tr>
       </thead>
       <tbody>
-        {games.map((game) => (
+        {games618.map((game) => (
           <tr className="border" key={game}>
             <td className="border">{game}</td>
             {difficultyLevels.map((diff) => {

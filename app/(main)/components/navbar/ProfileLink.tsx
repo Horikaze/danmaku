@@ -2,24 +2,24 @@
 
 import ProfileImage from "@/app/mainComponents/ProfileImage";
 import { AnimatePresence, motion } from "framer-motion";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";
 import { FaSignInAlt, FaUser } from "react-icons/fa";
-type ProfileLinkProps = {
-  nickname: string;
-  imageUrl: string;
-};
-export default function ProfileLink({ imageUrl, nickname }: ProfileLinkProps) {
+
+export default function ProfileLink() {
   const [isOpen, setIsOpen] = useState(false);
+  const session = useSession();
   return (
     <>
       <div className="relative z-20" onClick={() => setIsOpen((prev) => !prev)}>
         <div className="flex gap-x-2 items-center hover:bg-hover transition-all py-1 px-3 rounded-md cursor-pointer">
           <div className="size-10 rounded-full bg-background relative overflow-hidden">
-            <ProfileImage imageUrl={imageUrl} />
+            <ProfileImage imageUrl={session.data?.user.image!} />
           </div>
-          <p className="hidden md:block min-w-[4rem] text-end">{nickname}</p>
+          <p className="hidden md:block min-w-[4rem] text-end">
+            {session.data?.user.name}
+          </p>
         </div>
         <AnimatePresence mode="wait">
           {isOpen ? (

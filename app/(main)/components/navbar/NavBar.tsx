@@ -35,10 +35,7 @@ export default async function NavBar() {
         ))}
       </div>
       {session ? (
-        <ProfileLink
-          imageUrl={session?.user.image || ""}
-          nickname={session?.user.name! || "none"}
-        />
+        <ProfileLink />
       ) : (
         <NavbarElement href="/profile" icon={FaSignInAlt} text="Login" />
       )}

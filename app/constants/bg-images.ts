@@ -1,0 +1,16 @@
+export const bgImages: { [key: number]: string } = {
+  6: "/images/gameCover/Th06cover.jpg",
+  7: "/images/gameCover/Th07cover.jpg",
+  8: "/images/gameCover/Th08cover.jpg",
+  9: "/images/gameCover/Th09cover.jpg",
+  10: "/images/gameCover/Th10cover.jpg",
+  11: "/images/gameCover/Th11cover.jpg",
+  12: "/images/gameCover/Th12cover.jpg",
+  13: "/images/gameCover/Th13cover.jpg",
+  14: "/images/gameCover/Th14cover.jpg",
+  15: "/images/gameCover/Th15cover.jpg",
+  16: "/images/gameCover/Th16cover.jpg",
+  17: "/images/gameCover/Th17cover.jpg",
+  18: "/images/gameCover/Th18cover.jpg",
+  128: "/images/gameCover/Th128cover.jpg",
+};
