@@ -5,6 +5,6 @@ type ButtonLoaderProps = {
 };
 export default function ButtonLoader({ loading }: ButtonLoaderProps) {
   return (
-    <PulseLoader size={6} loading={loading} className="pr-2" color="white" />
+    <PulseLoader size={6} loading={loading} className="pr-2 mix-blend-exclusion" color="white" />
   );
 }

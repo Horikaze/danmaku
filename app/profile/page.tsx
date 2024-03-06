@@ -17,7 +17,7 @@ export default async function Profile({ searchParams }: { searchParams: any }) {
     );
   }
   return (
-    <div className="flex flex-col w-full h-full bg-primary drop-shadow-md overflow-auto min-h-[1000px]">
+    <div className="flex flex-col w-full h-full bg-primary drop-shadow-md overflow-auto min-h-[1200px]">
       <MainProfile tab={searchTab || "table"} userId={session.user.info.id} />
     </div>
   );

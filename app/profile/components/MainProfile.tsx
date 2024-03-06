@@ -37,6 +37,7 @@ export default async function MainProfile({
         return <ReplayTable userId={userId} />;
     }
   };
+
   return (
     <div className="flex flex-col gap-y-3">
       <div className="w-full relative">
@@ -108,7 +109,7 @@ export default async function MainProfile({
         </div>
         <ProfileController currentTab={tab} />
         <Divider className="m-5" />
-        <div className="flex justify-center items-center w-full md:px-4 lg:px-24 xl:px-36 2xl:px-72">
+        <div className="flex justify-center items-center w-full md:px-4 lg:px-24 xl:px-36">
           <TabComponent />
         </div>
       </div>
