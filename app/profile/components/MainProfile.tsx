@@ -69,14 +69,14 @@ export default async function MainProfile({
         </div>
       </div>
       <div className="flex flex-col p-3">
-        <div className="flex flex-row">
+        <div className="flex">
           <div className="size-24 md:size-32 group relative bg-white/10 rounded-full text-center drop-shadow-md mr-3 overflow-hidden">
             <ProfileImage imageUrl={user.imageUrl} />
             <div className="absolute left-1/2 -translate-x-1/2 bottom-1/2 translate-y-1/2 opacity-0 group-hover:opacity-50 transition-opacity">
               <UpdateImages endpoint="profileImage" />
             </div>
           </div>
-          <div className="flex-1">
+          <div className="flex-1 overflow-x-hidden">
             <div className="flex items-center justify-between">
               <h2 className="text-2xl font-semibold">{user.nickname}</h2>
               {user.discord ? (
@@ -87,7 +87,7 @@ export default async function MainProfile({
               ) : null}
             </div>
             <Divider />
-            <div className="flex flex-col md:flex-row p-2 justify-between text-tsecond space-y-0.5 break-all">
+            <div className="flex flex-col md:flex-row p-2 justify-between text-tsecond space-y-0.5">
               <div className="text-sm">
                 <p> CC Count: {user.CCCount}</p>
                 <p> Points: {user.points}</p>
@@ -102,7 +102,7 @@ export default async function MainProfile({
             </div>
           </div>
         </div>
-        <div className="text-xs text-start w-full md:hidden text-tsecond block md:w-1/2 flex-col items-start space-y-0.5 mb-2.5 break-all">
+        <div className="text-xs text-start w-full md:hidden text-tsecond block md:w-1/2 flex-col items-start space-y-0.5 mb-2.5">
           <p>Joined: {convertUnixDateHours(user.joindate as any)}</p>
           <p>Favorite game: {user.favoriteGame}</p>
           {user.bio ? <p> Bio: {user.bio}</p> : null}
