@@ -13,8 +13,8 @@ generator client {
 
 model Profile {
   id             String   @id @unique @default(uuid())
-  nickname       String?
-  name           String?
+  nickname       String
+  name           String
   email          String   @unique
   imageUrl       String?
   CCCount        Int?     @default(0)
@@ -33,79 +33,48 @@ model Profile {
 }
 
 model Ranking {
-  EOSD                String?  @db.Text
-  PCB                 String?  @db.Text
-  IN                  String?  @db.Text
-  POFV                String?  @db.Text
-  MOF                 String?  @db.Text
-  SA                  String?  @db.Text
-  UFO                 String?  @db.Text
-  GFW                 String?  @db.Text
-  TD                  String?  @db.Text
-  DDC                 String?  @db.Text
-  LOLK                String?  @db.Text
-  HSIFS               String?  @db.Text
-  WBAWC               String?  @db.Text
-  UM                  String?  @db.Text
+  EOSD                String   @db.Text
+  PCB                 String   @db.Text
+  IN                  String   @db.Text
+  POFV                String   @db.Text
+  MOF                 String   @db.Text
+  SA                  String   @db.Text
+  UFO                 String   @db.Text
+  GFW                 String   @db.Text
+  TD                  String   @db.Text
+  DDC                 String   @db.Text
+  LOLK                String   @db.Text
+  HSIFS               String   @db.Text
+  WBAWC               String   @db.Text
+  UM                  String   @db.Text
   userIdRankingPoints String   @unique
   Profile             Profile? @relation(fields: [userIdRankingPoints], references: [id])
 }
 
 model Replay {
   replayId     String    @id @default(cuid())
-  player       String?
-  character    String?
-  rank         String?
+  player       String
+  character    String
+  rank         String
   shottype     String?
   stage        String?
-  stage_score  String?
-  score        Int?
-  game         Int?
+  stage_score  String
+  score        Int
+  game         Int
   date         String?
-  rpy_name     String?
+  rpy_name     String
   slowRate     String?
-  points       Int?
-  videoLink    String?
+  points       Int
   acceptedBy   String?
-  filePath     String?
+  filePath     String
   comment      String?
-  uploadedDate DateTime? @default(now())
+  uploadedDate DateTime  @default(now())
   fileDate     DateTime?
-  achievement  Int?
+  achievement  Int
   status       Boolean   @default(false)
 
-  userId  String?
+  userId  String
   Profile Profile? @relation(fields: [userId], references: [id])
 
   @@index([userId])
-}
-
-model MainPage {
-  id              String  @id @default("0")
-  weeklyChallenge Int?
-  background      String?
-  profileId       String?
-
-  @@index([profileId])
-}
-
-model WeeklyChallenge {
-  challengeID   Int       @id @default(autoincrement())
-  challengeName String?
-  game          Int?
-  rank          String?
-  desc          String?   @db.Text
-  dateStart     DateTime  @default(now())
-  dateEnd       DateTime?
-  results       String?   @db.Text
-  ended         Boolean   @default(false)
-}
-
-enum Achievement {
-  CC
-  NM
-  NB
-  NMNB
-  NNN
-  NNNN
 }

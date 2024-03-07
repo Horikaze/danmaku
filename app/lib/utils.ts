@@ -1,7 +1,7 @@
 import { type ClassValue, clsx } from "clsx";
 import { format, fromUnixTime } from "date-fns";
 import { twMerge } from "tailwind-merge";
-import { emptyScoreObject } from "../types/Replay";
+import { emptyScoreObject, gameCodeRecord } from "../constants/games";
 export const emptyScoreObjectString = JSON.stringify(emptyScoreObject);
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -27,22 +27,6 @@ export const convertUnixDateHours = (date: number) => {
   }
 };
 
-export const gameCodeRecord: Record<string, number> = {
-  EOSD: 6,
-  PCB: 7,
-  IN: 8,
-  POFV: 9,
-  MOF: 10,
-  SA: 11,
-  UFO: 12,
-  GFW: 128,
-  TD: 13,
-  DDC: 14,
-  LOLK: 15,
-  HSIFS: 16,
-  WBAWC: 17,
-  UM: 18,
-};
 export const getGameInt = (gameCode: string) => {
   return gameCodeRecord[gameCode] || 6;
 };
@@ -74,7 +58,7 @@ export const getGameNumber = (replayName: string) => {
     return game;
   } catch (error) {
     console.log(error);
-    return "";
+    return 6;
   }
 };
 

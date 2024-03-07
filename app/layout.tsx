@@ -20,7 +20,20 @@ export default function RootLayout({
     <html lang="en">
       <NextAuthProvider>
         <body className={montserrat.className}>
-          <Toaster position="top-center" />
+          <Toaster
+            position="top-center"
+            toastOptions={{
+              style: {
+                borderRadius: "10px",
+                background: "#2F3136",
+                color: "#d8d8d8",
+              },
+              iconTheme: {
+                primary: 'white',
+                secondary: '#2F3136',
+              },
+            }}
+          />
           <NavBar />
           <main className="px-2 md:px-4 lg:px-24 xl:px-36 2xl:px-72 pt-20 w-full h-full">
             {children}

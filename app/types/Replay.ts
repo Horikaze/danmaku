@@ -40,11 +40,3 @@ export type ScoreObject = {
   PHANTASM: { score?: number; id?: string; CC?: number; char?: string };
   [key: string]: { score?: number; id?: string; CC?: number; char?: string };
 };
-export const emptyScoreObject: ScoreObject = {
-  EASY: { score: 0, id: "", CC: 0, char: "" },
-  NORMAL: { score: 0, id: "", CC: 0, char: "" },
-  HARD: { score: 0, id: "", CC: 0, char: "" },
-  LUNATIC: { score: 0, id: "", CC: 0, char: "" },
-  EXTRA: { score: 0, id: "", CC: 0, char: "" },
-  PHANTASM: { score: 0, id: "", CC: 0, char: "" },
-};

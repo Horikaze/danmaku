@@ -7,16 +7,24 @@ import {
   sendReplayAction,
   threp,
 } from "../actions/replayActions";
-import { cn, getCharacterFromData, getGameNumber } from "@/app/lib/utils";
+import {
+  cn,
+  convertUnixDateHours,
+  getCharacterFromData,
+  getGameNumber,
+} from "@/app/lib/utils";
 import ButtonLoader from "@/app/mainComponents/ButtonLoader";
 import ReplayScoreChart from "@/app/mainComponents/ReplayScoreChart";
 import { InputCheckbox } from "@/app/mainComponents/InputCheckbox";
 import toast from "react-hot-toast";
+import { achievementList } from "@/app/constants/games";
+import { calculatePoints } from "@/app/lib/calculatePoints";
 export default function SendReplay() {
   const [replayData, setreplayData] = useState<ReplayInfo | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [replayFile, setReplayFile] = useState<FormData | null>(null);
   const [chart, setChart] = useState(true);
+  const [CC, setCC] = useState("CC");
   const clearAll = () => {
     console.log("as");
     setreplayData(null);
@@ -43,22 +51,37 @@ export default function SendReplay() {
     try {
       setIsLoading(true);
       const res = await checkReplayExist(replayData!);
-      toast.success(`${res}`);
-      console.log(res);
+      if (res === true) {
+        toast.success("Replay exists");
+      } else {
+        toast.error("Replay does not exist.");
+      }
       setIsLoading(false);
     } catch (error) {
       console.log(error);
+      toast.error("Internal problem");
       setIsLoading(false);
     }
   };
-  const sendReplay = async () => {
+  const sendReplay = async (e: React.FormEvent<HTMLFormElement>) => {
     try {
+      const fileDate = replayFile?.get("replay") as File;
+      e.preventDefault();
+      const formData = new FormData(e.currentTarget);
+      const comment = formData.get("comment") as string;
+      const points = calculatePoints(replayData!, CC);
       setIsLoading(true);
-      const res = await sendReplayAction(replayData!, replayFile!);
-      console.log(res);
+      const res = await sendReplayAction(replayData!, replayFile!, {
+        CC: CC,
+        comment: comment,
+        fileDate: fileDate.lastModified,
+        points: points,
+      });
+      toast.success(res.toString());
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
+      toast.error(`${error}`);
     }
   };
   return (
@@ -91,7 +114,7 @@ export default function SendReplay() {
           Clear
         </ButtonInput>
       </div>
-      <div className="flex justify-between w-full">
+      <form className="flex justify-between w-full" onSubmit={sendReplay}>
         <div className="flex flex-col font-semibold w-full space-y-1">
           <p>
             Game:{" "}
@@ -133,26 +156,67 @@ export default function SendReplay() {
             <span className="text-tsecond">{replayData?.slow_rate}</span>
           </p>
         </div>
-        <div className="flex items-end flex-col justify-end text-sm md:text-base gap-y-1">
-          <ButtonInput
-            onClick={checkExist}
-            className="flex items-center whitespace-nowrap"
-            disabled={isLoading || !replayFile || !replayData}
-          >
-            <ButtonLoader loading={isLoading} />
-            Check exist
-          </ButtonInput>
-          <ButtonInput
-            onClick={sendReplay}
-            className="flex items-center whitespace-nowrap"
-            disabled={isLoading || !replayFile || !replayData}
-          >
-            <ButtonLoader loading={isLoading} />
-            Send
-          </ButtonInput>
+        <div className="flex flex-col justify-between">
+          <div className="flex flex-col items-end gap-y-1 text-sm h-full">
+            <div className="flex flex-col items-end gap-y-1">
+              <p>Achievement</p>
+              <select
+                name="CC"
+                onChange={(e) => setCC(e.target.value)}
+                value={CC}
+                id="CC"
+                className="outline-white/20 focus:outline-white transition-all outline-none border-none bg-primary py-0.5 px-1 rounded-full cursor-pointer"
+              >
+                {achievementList.map((e) => (
+                  <option key={e} value={e}>
+                    {e}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="flex flex-col items-end gap-y-1">
+              <p>Comment</p>
+              <textarea
+                placeholder="e.g. need x patch to be play correctly"
+                name="comment"
+                maxLength={50}
+                id="comment"
+                className="outline-white/20 resize-none focus:outline-white transition-all outline-none border-none bg-primary py-0.5 px-1 rounded-md"
+              />
+            </div>
+            <div className="flex flex-col h-full w-full text-center textba justify-center">
+              <h3>
+                You will get:{" "}
+                <span className="font-semibold">
+                  {replayData ? calculatePoints(replayData!, CC) : 0}{" "}
+                </span>
+                points
+              </h3>
+            </div>
+          </div>
+          <div className="flex items-end justify-end text-sm md:text-base gap-x-1">
+            <ButtonInput
+              type="button"
+              onClick={checkExist}
+              className="flex items-center whitespace-nowrap"
+              variant={"outline"}
+              disabled={isLoading || !replayFile || !replayData}
+            >
+              <ButtonLoader loading={isLoading} />
+              Check exist
+            </ButtonInput>
+            <ButtonInput
+              type="submit"
+              className="flex items-center whitespace-nowrap"
+              disabled={isLoading || !replayFile || !replayData}
+            >
+              <ButtonLoader loading={isLoading} />
+              Send
+            </ButtonInput>
+          </div>
         </div>
-      </div>
-      <div className="flex w-full flex-col gap-y-1">
+      </form>
+      <div className="flex flex-col gap-y-1 w-full">
         <div className="gap-x-1 flex items-center">
           <InputCheckbox
             id="sendChart"
@@ -167,7 +231,11 @@ export default function SendReplay() {
           </label>
         </div>
         {replayData && chart ? (
-          <ReplayScoreChart scores={replayData?.stage_score!} />
+          <div className="flex justify-center items-center w-full">
+            <div className="max-w-[700px] w-full h-72">
+              <ReplayScoreChart scores={replayData?.stage_score!} />
+            </div>
+          </div>
         ) : null}
       </div>
     </div>

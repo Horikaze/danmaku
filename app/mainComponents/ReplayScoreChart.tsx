@@ -23,6 +23,7 @@ ChartJS.register(
 
 export const options = {
   responsive: true,
+  maintainAspectRatio: false,
   layout: {
     padding: {
       right: 60, // Adjust the padding value as needed
