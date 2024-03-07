@@ -69,8 +69,13 @@ export const getCCstring = (CCNumber: number) => {
   return CCString || "CC";
 };
 export const getGameNumber = (replayName: string) => {
-  const game = parseInt(replayName.split("_")[0].substring(2));
-  return game;
+  try {
+    const game = parseInt(replayName.split("_")[0].substring(2));
+    return game;
+  } catch (error) {
+    console.log(error);
+    return "";
+  }
 };
 
 export const getCharacterFromData = (

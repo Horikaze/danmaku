@@ -3,12 +3,15 @@ import { ButtonInput, buttonVariants } from "@/app/mainComponents/InputButton";
 import { ReplayInfo } from "@/app/types/Replay";
 import { useState } from "react";
 import { threp } from "../actions/replayActions";
-import { cn, getCharacterFromData } from "@/app/lib/utils";
+import { cn, getCharacterFromData, getGameNumber } from "@/app/lib/utils";
 import ButtonLoader from "@/app/mainComponents/ButtonLoader";
 import ReplayScoreChart from "@/app/mainComponents/ReplayScoreChart";
+import { InputCheckbox } from "@/app/mainComponents/InputCheckbox";
 export default function SendReplay() {
   const [replayData, setreplayData] = useState<ReplayInfo | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [chart, setChart] = useState(true);
+  console.log(chart);
   const checkRpy = async (e: File) => {
     setIsLoading(true);
     if (!e) return;
@@ -60,6 +63,14 @@ export default function SendReplay() {
       </div>
       <div className="flex flex-col font-semibold w-full space-y-1">
         <p>
+          Game:{" "}
+          <span className="text-tsecond">
+            {replayData
+              ? `Touhou: ${getGameNumber(replayData?.rpy_name!)}`
+              : ""}
+          </span>
+        </p>
+        <p>
           Player: <span className="text-tsecond">{replayData?.player}</span>
         </p>
         <p>
@@ -91,9 +102,25 @@ export default function SendReplay() {
           <span className="text-tsecond">{replayData?.slow_rate}</span>
         </p>
       </div>
-      {replayData ? (
-        <ReplayScoreChart scores={replayData?.stage_score!} />
-      ) : null}
+      <div className="flex w-full flex-col gap-y-1">
+        <div className="gap-x-1 flex items-center">
+          <InputCheckbox
+            id="sendChart"
+            name="sendChart"
+            checked={chart}
+            onClick={() => {
+              setChart((e) => !e);
+              console.log("asasas");
+            }}
+          />
+          <label htmlFor="sendChart" className="select-none">
+            Show chart
+          </label>
+        </div>
+        {replayData && chart ? (
+          <ReplayScoreChart scores={replayData?.stage_score!} />
+        ) : null}
+      </div>
     </div>
   );
 }

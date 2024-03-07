@@ -55,7 +55,7 @@ export default function Settings() {
         <div className="grid w-full gap-1.5">
           <p>Bio</p>
           <textarea
-            placeholder="Write something about yourself..."
+            placeholder="Write something about yourself...(max 250)"
             name="bio"
             maxLength={250}
             className="outline-white/20 focus:outline-white transition-all outline-none border-none resize-none bg-primary py-1.5 px-4 rounded-md"

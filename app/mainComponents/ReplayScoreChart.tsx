@@ -52,13 +52,19 @@ export const options = {
 };
 
 export default function ReplayScoreChart({ scores }: { scores: number[] }) {
+  if (scores.length <= 1) {
+    return (
+      <div className="flex text-2xl text-tsecond text-center font-semibold items-center justify-center h-32">
+        <h3>Replay needs at least 2 stages to show chart</h3>
+      </div>
+    );
+  }
   const labels = Array.from(
     { length: scores.length },
     (_, i) => `Stage ${i + 1}`
   );
   const data = {
     labels,
-
     datasets: [
       {
         data: scores,

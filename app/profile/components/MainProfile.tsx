@@ -94,7 +94,7 @@ export default async function MainProfile({
                 <p> Event points: {user.event}</p>
               </div>
 
-              <div className="text-xs text-start md:block hidden w-1/2 flex-col items-end space-y-0.5 ">
+              <div className="text-xs text-end md:block hidden w-1/2 flex-col items-end space-y-0.5 ">
                 <p>Joined: {convertUnixDateHours(user.joindate as any)}</p>
                 <p>Favorite game: {user.favoriteGame}</p>
                 {user.bio ? <p> Bio: {user.bio}</p> : null}
