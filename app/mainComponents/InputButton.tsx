@@ -2,10 +2,10 @@ import { forwardRef } from "react";
 import { cn } from "../lib/utils";
 import { cva, type VariantProps } from "class-variance-authority";
 
-export const buttonVariants = cva("rounded-full text-black", {
+export const buttonVariants = cva("rounded-full text-black disabled:bg-opacity-60 ", {
   variants: {
     variant: {
-      default: "bg-white text-black",
+      default: "bg-white text-black hover:opacity-60 transition-all",
       outline:
         "border-white border-2 border-solid text-white hover:bg-white hover:text-black transition-all",
     },
