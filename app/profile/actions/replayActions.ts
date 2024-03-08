@@ -4,7 +4,7 @@ import prisma from "@/app/lib/prismadb";
 import axios from "axios";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
-import { AchievementRankValues } from "@/app/constants/games";
+import { achievementRankValues } from "@/app/constants/games";
 import {
   getCharacterFromData,
   getGameNumber,
@@ -86,7 +86,7 @@ export const sendReplayAction = async (
     }
     const newReplay = await prisma.replay.create({
       data: {
-        achievement: AchievementRankValues[CC],
+        achievement: achievementRankValues[CC],
         character: getCharacterFromData(
           replayData.character,
           replayData.shottype,
@@ -164,29 +164,6 @@ const changeRanking = async (newReplay: Replay) => {
           },
         },
       });
-
-      const newScoreObj: ScoreObject = {
-        ...rankingObject,
-        [newReplay.rank.toUpperCase()]: {
-          score: newReplay.score,
-          id: newReplay.replayId,
-          CC: newReplay.achievement,
-          char: getCharacterFromData(
-            newReplay.character,
-            newReplay.shottype!,
-            true
-          ),
-        },
-      };
-      await prisma.ranking.update({
-        where: {
-          userIdRankingPoints: newReplay.userId,
-        },
-        data: {
-          [gameString]: JSON.stringify(newScoreObj),
-        },
-      });
-      return;
     }
 
     const newScoreObj: ScoreObject = {
@@ -211,19 +188,21 @@ const changeRanking = async (newReplay: Replay) => {
       },
     });
 
-    await prisma.profile.update({
-      where: {
-        id: newReplay.userId,
-      },
-      data: {
-        points: {
-          increment: Number(newReplay.points),
+    if (!sameReplay) {
+      await prisma.profile.update({
+        where: {
+          id: newReplay.userId,
         },
-        CCCount: {
-          increment: 1,
+        data: {
+          points: {
+            increment: Number(newReplay.points),
+          },
+          CCCount: {
+            increment: 1,
+          },
         },
-      },
-    });
+      });
+    }
   } catch (error) {
     console.log(error);
   }

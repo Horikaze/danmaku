@@ -41,7 +41,7 @@ export const games618 = [
 
 export const achievementList = ["CC", "NM", "NB", "NMNB", "NNN", "NNNN"];
 
-export const AchievementRankValues: Record<string, number> = {
+export const achievementRankValues: Record<string, number> = {
   CC: 1,
   NM: 2,
   NB: 3,
