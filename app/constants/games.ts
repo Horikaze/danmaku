@@ -58,7 +58,7 @@ export const touhouDifficulty = [
   "Extra",
   "Phantasm",
 ];
-
+export const difficultyLevelsTable = ["EASY", "NORMAL", "HARD", "LUNATIC", "EXTRA"];
 export const shotTypeList = ["A", "B", "C"];
 
 export const emptyScoreObject: ScoreObject = {

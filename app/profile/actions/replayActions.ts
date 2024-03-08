@@ -1,12 +1,18 @@
 "use server";
-import { ReplayInfo } from "@/app/types/Replay";
+import { ReplayInfo, ScoreObject } from "@/app/types/Replay";
 import prisma from "@/app/lib/prismadb";
 import axios from "axios";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
 import { AchievementRankValues } from "@/app/constants/games";
-import { getCharacterFromData, getGameNumber } from "@/app/lib/utils";
+import {
+  getCharacterFromData,
+  getGameNumber,
+  getGameString,
+} from "@/app/lib/utils";
 import { UTApi } from "uploadthing/server";
+import { Ranking, Replay } from "@prisma/client";
+import { revalidatePath } from "next/cache";
 export const threp = async (formData: FormData) => {
   try {
     const file = formData.get("replay") as File;
@@ -92,7 +98,7 @@ export const sendReplayAction = async (
         game: getGameNumber(replayData.rpy_name),
         player: replayData.player,
         rank: replayData.rank,
-        slowRate: replayData.slow_rate ? replayData.slow_rate.toString() : null,
+        slowRate: replayData.slow_rate ? replayData.slow_rate.toString() : "0",
         rpy_name: replayFile.name,
         stage: replayData.stage,
         shottype: replayData.shottype,
@@ -104,10 +110,122 @@ export const sendReplayAction = async (
         userId: session.user.info.id,
       },
     });
-
+    await changeRanking(newReplay);
+    revalidatePath("/profile");
     return "Sended";
   } catch (error) {
     console.log(error);
     return "Internal error";
   }
 };
+
+const changeRanking = async (newReplay: Replay) => {
+  try {
+    const sameReplay = await prisma.replay.findFirst({
+      where: {
+        game: newReplay.game,
+        rank: newReplay.rank,
+        userId: newReplay.userId,
+        replayId: {
+          not: newReplay.replayId,
+        },
+      },
+      orderBy: {
+        points: "desc",
+      },
+    });
+
+    const gameString = getGameString(
+      getGameNumber(newReplay.rpy_name)
+    ).toUpperCase();
+
+    const currenntRanking = await prisma.ranking.findFirst({
+      where: {
+        userIdRankingPoints: newReplay.userId,
+      },
+      select: {
+        [gameString]: true,
+      },
+    });
+    if (!currenntRanking) return;
+    const rankingObject = JSON.parse(currenntRanking[gameString]);
+
+    if (sameReplay && sameReplay.points >= newReplay.points) return;
+    if (sameReplay && sameReplay.points <= newReplay.points) {
+      const updatedPoints = newReplay.points - sameReplay.points;
+
+      await prisma.profile.update({
+        where: {
+          id: newReplay.userId,
+        },
+        data: {
+          points: {
+            increment: updatedPoints,
+          },
+        },
+      });
+
+      const newScoreObj: ScoreObject = {
+        ...rankingObject,
+        [newReplay.rank.toUpperCase()]: {
+          score: newReplay.score,
+          id: newReplay.replayId,
+          CC: newReplay.achievement,
+          char: getCharacterFromData(
+            newReplay.character,
+            newReplay.shottype!,
+            true
+          ),
+        },
+      };
+      await prisma.ranking.update({
+        where: {
+          userIdRankingPoints: newReplay.userId,
+        },
+        data: {
+          [gameString]: JSON.stringify(newScoreObj),
+        },
+      });
+      return;
+    }
+
+    const newScoreObj: ScoreObject = {
+      ...rankingObject,
+      [newReplay.rank.toUpperCase()]: {
+        score: newReplay.score,
+        id: newReplay.replayId,
+        CC: newReplay.achievement,
+        char: getCharacterFromData(
+          newReplay.character,
+          newReplay.shottype!,
+          true
+        ),
+      },
+    };
+    await prisma.ranking.update({
+      where: {
+        userIdRankingPoints: newReplay.userId,
+      },
+      data: {
+        [gameString]: JSON.stringify(newScoreObj),
+      },
+    });
+
+    await prisma.profile.update({
+      where: {
+        id: newReplay.userId,
+      },
+      data: {
+        points: {
+          increment: Number(newReplay.points),
+        },
+        CCCount: {
+          increment: 1,
+        },
+      },
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+const replaceReplay = async (newReplay: Replay) => {};

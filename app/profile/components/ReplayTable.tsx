@@ -1,10 +1,9 @@
-import { games618 } from "@/app/constants/games";
+import { difficultyLevelsTable, games618 } from "@/app/constants/games";
 import prisma from "@/app/lib/prismadb";
 import { ScoreObject } from "@/app/types/Replay";
 type ReplayTableProps = {
   userId: string;
 };
-const difficultyLevels = ["EASY", "NORMAL", "HARD", "LUNATIC", "EXTRA"];
 export default async function ReplayTable({ userId }: ReplayTableProps) {
   const tableData = await prisma.ranking.findFirst({
     where: {
@@ -24,31 +23,31 @@ export default async function ReplayTable({ userId }: ReplayTableProps) {
   return (
     <div className="overflow-auto grow">
       <table className="text-sm md:text-base w-full">
-      <thead>
-        <tr>
-          <th className="border">Game</th>
-          {difficultyLevels.map((e) => (
-            <th className="border" key={e}>
-              {e}
-            </th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {games618.map((game) => (
-          <tr className="border" key={game}>
-            <td className="border">{game}</td>
-            {difficultyLevels.map((diff) => {
-              return (
-                <td key={diff} className="border">
-                  {forrmatedObject[game][diff].score}
-                </td>
-              );
-            })}
+        <thead>
+          <tr>
+            <th className="border">Game</th>
+            {difficultyLevelsTable.map((e) => (
+              <th className="border" key={e}>
+                {e}
+              </th>
+            ))}
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {games618.map((game) => (
+            <tr className="border" key={game}>
+              <td className="border">{game}</td>
+              {difficultyLevelsTable.map((diff) => {
+                return (
+                  <td key={diff} className="border">
+                    {forrmatedObject[game][diff].score}
+                  </td>
+                );
+              })}
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }

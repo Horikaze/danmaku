@@ -32,11 +32,11 @@ export type ReplayFormData = {
   points?: string;
 };
 export type ScoreObject = {
-  EASY: { score?: number; id?: string; CC?: number; char?: string };
-  NORMAL: { score?: number; id?: string; CC?: number; char?: string };
-  HARD: { score?: number; id?: string; CC?: number; char?: string };
-  LUNATIC: { score?: number; id?: string; CC?: number; char?: string };
-  EXTRA: { score?: number; id?: string; CC?: number; char?: string };
-  PHANTASM: { score?: number; id?: string; CC?: number; char?: string };
-  [key: string]: { score?: number; id?: string; CC?: number; char?: string };
+  EASY: { score: number; id: string; CC: number; char: string };
+  NORMAL: { score: number; id: string; CC: number; char: string };
+  HARD: { score: number; id: string; CC: number; char: string };
+  LUNATIC: { score: number; id: string; CC: number; char: string };
+  EXTRA: { score: number; id: string; CC: number; char: string };
+  PHANTASM: { score: number; id: string; CC: number; char: string };
+  [key: string]: { score: number; id: string; CC: number; char: string };
 };

@@ -148,7 +148,11 @@ export default function SendReplay() {
           <p>
             Stage:{" "}
             <span className="text-tsecond">
-              {replayData?.stage || replayData === null ? "" : "Not supported"}
+              {replayData
+                ? replayData.stage
+                  ? replayData.stage
+                  : "Not supported"
+                : ""}
             </span>
           </p>
           <p>
