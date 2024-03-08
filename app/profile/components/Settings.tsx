@@ -7,7 +7,7 @@ import { useSession } from "next-auth/react";
 import toast from "react-hot-toast";
 import { changeUserAction } from "../actions/profileActions";
 
-export default function Settings() {
+export default function Settings({ favoriteGame }: { favoriteGame: string }) {
   const { data: session, update } = useSession();
   return (
     <form
@@ -40,7 +40,7 @@ export default function Settings() {
         <div className="grid w-full gap-1.5">
           <p>Favorite game</p>
           <select
-            defaultValue={"EoSD"}
+            defaultValue={favoriteGame}
             name="game"
             id="game"
             className="outline-white/20 focus:outline-white transition-all outline-none border-none bg-primary py-1.5 px-4 rounded-full"

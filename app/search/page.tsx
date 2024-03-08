@@ -1,17 +1,10 @@
-"use client";
-import toast from "react-hot-toast";
-import { InputCheckbox } from "../mainComponents/InputCheckbox";
-
-export default function Search() {
+import prisma from "@/app/lib/prismadb";
+import ReplaysTable from "./ReplaysTable";
+export default async function Search() {
+  const replays = await prisma.replay.findMany({});
   return (
-    <div className="flex w-full">
-      <button
-        onClick={() => {
-          toast.success("aha");
-        }}
-      >
-        aha
-      </button>
+    <div className="flex w-full jc items-center">
+      <ReplaysTable replays={replays}/>
     </div>
   );
 }

@@ -68,7 +68,7 @@ export default async function ReplayTable({ userId }: ReplayTableProps) {
                   return (
                     <td
                       key={diff}
-                      className={`text-xs overflow-hidden flex md:min-h-7 min-h-6`}
+                      className={`text-xs flex md:min-h-7 min-h-6`}
                     >
                       <Link
                         href={`/replay/${forrmatedObject[game][diff].id}`}

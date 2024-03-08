@@ -9,6 +9,7 @@ import Settings from "./Settings";
 import UpdateImages from "./UpdateImages";
 import Image from "next/image";
 import SendReplay from "./SendReplay";
+import MyReplays from "./MyReplays";
 
 export default async function MainProfile({
   tab,
@@ -30,9 +31,11 @@ export default async function MainProfile({
       case "table":
         return <ReplayTable userId={userId} />;
       case "settings":
-        return <Settings />;
+        return <Settings favoriteGame={user.favoriteGame || "EOSD"} />;
       case "send":
         return <SendReplay />;
+      case "myreplays":
+        return <MyReplays />;
       default:
         return <ReplayTable userId={userId} />;
     }
@@ -60,7 +63,7 @@ export default async function MainProfile({
             />
           </>
         ) : (
-          <div className="h-12 text-sm bottom-0 text-end pt-3 pr-10 opacity-50 ">
+          <div className="h-12 text-sm bottom-0 text-end pt-[18px] pr-10 opacity-50 ">
             Select your banner here ➔
           </div>
         )}
