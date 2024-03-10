@@ -1,12 +1,10 @@
 "use client";
 import { Replay } from "@prisma/client";
-import { useState } from "react";
-import { ButtonInput } from "../mainComponents/InputButton";
-import { FaArrowDown, FaArrowUp } from "react-icons/fa";
-import { AnimatePresence, motion } from "framer-motion";
-import { convertUnixDate } from "../lib/utils";
-import { achievementRankValues } from "../constants/games";
 import Link from "next/link";
+import { useState } from "react";
+import { FaArrowDown, FaArrowUp } from "react-icons/fa";
+import { achievementRankValues } from "../constants/games";
+import { convertUnixDate } from "../lib/utils";
 export type sortTypesType =
   | "Points"
   | "Achievement"
@@ -20,10 +18,11 @@ const sortTypes: sortTypesType[] = [
   "Slow",
   "Date",
 ];
-export default function ReplaysTable({ replays }: { replays: Replay[] }) {
+export default function ReplaysList({ replays }: { replays: Replay[] }) {
   const [sortDir, setSortDir] = useState<boolean>(true);
   const [activeSort, setActiveSort] = useState<sortTypesType>("Points");
   const [isOpen, setIsOpen] = useState(false);
+  const [searchPlayer, setSearchPlayer] = useState("");
 
   const changeSorting = (sortType: sortTypesType) => {
     if (activeSort === sortType) {
@@ -32,6 +31,12 @@ export default function ReplaysTable({ replays }: { replays: Replay[] }) {
     setIsOpen(false);
     setActiveSort(sortType);
   };
+
+  if (searchPlayer !== "") {
+    replays = replays.filter((s) =>
+      s.player.toLowerCase().includes(searchPlayer.toLowerCase())
+    );
+  }
 
   replays.sort((a, b) => {
     if (activeSort === "Date") {
@@ -52,13 +57,18 @@ export default function ReplaysTable({ replays }: { replays: Replay[] }) {
   if (!sortDir) {
     replays.reverse();
   }
+
+  console.log(replays);
   return (
-    <div className="flex flex-col bg-primary w-full min-h-64 drop-shadow-md p-3 text-sm md:text-base">
+    <div className="flex flex-col  w-full min-h-64 p-3 text-sm md:text-base">
       <div className="flex flex-col gap-y-3">
-        <div className="flex text-center">
-          <div className="basis-1/5 px-1 relative hover:bg-hover transition-colors flex items-center gap-x-1 rounded-md p-2 cursor-pointer select-none overflow-x-hidden">
-            Player
-          </div>
+        <div className="flex text-center gap-x-1">
+          <input
+            placeholder="Player"
+            onChange={(e) => setSearchPlayer(e.target.value)}
+            value={searchPlayer}
+            className="basis-1/5 px-1 relative bg-primary hover:bg-hover transition-colors flex items-center gap-x-1 rounded-md p-2 select-none overflow-x-hidden"
+          />
           {sortTypes.map((e) => (
             <div
               key={e}

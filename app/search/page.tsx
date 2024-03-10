@@ -1,5 +1,5 @@
 import prisma from "@/app/lib/prismadb";
-import ReplaysTable from "./ReplaysTable";
+import ReplaysTable from "./ReplaysList";
 export default async function Search() {
   const replays = await prisma.replay.findMany({});
   return (

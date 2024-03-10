@@ -9,7 +9,7 @@ import Settings from "./Settings";
 import UpdateImages from "./UpdateImages";
 import Image from "next/image";
 import SendReplay from "./SendReplay";
-import MyReplays from "./MyReplays";
+import ReplaysList from "@/app/search/ReplaysList";
 
 export default async function MainProfile({
   tab,
@@ -21,6 +21,9 @@ export default async function MainProfile({
   const user = await prisma.profile.findFirst({
     where: {
       id: userId,
+    },
+    include: {
+      Replays: true,
     },
   });
   if (!user) {
@@ -35,7 +38,7 @@ export default async function MainProfile({
       case "send":
         return <SendReplay />;
       case "myreplays":
-        return <MyReplays />;
+        return <ReplaysList replays={user.Replays} />;
       default:
         return <ReplayTable userId={userId} />;
     }

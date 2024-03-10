@@ -1,5 +1,5 @@
 import { FaArrowDown, FaArrowUp } from "react-icons/fa";
-import { sortTypesType } from "./ReplaysTable";
+import { sortTypesType } from "./ReplaysList";
 
 type SortLabelProps = {
   onClick: (type: sortTypesType) => void;
