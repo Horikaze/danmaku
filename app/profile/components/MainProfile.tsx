@@ -9,7 +9,7 @@ import Settings from "./Settings";
 import UpdateImages from "./UpdateImages";
 import Image from "next/image";
 import SendReplay from "./SendReplay";
-import ReplaysList from "@/app/search/ReplaysList";
+import ReplaysList from "@/app/mainComponents/ReplaysList";
 
 export default async function MainProfile({
   tab,

@@ -1,3 +1,5 @@
+import { Replay } from "@prisma/client";
+
 export type ReplayInfo = {
   character: string | string[];
   date: string;
@@ -40,3 +42,5 @@ export type ScoreObject = {
   PHANTASM: { score: number; id: string; CC: number; char: string };
   [key: string]: { score: number; id: string; CC: number; char: string };
 };
+
+export type replayWithNickname = Replay & { Profile: { nickname: string } };
