@@ -5,7 +5,7 @@ import ReplaysList from "../mainComponents/ReplaysList";
 import SearchBar from "./SearchBar";
 import { replayWithNickname } from "../types/Replay";
 export default async function Search({ searchParams }: { searchParams: any }) {
-  const generateQuery = () => {
+  const getReplays = async () => {
     try {
       const {
         player,
@@ -22,85 +22,84 @@ export default async function Search({ searchParams }: { searchParams: any }) {
       } = searchParams;
       const achivInt = achievementRankValues[achievement!];
       let whereClause: Record<string, any> = {};
-
-      if (player !== "") {
+      console.log(player);
+      if (player !== undefined && player !== "") {
         whereClause.player = {
           contains: player,
         };
       }
 
-      if (game !== "" && game !== "All") {
+      if (game !== undefined && game !== "All") {
         whereClause.game = getGameInt(game);
       }
-
-      if (scoreFrom !== "") {
+      if (scoreFrom !== undefined && scoreFrom !== "") {
         whereClause.score = {
           ...whereClause.score,
-          gte: Number(scoreFrom),
+          gte: Number((scoreFrom as string).replace(/\s/g, "")),
         };
       }
-
-      if (scoreTo !== "") {
+      console.log(scoreTo);
+      if (scoreTo !== undefined && scoreTo !== "") {
         whereClause.score = {
           ...whereClause.score,
-          lte: Number(scoreTo),
+          lte: Number((scoreTo as string).replace(/\s/g, "")),
         };
       }
-      if (pointsFrom !== "") {
+      if (pointsFrom !== undefined && pointsFrom !== "") {
         whereClause.points = {
           ...whereClause.points,
           gte: Number(pointsFrom),
         };
       }
 
-      if (pointsTo !== "") {
+      if (pointsTo !== undefined && pointsTo !== "") {
         whereClause.points = {
           ...whereClause.points,
           lte: Number(pointsTo),
         };
       }
 
-      if (rank !== "" && rank !== "All") {
+      if (rank !== undefined && rank !== "All") {
         whereClause.rank = rank;
       }
       if (achivInt !== 0 && achievement !== "All") {
         whereClause.achievement = achivInt;
       }
 
-      if (shottype !== "" && shottype !== "All") {
+      if (shottype !== undefined && shottype !== "All") {
         whereClause.shottype = shottype;
       }
-      if (character !== "") {
+      if (character !== undefined && character !== "") {
         whereClause.character = {
           contains: character,
         };
       }
 
-      if (userId !== "") {
+      if (userId !== undefined && userId !== "") {
         whereClause.userId = userId;
       }
 
-      return whereClause;
+      const replays = (await prisma.replay.findMany({
+        where: whereClause,
+        include: {
+          Profile: {
+            select: {
+              nickname: true,
+            },
+          },
+        },
+      })) as replayWithNickname[];
+      return replays;
     } catch (error) {
       console.log(error);
-      return {};
+      return null;
     }
   };
-  const whereClause = generateQuery();
-  const replays = (await prisma.replay.findMany({
-    where: whereClause,
-    include: {
-      Profile: {
-        select: {
-          nickname: true,
-        },
-      },
-    },
-  })) as replayWithNickname[];
+  const replays = await getReplays();
   return (
     <div className="flex flex-col">
       <SearchBar />
-      <ReplaysList replays={replays} />
+      {replays ? <ReplaysList replays={replays} /> : null}
     </div>
   );
 }
