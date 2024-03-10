@@ -99,7 +99,13 @@ export default async function Search({ searchParams }: { searchParams: any }) {
   return (
     <div className="flex flex-col">
       <SearchBar />
-      {replays ? <ReplaysList replays={replays} /> : null}
+      {replays && replays.length > 0 ? (
+        <ReplaysList replays={replays} />
+      ) : (
+        <div className="flex text-2xl text-tsecond text-center font-semibold items-center justify-center h-32">
+          <h3>No results</h3>
+        </div>
+      )}
     </div>
   );
 }
