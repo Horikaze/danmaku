@@ -34,7 +34,6 @@ export default function ReplaysList({
   const [activeSort, setActiveSort] = useState<sortTypesType>(null);
   const [searchPlayer, setSearchPlayer] = useState("");
   const [searchChara, setsearchChara] = useState("");
-
   const changeSorting = (sortType: sortTypesType) => {
     if (activeSort === sortType) {
       setSortDir((prev) => !prev);

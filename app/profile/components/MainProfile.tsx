@@ -1,17 +1,17 @@
 import prisma from "@/app/lib/prismadb";
-import { Divider } from "@/app/mainComponents/Divider";
-import { FaCopy, FaDiscord } from "react-icons/fa";
-import ProfileController from "./ProfileController";
-import ReplayTable from "./ReplayTable";
 import { convertUnixDateHours } from "@/app/lib/utils";
+import Copy from "@/app/mainComponents/Copy";
+import { Divider } from "@/app/mainComponents/Divider";
 import ProfileImage from "@/app/mainComponents/ProfileImage";
-import Settings from "./Settings";
-import UpdateImages from "./UpdateImages";
-import Image from "next/image";
-import SendReplay from "./SendReplay";
 import ReplaysList from "@/app/mainComponents/ReplaysList";
 import { replayWithNickname } from "@/app/types/Replay";
-import Copy from "@/app/mainComponents/Copy";
+import Image from "next/image";
+import { FaDiscord } from "react-icons/fa";
+import ProfileController from "./ProfileController";
+import ReplayTable from "./ReplayTable";
+import SendReplay from "./SendReplay";
+import Settings from "./Settings";
+import UpdateImages from "./UpdateImages";
 
 export default async function MainProfile({
   tab,

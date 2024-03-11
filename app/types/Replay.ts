@@ -44,3 +44,9 @@ export type ScoreObject = {
 };
 
 export type replayWithNickname = Replay & { Profile: { nickname: string } };
+
+export type searchParamsPropsReplay = {
+  modalReplay?: string;
+  replayId?: string;
+  tab: string;
+};

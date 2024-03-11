@@ -1,9 +1,14 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/auth";
+import { searchParamsPropsReplay } from "../types/Replay";
 import LoginForm from "./components/LoginForm";
 import MainProfile from "./components/MainProfile";
 
-export default async function Profile({ searchParams }: { searchParams: any }) {
+export default async function Profile({
+  searchParams,
+}: {
+  searchParams: searchParamsPropsReplay;
+}) {
   const validTabs = ["table", "send", "myreplays", "settings"];
   const searchTab = validTabs.includes(searchParams.tab)
     ? searchParams.tab
@@ -17,8 +22,10 @@ export default async function Profile({ searchParams }: { searchParams: any }) {
     );
   }
   return (
-    <div className="flex flex-col w-full h-full bg-primary drop-shadow-md overflow-auto min-h-[1200px]">
-      <MainProfile tab={searchTab || "table"} userId={session.user.info.id} />
-    </div>
+    <>
+      <div className="flex flex-col w-full h-full bg-primary drop-shadow-md overflow-auto min-h-[1200px]">
+        <MainProfile tab={searchTab || "table"} userId={session.user.info.id} />
+      </div>
+    </>
   );
 }
