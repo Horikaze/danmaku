@@ -137,10 +137,10 @@ export default function ReplaysList({
             <Link
               href={`/replay/${r.replayId}`}
               prefetch={false}
-              className="flex w-full min-w-[600px] py-2 bg-background hover:bg-hover transition-colors rounded-md gap-x-1 text-start justify-between"
+              className="flex w-full min-w-[600px] py-2  hover:bg-hover transition-colors rounded-md gap-x-1 text-start justify-between whitespace-nowrap"
               key={r.replayId}
             >
-              <div className="w-2/12">{r.Profile.nickname}</div>
+              <div className="w-2/12 px-1">{r.Profile.nickname}</div>
               <div className="w-1/12 px-1">
                 {r.character} {r.shottype}
               </div>

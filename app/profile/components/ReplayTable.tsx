@@ -30,7 +30,7 @@ export default async function ReplayTable({ userId }: ReplayTableProps) {
   const cellColor = (achievement: number) => {
     switch (achievement) {
       case 1:
-        return "";
+        return "bg-[#4e5052]";
       case 2:
         return "bg-[#bb8888]";
       case 3:

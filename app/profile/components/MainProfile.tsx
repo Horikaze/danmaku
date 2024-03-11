@@ -1,6 +1,6 @@
 import prisma from "@/app/lib/prismadb";
 import { Divider } from "@/app/mainComponents/Divider";
-import { FaDiscord } from "react-icons/fa";
+import { FaCopy, FaDiscord } from "react-icons/fa";
 import ProfileController from "./ProfileController";
 import ReplayTable from "./ReplayTable";
 import { convertUnixDateHours } from "@/app/lib/utils";
@@ -10,6 +10,8 @@ import UpdateImages from "./UpdateImages";
 import Image from "next/image";
 import SendReplay from "./SendReplay";
 import ReplaysList from "@/app/mainComponents/ReplaysList";
+import { replayWithNickname } from "@/app/types/Replay";
+import Copy from "@/app/mainComponents/Copy";
 
 export default async function MainProfile({
   tab,
@@ -23,7 +25,15 @@ export default async function MainProfile({
       id: userId,
     },
     include: {
-      Replays: true,
+      Replays: {
+        include: {
+          Profile: {
+            select: {
+              nickname: true,
+            },
+          },
+        },
+      },
     },
   });
   if (!user) {
@@ -38,7 +48,7 @@ export default async function MainProfile({
       case "send":
         return <SendReplay />;
       case "myreplays":
-        return <ReplaysList replays={user.Replays} />;
+        return <ReplaysList replays={user.Replays as replayWithNickname[]} />;
       default:
         return <ReplayTable userId={userId} />;
     }
@@ -84,7 +94,12 @@ export default async function MainProfile({
           </div>
           <div className="flex-1 overflow-x-hidden">
             <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-semibold">{user.nickname}</h2>
+              <h2 className="text-2xl font-semibold float-left">
+                {user.nickname}
+              </h2>
+              <div className="float-left text-sm text-tsecond flex items-center gap-x-1 hover:brightness-125 cursor-pointer">
+                <Copy text={user.id} /> uid
+              </div>
               {user.discord ? (
                 <div className="space-x-1">
                   <FaDiscord className="size-6 float-left" />
@@ -115,7 +130,7 @@ export default async function MainProfile({
         </div>
         <ProfileController currentTab={tab} />
         <Divider className="m-5" />
-        <div className="flex justify-center items-center w-full md:px-4 lg:px-24 xl:px-36">
+        <div className="flex justify-center items-center w-full md:px-4 lg:px-24 xl:px-36 overflow-y-scroll">
           <TabComponent />
         </div>
       </div>

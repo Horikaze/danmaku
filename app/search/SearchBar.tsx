@@ -31,7 +31,7 @@ export default function SearchBar() {
                 <p>Game</p>
                 <select
                   name="game"
-                  className="w-full  outline-white/20 focus:outline-white transition-all outline-none border-none bg-primary py-1.5 px-4 rounded-md"
+                  className="w-full  outline-white/20 focus:outline-white transition-all outline-none border-none bg-primary py-1 px-4 rounded-md"
                 >
                   <option value={"All"}>All</option>
                   {games618.map((g) => (
@@ -65,7 +65,7 @@ export default function SearchBar() {
                 <p>Shot-type</p>
                 <select
                   name="shottype"
-                  className="w-full  outline-white/20 focus:outline-white transition-all outline-none border-none bg-primary py-1.5 px-4 rounded-md"
+                  className="w-full  outline-white/20 focus:outline-white transition-all outline-none border-none bg-primary py-1 px-4 rounded-md"
                 >
                   <option value={"All"}>All</option>
 
@@ -108,7 +108,7 @@ export default function SearchBar() {
                 <div className="flex gap-x-3 items-center">
                   <select
                     name="rank"
-                    className="w-full outline-white/20 focus:outline-white transition-all outline-none border-none bg-primary py-1.5 px-4 rounded-md"
+                    className="w-full outline-white/20 focus:outline-white transition-all outline-none border-none bg-primary py-1 px-4 rounded-md"
                   >
                     <option value={"All"}>All</option>
 
@@ -120,7 +120,7 @@ export default function SearchBar() {
                   </select>
                   <select
                     name="achievement"
-                    className="w-full  outline-white/20 focus:outline-white transition-all outline-none border-none bg-primary py-1.5 px-4 rounded-md"
+                    className="w-full  outline-white/20 focus:outline-white transition-all outline-none border-none bg-primary py-1 px-4 rounded-md"
                   >
                     <option value={"All"}>All</option>
 

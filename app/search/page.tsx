@@ -76,7 +76,7 @@ export default async function Search({ searchParams }: { searchParams: any }) {
       }
 
       if (userId !== undefined && userId !== "") {
-        whereClause.userId = userId;
+        whereClause.userId = (userId as string).replace(/\s/g, "");
       }
 
       const replays = (await prisma.replay.findMany({

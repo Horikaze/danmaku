@@ -43,7 +43,7 @@ export default function Settings({ favoriteGame }: { favoriteGame: string }) {
             defaultValue={favoriteGame}
             name="game"
             id="game"
-            className="outline-white/20 focus:outline-white transition-all outline-none border-none bg-primary py-1.5 px-4 rounded-full"
+            className="outline-white/20 focus:outline-white transition-all outline-none border-none bg-primary py-1 px-4 rounded-md"
           >
             {allGamesString.map((e) => (
               <option key={e} value={e}>
