@@ -1,8 +1,7 @@
 import {
-  achievementList,
   achievementRankValues,
   difficultyLevelsTable,
-  games618,
+  games618
 } from "@/app/constants/games";
 import prisma from "@/app/lib/prismadb";
 import { ScoreObject } from "@/app/types/Replay";
@@ -70,24 +69,28 @@ export default async function ReplayTable({ userId }: ReplayTableProps) {
                       key={diff}
                       className={`text-xs flex md:min-h-7 min-h-6`}
                     >
-                      <Link
-                        href={`/replay/${forrmatedObject[game][diff].id}`}
-                        prefetch={false}
-                        className={`text-center flex items-center justify-center w-1/2 hover:opacity-60 transition-opacity ${cellColor(
-                          forrmatedObject[game][diff].CC
-                        )}`}
-                      >
-                        E: {forrmatedObject[game][diff].char}
-                      </Link>
-                      <Link
-                        href={`/replay/${forrmatedObject[game]["PHANTASM"].id}`}
-                        prefetch={false}
-                        className={`text-center flex items-center justify-center w-1/2 hover:opacity-60 transition-opacity ${cellColor(
-                          forrmatedObject[game]["PHANTASM"].CC
-                        )}`}
-                      >
-                        P: {forrmatedObject[game]["PHANTASM"].char}
-                      </Link>
+                      {forrmatedObject[game][diff].CC !== 0 ? (
+                        <Link
+                          href={`/replay/${forrmatedObject[game][diff].id}`}
+                          prefetch={false}
+                          className={`text-center flex items-center justify-center w-1/2 hover:opacity-60 transition-opacity ${cellColor(
+                            forrmatedObject[game][diff].CC
+                          )}`}
+                        >
+                          E: {forrmatedObject[game][diff].char}
+                        </Link>
+                      ) : null}
+                      {forrmatedObject[game]["PHANTASM"].CC !== 0 ? (
+                        <Link
+                          href={`/replay/${forrmatedObject[game]["PHANTASM"].id}`}
+                          prefetch={false}
+                          className={`text-center flex items-center justify-center w-1/2 hover:opacity-60 transition-opacity ${cellColor(
+                            forrmatedObject[game]["PHANTASM"].CC
+                          )}`}
+                        >
+                          P: {forrmatedObject[game]["PHANTASM"].char}
+                        </Link>
+                      ) : null}
                     </td>
                   );
                 }

@@ -66,8 +66,8 @@ export const authOptions: AuthOptions = {
           const newUser = await prisma.profile.create({
             data: {
               email: user.email!,
-              nickname: user.name,
-              name: user.name,
+              nickname: user.name!,
+              name: user.name!,
               imageUrl: user.image || null,
             },
           });

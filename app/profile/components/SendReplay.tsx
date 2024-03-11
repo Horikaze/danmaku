@@ -1,24 +1,22 @@
 "use client";
+import { achievementList } from "@/app/constants/games";
+import { calculatePoints } from "@/app/lib/calculatePoints";
+import {
+  cn,
+  getCharacterFromData,
+  getGameNumber
+} from "@/app/lib/utils";
+import ButtonLoader from "@/app/mainComponents/ButtonLoader";
 import { ButtonInput, buttonVariants } from "@/app/mainComponents/InputButton";
 import { ReplayInfo } from "@/app/types/Replay";
 import { useState } from "react";
+import toast from "react-hot-toast";
 import {
   checkReplayExist,
   sendReplayAction,
   threp,
 } from "../actions/replayActions";
-import {
-  cn,
-  convertUnixDateHours,
-  getCharacterFromData,
-  getGameNumber,
-} from "@/app/lib/utils";
-import ButtonLoader from "@/app/mainComponents/ButtonLoader";
-import ReplayScoreChart from "@/app/mainComponents/ReplayScoreChart";
-import { InputCheckbox } from "@/app/mainComponents/InputCheckbox";
-import toast from "react-hot-toast";
-import { achievementList } from "@/app/constants/games";
-import { calculatePoints } from "@/app/lib/calculatePoints";
+import ReplayChart from "./ReplayChart";
 export default function SendReplay() {
   const [replayData, setreplayData] = useState<ReplayInfo | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -221,26 +219,7 @@ export default function SendReplay() {
         </div>
       </form>
       <div className="flex flex-col gap-y-1 w-full">
-        <div className="gap-x-1 flex items-center">
-          <InputCheckbox
-            id="sendChart"
-            name="sendChart"
-            checked={chart}
-            onChange={(e) => {
-              setChart(e.target.checked);
-            }}
-          />
-          <label htmlFor="sendChart" className="select-none">
-            Show chart
-          </label>
-        </div>
-        {replayData && chart ? (
-          <div className="flex justify-center items-center w-full">
-            <div className="max-w-[700px] w-full h-72">
-              <ReplayScoreChart scores={replayData?.stage_score!} />
-            </div>
-          </div>
-        ) : null}
+        {replayData ? <ReplayChart scores={replayData.stage_score} /> : null}
       </div>
     </div>
   );

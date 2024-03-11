@@ -62,7 +62,11 @@ export default async function Search({ searchParams }: { searchParams: any }) {
       if (rank !== undefined && rank !== "All") {
         whereClause.rank = rank;
       }
-      if (achivInt !== 0 && achievement !== "All") {
+      if (
+        achivInt !== 0 &&
+        achievement !== "All" &&
+        achievement !== undefined
+      ) {
         whereClause.achievement = achivInt;
       }
 
@@ -78,7 +82,8 @@ export default async function Search({ searchParams }: { searchParams: any }) {
       if (userId !== undefined && userId !== "") {
         whereClause.userId = (userId as string).replace(/\s/g, "");
       }
-
+      console.log(whereClause);
+      const isEmpty = Object.keys(whereClause).length <= 0 ? true : false;
       const replays = (await prisma.replay.findMany({
         where: whereClause,
         include: {
@@ -88,6 +93,10 @@ export default async function Search({ searchParams }: { searchParams: any }) {
             },
           },
         },
+        orderBy: {
+          uploadedDate: "desc",
+        },
+        take: isEmpty ? 10 : 50,
       })) as replayWithNickname[];
       return replays;
     } catch (error) {
