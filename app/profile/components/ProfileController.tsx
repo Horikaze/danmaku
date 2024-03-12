@@ -1,29 +1,18 @@
 "use client";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-const tabs = [
-  {
-    href: "table",
-    name: "Table",
-  },
-  {
-    href: "send",
-    name: "Send",
-  },
-  {
-    href: "myreplays",
-    name: "My replays",
-  },
-  {
-    href: "settings",
-    name: "Settings",
-  },
-];
+
+type Tabs = {
+  href: string;
+  name: string;
+};
+
 export default function ProfileController({
   currentTab,
+  tabs,
 }: {
   currentTab: string;
+  tabs: Tabs[];
 }) {
   return (
     <div>

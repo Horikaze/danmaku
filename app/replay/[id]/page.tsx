@@ -3,6 +3,7 @@ import {
   convertUnixDateHours,
   getCharacterFromData,
   getGameNumber,
+  getGameString,
 } from "@/app/lib/utils";
 import BackButton from "@/app/mainComponents/BackButton";
 import Copy from "@/app/mainComponents/Copy";
@@ -34,11 +35,11 @@ export async function generateMetadata(
   });
   return {
     title:
-      `${getCharacterFromData(
+      `${getGameString(replay?.game!)} ${replay?.rank} ${getCharacterFromData(
         replay?.character!,
         replay?.shottype!,
         true
-      )} ${replay?.score?.toLocaleString()}` || ":>",
+      )}` || ":>",
   };
 }
 
@@ -73,7 +74,7 @@ export default async function Replay({ params }: { params: { id: string } }) {
           </div>
         </div>
         <Divider />
-        <div className="flex flex-col font-semibold w-full space-y-1 items-start">
+        <div className="flex flex-col font-semibold w-full space-y-1 items-start relative">
           <p>
             Game:{" "}
             <span className="text-tsecond">
@@ -140,6 +141,12 @@ export default async function Replay({ params }: { params: { id: string } }) {
           >
             Download .rpy
           </Link>
+          <div className="absolute right-0 bottom-0 text-xs opacity-60 text-tsecond">
+            {replay?.comment ? <p>{replay?.comment || ""}</p> : null}
+            {replay?.acceptedBy ? (
+              <p> Verified by: {replay?.acceptedBy || ""}</p>
+            ) : null}
+          </div>
         </div>
         <ReplayChart scores={replayScores || []} />
       </div>

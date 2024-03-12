@@ -12,7 +12,24 @@ import ReplayTable from "./ReplayTable";
 import SendReplay from "./SendReplay";
 import Settings from "./Settings";
 import UpdateImages from "./UpdateImages";
-
+const controllerTabs = [
+  {
+    href: "table",
+    name: "Table",
+  },
+  {
+    href: "send",
+    name: "Send",
+  },
+  {
+    href: "myreplays",
+    name: "My replays",
+  },
+  {
+    href: "settings",
+    name: "Settings",
+  },
+];
 export default async function MainProfile({
   tab,
   userId,
@@ -59,7 +76,7 @@ export default async function MainProfile({
 
   return (
     <div className="flex flex-col gap-y-3">
-      <div className="w-full relative">
+      <div className="w-full relative flex justify-end">
         {user.profileBanner ? (
           <>
             <div
@@ -67,7 +84,7 @@ export default async function MainProfile({
                 textOrientation: "sideways",
                 writingMode: "vertical-rl",
               }}
-              className="px-1 flex relative  opac items-center bg-black opacity-40 text-xs justify-center whitespace-nowrap z-20 xl:h-56 h-48 select-none md:hover:py-32 xl:hover:py-44 2xl:hover:py-56 transition-all"
+              className="px-1 flex relative items-center bg-black opacity-40 text-xs justify-center whitespace-nowrap z-20 xl:h-56 h-48 select-none md:hover:py-32 xl:hover:py-44 2xl:hover:py-56 transition-all"
             >
               <p>Expand image</p>
             </div>
@@ -131,7 +148,7 @@ export default async function MainProfile({
           <p>Favorite game: {user.favoriteGame}</p>
           {user.bio ? <p> Bio: {user.bio}</p> : null}
         </div>
-        <ProfileController currentTab={tab} />
+        <ProfileController currentTab={tab} tabs={controllerTabs} />
         <Divider className="m-5" />
         <div className="flex justify-center items-center w-full md:px-4 lg:px-24 xl:px-36 overflow-y-scroll">
           <TabComponent />
