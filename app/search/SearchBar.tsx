@@ -12,7 +12,7 @@ export default function SearchBar() {
   return (
     <form
       action={searchReaplys}
-      className="flex flex-col gap-y-3 bg-primary drop-shadow-md p-3 rounded-md"
+      className="flex flex-col gap-y-3 bg-primary drop-shadow-md p-3 rounded-md text-sm md:text-base"
     >
       <div className="flex items-center flex-col md:flex-row justify-center gap-3">
         <div className="flex flex-col w-full ">
@@ -103,7 +103,7 @@ export default function SearchBar() {
               <div className="flex flex-col gap-1.5 w-full">
                 <div>
                   <p className="float-left">Rank</p>
-                  <p className="float-right">Achivment</p>
+                  <p className="float-right">Achievement</p>
                 </div>
                 <div className="flex gap-x-3 items-center">
                   <select

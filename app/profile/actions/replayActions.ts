@@ -13,6 +13,7 @@ import {
 import { UTApi } from "uploadthing/server";
 import { Ranking, Replay } from "@prisma/client";
 import { revalidatePath } from "next/cache";
+import { nanoid } from "nanoid";
 export const threp = async (formData: FormData) => {
   try {
     const file = formData.get("replay") as File;
@@ -86,6 +87,7 @@ export const sendReplayAction = async (
     }
     const newReplay = await prisma.replay.create({
       data: {
+        replayId: nanoid(10),
         achievement: achievementRankValues[CC],
         character: getCharacterFromData(
           replayData.character,

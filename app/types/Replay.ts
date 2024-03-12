@@ -1,4 +1,4 @@
-import { Replay } from "@prisma/client";
+import { Profile, Replay } from "@prisma/client";
 
 export type ReplayInfo = {
   character: string | string[];
@@ -46,7 +46,13 @@ export type ScoreObject = {
 export type replayWithNickname = Replay & { Profile: { nickname: string } };
 
 export type searchParamsPropsReplay = {
-  modalReplay?: string;
-  replayId?: string;
   tab: string;
+};
+
+export type userWithoutPassowrd = Omit<Profile, "hashedPassword">;
+export type RankingUser = {
+  id: string;
+  imageUrl?: string;
+  nickname: string;
+  value: number;
 };

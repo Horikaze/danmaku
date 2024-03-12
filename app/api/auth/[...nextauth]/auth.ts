@@ -1,6 +1,7 @@
 import prisma from "@/app/lib/prismadb";
 import { emptyScoreObjectString } from "@/app/lib/utils";
 import bcrypt from "bcrypt";
+import { nanoid } from "nanoid";
 import { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import DiscordProvider from "next-auth/providers/discord";
@@ -65,6 +66,7 @@ export const authOptions: AuthOptions = {
         if (!isUserExists) {
           const newUser = await prisma.profile.create({
             data: {
+              id: nanoid(10),
               email: user.email!,
               nickname: user.name!,
               name: user.name!,

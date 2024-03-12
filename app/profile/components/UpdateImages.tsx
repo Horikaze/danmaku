@@ -6,7 +6,7 @@ import { FaImage } from "react-icons/fa6";
 export default function UpdateImages({
   endpoint,
 }: {
-  endpoint: "profileBanner" | "profileImage" | "siteBG";
+  endpoint: "profileBanner" | "profileImage";
 }) {
   const { update } = useSession();
   return (

@@ -1,23 +1,43 @@
 "use client";
-import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
-import RankingElement from "./RankingElement";
 import { Divider } from "@/app/mainComponents/Divider";
+import { RankingUser } from "@/app/types/Replay";
+import { motion } from "framer-motion";
+import { useRef, useState } from "react";
+import RankingElement from "./RankingElement";
 const tabs = ["Points", "1cc", "Challenge"];
-const myArray = Array.from({ length: 10 }, (_, index) => index + 1);
-export default function Ranking() {
-  const [currentTab, setCurrentTab] = useState(tabs[0]);
 
+type RankingProps = {
+  rankingPoints: RankingUser[];
+  rankingCC: RankingUser[];
+  rankingEvent: RankingUser[];
+};
+
+export default function Ranking({
+  rankingCC,
+  rankingEvent,
+  rankingPoints,
+}: RankingProps) {
+  const [currentTab, setCurrentTab] = useState(0);
+  const arrayToMap =
+    currentTab === 0
+      ? rankingPoints
+      : currentTab === 1
+      ? rankingCC
+      : rankingEvent;
+  const scrollRef = useRef<HTMLDivElement | null>(null);
   return (
     <div className="bg-primary flex flex-col h-[500px] w-full drop-shadow-md p-3 gap-y-3">
       <div className="flex justify-center space-x-1 font-light">
-        {tabs.map((e) => (
+        {tabs.map((e, idx) => (
           <button
-            onClick={() => setCurrentTab(e)}
+            onClick={() => {
+              setCurrentTab(idx);
+              scrollRef.current!.scrollTop = 0;
+            }}
             key={e}
             className="relative py-0.5 px-3.5 rounded-full"
           >
-            {currentTab === e ? (
+            {currentTab === idx ? (
               <motion.div
                 layoutId="active-tab"
                 className="absolute inset-0 bg-white"
@@ -30,20 +50,14 @@ export default function Ranking() {
         ))}
       </div>
       <Divider />
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={currentTab}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.2 }}
-          className="flex flex-col space-y-1 overflow-y-scroll"
-        >
-          {myArray.map((e, idx) => {
-            return <RankingElement key={e} idx={idx} />;
-          })}
-        </motion.div>
-      </AnimatePresence>
+      <div
+        ref={scrollRef}
+        className="flex flex-col h-full gap-y-1 overflow-y-scroll"
+      >
+        {arrayToMap.map((u, idx) => (
+          <RankingElement key={u.id + currentTab} user={u} idx={idx} />
+        ))}
+      </div>
     </div>
   );
 }

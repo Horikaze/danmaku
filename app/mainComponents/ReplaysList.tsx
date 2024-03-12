@@ -3,10 +3,10 @@ import Link from "next/link";
 import { useState } from "react";
 import { FaArrowDown, FaArrowUp } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
+import { MdOutlineVerified, MdVerified } from "react-icons/md";
 import { achievementRankValues } from "../constants/games";
 import { convertUnixDate, getGameString } from "../lib/utils";
 import { replayWithNickname } from "../types/Replay";
-
 export type sortTypesType =
   | "Points"
   | "Achievement"
@@ -104,6 +104,7 @@ export default function ReplaysList({
               />
             ) : null}
           </div>
+
           {sortTypes.map((e) => {
             return (
               <div
@@ -130,13 +131,14 @@ export default function ReplaysList({
               </div>
             );
           })}
+          <div className="w-5" />
         </div>
         <div className="flex flex-col gap-y-2 overflow-x-scroll">
           {replays.map((r) => (
             <Link
               href={`/replay/${r.replayId}`}
               prefetch={false}
-              className="flex w-full min-w-[600px] py-2  hover:bg-hover transition-colors rounded-md gap-x-1 text-start justify-between whitespace-nowrap"
+              className="flex w-full min-w-[600px] py-2 px-1 hover:bg-hover transition-colors rounded-md gap-x-1 text-start justify-between whitespace-nowrap"
               key={r.replayId}
             >
               <div className="w-2/12 px-1">{r.Profile.nickname}</div>
@@ -152,6 +154,13 @@ export default function ReplaysList({
               <div className="w-[12%] px-1">{r.score.toLocaleString()}</div>
               <div className="w-[12%] text-center">
                 {convertUnixDate(r.uploadedDate as any)}
+              </div>
+              <div className="text-center">
+                {r.status ? (
+                  <MdVerified className="size-5" />
+                ) : (
+                  <MdOutlineVerified className="size-5" />
+                )}
               </div>
             </Link>
           ))}

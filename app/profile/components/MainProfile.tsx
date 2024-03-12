@@ -33,6 +33,9 @@ export default async function MainProfile({
             },
           },
         },
+        orderBy: {
+          uploadedDate: "desc",
+        },
       },
     },
   });

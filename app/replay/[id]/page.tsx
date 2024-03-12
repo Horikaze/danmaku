@@ -5,9 +5,43 @@ import {
   getGameNumber,
 } from "@/app/lib/utils";
 import BackButton from "@/app/mainComponents/BackButton";
+import Copy from "@/app/mainComponents/Copy";
 import { Divider } from "@/app/mainComponents/Divider";
 import ReplayChart from "@/app/profile/components/ReplayChart";
+import { Metadata, ResolvingMetadata } from "next";
 import Link from "next/link";
+
+type Props = {
+  params: { id: string };
+};
+
+export async function generateMetadata(
+  { params }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const replay = await prisma.replay.findFirst({
+    where: {
+      replayId: params.id,
+    },
+    include: {
+      Profile: {
+        select: {
+          nickname: true,
+          id: true,
+        },
+      },
+    },
+  });
+  return {
+    title:
+      `${getCharacterFromData(
+        replay?.character!,
+        replay?.shottype!,
+        true
+      )} ${replay?.score?.toLocaleString()}` || ":>",
+  };
+}
+
 export default async function Replay({ params }: { params: { id: string } }) {
   const replay = await prisma.replay.findFirst({
     where: {
@@ -25,14 +59,18 @@ export default async function Replay({ params }: { params: { id: string } }) {
   const replayScores = replay?.stage_score.split("+").map((e) => {
     return Number(e);
   });
+
   return (
-    <div className="bg-primary w-full h-full p-3 rounded-md drop-shadow-md">
+    <div className="bg-primary w-full h-full p-3 rounded-md drop-shadow-md overflow-y-scroll pb-20">
       <div className="flex flex-col gap-y-2">
-        <div className="flex relative">
+        <div className="flex relative justify-between items-center">
           <h2 className="text-xl font-semibold absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 text-tsecond text-center">
             {replay?.rpy_name}
           </h2>
           <BackButton />
+          <div className="text-sm text-tsecond flex items-center gap-x-1 hover:brightness-125 cursor-pointer">
+            <Copy text={replay?.replayId!} /> id
+          </div>
         </div>
         <Divider />
         <div className="flex flex-col font-semibold w-full space-y-1 items-start">
@@ -81,6 +119,10 @@ export default async function Replay({ params }: { params: { id: string } }) {
             <span className="text-tsecond">
               {convertUnixDateHours(replay?.fileDate as any)}
             </span>
+          </p>
+          <p>
+            Verified:{" "}
+            <span className="text-tsecond">{replay?.status.toString()}</span>
           </p>
           <Link
             href={`/profile/${replay?.Profile?.id}`}

@@ -6,7 +6,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../../api/auth/[...nextauth]/auth";
 import { revalidatePath } from "next/cache";
 import { emptyScoreObjectString } from "@/app/lib/utils";
-
+import { nanoid } from "nanoid";
 const registerSchema = z.object({
   nickname: z
     .string()
@@ -42,6 +42,7 @@ export const registerUserAction = async (formData: FormData) => {
     const hashedPassword = await bcrypt.hash(password, 12);
     const user = await prisma.profile.create({
       data: {
+        id: nanoid(10),
         email: newUser.nickname.replace(/\s/g, "_") + "@dmku.pl",
         hashedPassword,
         nickname: newUser.nickname,
