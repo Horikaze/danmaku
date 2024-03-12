@@ -136,6 +136,7 @@ export default function ReplaysList({
         <div className="flex flex-col gap-y-2 overflow-x-scroll">
           {replays.map((r) => (
             <Link
+              replace
               href={`/replay/${r.replayId}`}
               prefetch={false}
               className="flex w-full min-w-[600px] py-2 px-1 hover:bg-hover transition-colors rounded-md gap-x-1 text-start justify-between whitespace-nowrap"

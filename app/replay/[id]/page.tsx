@@ -126,6 +126,7 @@ export default async function Replay({ params }: { params: { id: string } }) {
             <span className="text-tsecond">{replay?.status.toString()}</span>
           </p>
           <Link
+            replace
             href={`/profile/${replay?.Profile?.id}`}
             prefetch={false}
             className="underline"
@@ -134,6 +135,7 @@ export default async function Replay({ params }: { params: { id: string } }) {
             <span className="text-tsecond">{replay?.Profile?.nickname}</span>
           </Link>
           <Link
+            replace
             href={replay?.filePath!}
             download
             prefetch={false}

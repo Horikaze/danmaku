@@ -1,12 +1,7 @@
 import prisma from "@/app/lib/prismadb";
-import { searchParamsPropsReplay } from "../types/Replay";
 import EventWindow from "./components/EventWindow";
 import Ranking from "./components/Ranking";
-export default async function Home({
-  searchParams,
-}: {
-  searchParams: searchParamsPropsReplay;
-}) {
+export default async function Home() {
   const rankingPoints = await prisma.profile.findMany({
     orderBy: {
       points: "desc",
@@ -66,9 +61,9 @@ export default async function Home({
       </div>
       <h2 className="text-center text-3xl font-semibold">Ranking</h2>
       <Ranking
-        rankingCC={forrmatedCC}
-        rankingEvent={forrmatedEvent}
-        rankingPoints={forrmatedPoints}
+        rankingCC={forrmatedCC || []}
+        rankingEvent={forrmatedEvent || []}
+        rankingPoints={forrmatedPoints || []}
       />
     </div>
   );

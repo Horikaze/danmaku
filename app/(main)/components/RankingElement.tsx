@@ -10,7 +10,7 @@ type RankingElementProps = {
 
 export default function RankingElement({ idx, user }: RankingElementProps) {
   return (
-    <Link href={`/profile/${user.id}`}>
+    <Link href={`/profile/${user.id}`} replace>
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

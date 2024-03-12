@@ -22,6 +22,7 @@ export default function ProfileController({
             href={`?tab=${e.href}`}
             scroll={false}
             key={e.href}
+            replace
             className="relative py-1 px-3.5 rounded-full whitespace-nowrap"
           >
             {currentTab === e.href ? (
