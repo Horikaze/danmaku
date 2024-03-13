@@ -224,6 +224,7 @@ export const deleteReplayAction = async ({
 }: {
   replayId: string;
 }): Promise<deleteReplayReturns> => {
+  console.log(replayId);
   try {
     const session = await getServerSession(authOptions);
     if (!session) return "Unauthorized";

@@ -1,10 +1,14 @@
 "use client";
 import { Divider } from "@/app/mainComponents/Divider";
+import { ButtonInput } from "@/app/mainComponents/InputButton";
+import { InputText } from "@/app/mainComponents/InputText";
 import ReplaysList from "@/app/mainComponents/ReplaysList";
 import { replayWithNickname } from "@/app/types/Replay";
 import { Profile, Ranking } from "@prisma/client";
 import { motion } from "framer-motion";
 import { useState } from "react";
+import toast from "react-hot-toast";
+import { deleteReplayAction } from "../actions/replayActions";
 import ReplayTable from "./ReplayTable";
 import SendReplay from "./SendReplay";
 import Settings from "./Settings";
@@ -27,7 +31,38 @@ export default function ProfileInfo({
       case 1:
         return <SendReplay />;
       case 2:
-        return <ReplaysList replays={replays} />;
+        return (
+          <div className="flex flex-col w-full mt-1 items-center justify-center">
+            <form
+              action={async (e) => {
+                try {
+                  const replay = e.get("replayId") as string;
+                  if (replay === "") {
+                    toast.error("No id provided");
+                    return;
+                  }
+                  const res = await deleteReplayAction({ replayId: replay });
+                  toast.success(`${res}`);
+                } catch (error) {
+                  toast.error(`${error}`);
+                  console.log(error);
+                }
+              }}
+              className="flex gap-x-2 items-center justify-end w-full"
+            >
+              <InputText
+                className="max-w-32 py-0 px-1 h-7 text-sm rounded-sm"
+                placeholder="replayId"
+                id="replayId"
+                name="replayId"
+              />
+              <ButtonInput variant={"outline"} className="rounded-sm">
+                Delete
+              </ButtonInput>
+            </form>
+            <ReplaysList replays={replays} />
+          </div>
+        );
       case 3:
         return <Settings favoriteGame={user.favoriteGame || "EOSD"} />;
       default:
