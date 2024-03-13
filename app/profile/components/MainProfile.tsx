@@ -3,40 +3,12 @@ import { convertUnixDateHours } from "@/app/lib/utils";
 import Copy from "@/app/mainComponents/Copy";
 import { Divider } from "@/app/mainComponents/Divider";
 import ProfileImage from "@/app/mainComponents/ProfileImage";
-import ReplaysList from "@/app/mainComponents/ReplaysList";
-import { replayWithNickname } from "@/app/types/Replay";
 import Image from "next/image";
 import { FaDiscord } from "react-icons/fa";
-import ProfileController from "./ProfileController";
-import ReplayTable from "./ReplayTable";
-import SendReplay from "./SendReplay";
-import Settings from "./Settings";
 import UpdateImages from "./UpdateImages";
-const controllerTabs = [
-  {
-    href: "table",
-    name: "Table",
-  },
-  {
-    href: "send",
-    name: "Send",
-  },
-  {
-    href: "myreplays",
-    name: "My replays",
-  },
-  {
-    href: "settings",
-    name: "Settings",
-  },
-];
-export default async function MainProfile({
-  tab,
-  userId,
-}: {
-  tab: string;
-  userId: string;
-}) {
+import ProfileInfo from "./ProfileInfo";
+
+export default async function MainProfile({ userId }: { userId: string }) {
   const user = await prisma.profile.findFirst({
     where: {
       id: userId,
@@ -54,25 +26,13 @@ export default async function MainProfile({
           uploadedDate: "desc",
         },
       },
+      CCTable: true,
     },
   });
+  console.log("refetched");
   if (!user) {
     return null;
   }
-  const TabComponent = () => {
-    switch (tab) {
-      case "table":
-        return <ReplayTable userId={userId} />;
-      case "settings":
-        return <Settings favoriteGame={user.favoriteGame || "EOSD"} />;
-      case "send":
-        return <SendReplay />;
-      case "myreplays":
-        return <ReplaysList replays={user.Replays as replayWithNickname[]} />;
-      default:
-        return <ReplayTable userId={userId} />;
-    }
-  };
 
   return (
     <div className="flex flex-col gap-y-3">
@@ -148,11 +108,11 @@ export default async function MainProfile({
           <p>Favorite game: {user.favoriteGame}</p>
           {user.bio ? <p> Bio: {user.bio}</p> : null}
         </div>
-        <ProfileController currentTab={tab} tabs={controllerTabs} />
-        <Divider className="m-5" />
-        <div className="flex justify-center items-center w-full md:px-4 lg:px-24 xl:px-36 overflow-y-scroll">
-          <TabComponent />
-        </div>
+        <ProfileInfo
+          replays={user.Replays}
+          user={user}
+          ranking={user.CCTable!}
+        />
       </div>
     </div>
   );

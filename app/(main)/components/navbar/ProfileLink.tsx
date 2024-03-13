@@ -32,7 +32,6 @@ export default function ProfileLink() {
               className="absolute rounded-md w-full flex flex-col p-3 bg-primary drop-shadow-md items-stretch text-center transition-all min-w-36 right-0"
             >
               <Link
-                replace
                 href={"/profile"}
                 className="py-2 hover:bg-hover relative rounded-md transition-all"
               >

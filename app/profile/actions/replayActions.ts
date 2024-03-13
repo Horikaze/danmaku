@@ -209,4 +209,3 @@ const changeRanking = async (newReplay: Replay) => {
     console.log(error);
   }
 };
-const replaceReplay = async (newReplay: Replay) => {};

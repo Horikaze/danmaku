@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { FaArrowDown, FaArrowUp } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 import { MdOutlineVerified, MdVerified } from "react-icons/md";
@@ -43,7 +44,7 @@ export default function ReplaysList({
 
   if (searchPlayer !== "") {
     replays = replays.filter((s) =>
-      s.Profile.nickname.toLowerCase().includes(searchPlayer.toLowerCase())
+      s.Profile!.nickname.toLowerCase().includes(searchPlayer.toLowerCase())
     );
   }
   if (searchChara !== "") {
@@ -134,36 +135,41 @@ export default function ReplaysList({
           <div className="w-5" />
         </div>
         <div className="flex flex-col gap-y-2 overflow-x-scroll">
-          {replays.map((r) => (
-            <Link
-              replace
-              href={`/replay/${r.replayId}`}
-              prefetch={false}
-              className="flex w-full min-w-[600px] py-2 px-1 hover:bg-hover transition-colors rounded-md gap-x-1 text-start justify-between whitespace-nowrap"
+          {replays.map((r, idx) => (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.3, delay: idx * 0.08 }}
               key={r.replayId}
             >
-              <div className="w-2/12 px-1">{r.Profile.nickname}</div>
-              <div className="w-1/12 px-1">
-                {r.character} {r.shottype}
-              </div>
-              <div className="w-1/12 px-1">{getGameString(r.game)}</div>
-              <div className="w-1/12 px-1">{r.rank}</div>
-              <div className="w-1/12 px-1 ">{r.points}</div>
-              <div className="w-1/12 px-1">
-                {Object.keys(achievementRankValues)[r.achievement - 1]}
-              </div>
-              <div className="w-[12%] px-1">{r.score.toLocaleString()}</div>
-              <div className="w-[12%] text-center">
-                {convertUnixDate(r.uploadedDate as any)}
-              </div>
-              <div className="text-center">
-                {r.status ? (
-                  <MdVerified className="size-5" />
-                ) : (
-                  <MdOutlineVerified className="size-5" />
-                )}
-              </div>
-            </Link>
+              <Link
+                href={`/replay/${r.replayId}`}
+                prefetch={false}
+                className="flex w-full min-w-[600px] py-2 px-1 bg-primary hover:bg-hover transition-colors rounded-md gap-x-1 text-start justify-between whitespace-nowrap"
+              >
+                <div className="w-2/12 px-1">{r.Profile!.nickname}</div>
+                <div className="w-1/12 px-1">
+                  {r.character} {r.shottype}
+                </div>
+                <div className="w-1/12 px-1">{getGameString(r.game)}</div>
+                <div className="w-1/12 px-1">{r.rank}</div>
+                <div className="w-1/12 px-1 ">{r.points}</div>
+                <div className="w-1/12 px-1">
+                  {Object.keys(achievementRankValues)[r.achievement - 1]}
+                </div>
+                <div className="w-[12%] px-1">{r.score.toLocaleString()}</div>
+                <div className="w-[12%] text-center">
+                  {convertUnixDate(r.uploadedDate as any)}
+                </div>
+                <div className="text-center">
+                  {r.status ? (
+                    <MdVerified className="size-5" />
+                  ) : (
+                    <MdOutlineVerified className="size-5" />
+                  )}
+                </div>
+              </Link>
+            </motion.div>
           ))}
         </div>
       </div>

@@ -8,7 +8,7 @@ import {
 import BackButton from "@/app/mainComponents/BackButton";
 import Copy from "@/app/mainComponents/Copy";
 import { Divider } from "@/app/mainComponents/Divider";
-import ReplayChart from "@/app/profile/components/ReplayChart";
+import ReplayChart from "@/app/mainComponents/ReplayChart";
 import { Metadata, ResolvingMetadata } from "next";
 import Link from "next/link";
 
@@ -126,7 +126,6 @@ export default async function Replay({ params }: { params: { id: string } }) {
             <span className="text-tsecond">{replay?.status.toString()}</span>
           </p>
           <Link
-            replace
             href={`/profile/${replay?.Profile?.id}`}
             prefetch={false}
             className="underline"
@@ -135,7 +134,6 @@ export default async function Replay({ params }: { params: { id: string } }) {
             <span className="text-tsecond">{replay?.Profile?.nickname}</span>
           </Link>
           <Link
-            replace
             href={replay?.filePath!}
             download
             prefetch={false}

@@ -3,18 +3,13 @@ import {
   difficultyLevelsTable,
   games618,
 } from "@/app/constants/games";
-import prisma from "@/app/lib/prismadb";
 import { ScoreObject } from "@/app/types/Replay";
+import { Ranking } from "@prisma/client";
 import Link from "next/link";
 type ReplayTableProps = {
-  userId: string;
+  tableData: Ranking;
 };
-export default async function ReplayTable({ userId }: ReplayTableProps) {
-  const tableData = await prisma.ranking.findFirst({
-    where: {
-      userIdRankingPoints: userId,
-    },
-  });
+export default function ReplayTable({ tableData }: ReplayTableProps) {
   if (!tableData) return null;
   let forrmatedObject: Record<string, ScoreObject> = {};
   Object.keys(tableData).forEach((key) => {
@@ -71,7 +66,6 @@ export default async function ReplayTable({ userId }: ReplayTableProps) {
                     >
                       {forrmatedObject[game][diff].CC !== 0 ? (
                         <Link
-                          replace
                           href={`/replay/${forrmatedObject[game][diff].id}`}
                           prefetch={false}
                           className={`text-center flex items-center justify-center w-1/2 hover:opacity-60 transition-opacity ${cellColor(
@@ -83,7 +77,6 @@ export default async function ReplayTable({ userId }: ReplayTableProps) {
                       ) : null}
                       {forrmatedObject[game]["PHANTASM"].CC !== 0 ? (
                         <Link
-                          replace
                           href={`/replay/${forrmatedObject[game]["PHANTASM"].id}`}
                           prefetch={false}
                           className={`text-center flex items-center justify-center w-1/2 hover:opacity-60 transition-opacity ${cellColor(
@@ -104,7 +97,6 @@ export default async function ReplayTable({ userId }: ReplayTableProps) {
                     )} border hover:opacity-60 transition-opacity`}
                   >
                     <Link
-                      replace
                       href={`/replay/${forrmatedObject[game][diff].id}`}
                       prefetch={false}
                       className="text-center w-full h-full block"

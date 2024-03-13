@@ -43,7 +43,9 @@ export type ScoreObject = {
   [key: string]: { score: number; id: string; CC: number; char: string };
 };
 
-export type replayWithNickname = Replay & { Profile: { nickname: string } };
+export type replayWithNickname = Replay & {
+  Profile: { nickname: string } | null;
+};
 
 export type searchParamsPropsReplay = {
   tab: string;

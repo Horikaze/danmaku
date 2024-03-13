@@ -16,12 +16,11 @@ import {
   sendReplayAction,
   threp,
 } from "../actions/replayActions";
-import ReplayChart from "./ReplayChart";
+import ReplayChart from "../../mainComponents/ReplayChart";
 export default function SendReplay() {
   const [replayData, setreplayData] = useState<ReplayInfo | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [replayFile, setReplayFile] = useState<FormData | null>(null);
-  const [chart, setChart] = useState(true);
   const [CC, setCC] = useState("CC");
   const clearAll = () => {
     console.log("as");

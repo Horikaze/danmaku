@@ -53,7 +53,6 @@ export default async function Home() {
     nickname: e.nickname!,
     imageUrl: e.imageUrl!,
   }));
-
   return (
     <div className="flex-col flex gap-y-3">
       <div className="flex items-center justify-end">
