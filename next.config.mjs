@@ -14,6 +14,9 @@ const nextConfig = {
       {
         hostname: "uploadthing.com",
       },
+      {
+        hostname: "avatars.githubusercontent.com",
+      },
     ],
   },
 };
