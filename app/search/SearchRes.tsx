@@ -27,7 +27,6 @@ export default async function SearchRes({
       } = searchParams;
       const achivInt = achievementRankValues[achievement!];
       let whereClause: Record<string, any> = {};
-      console.log(player);
       if (player !== undefined && player !== "") {
         whereClause.player = {
           contains: player,

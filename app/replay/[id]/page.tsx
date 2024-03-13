@@ -101,6 +101,12 @@ export default async function Replay({ params }: { params: { id: string } }) {
             </span>
           </p>
           <p>
+            Points:{" "}
+            <span className="text-tsecond">
+              {replay?.points}
+            </span>
+          </p>
+          <p>
             Stage:{" "}
             <span className="text-tsecond">
               {replay ? (replay.stage ? replay.stage : "Not supported") : ""}

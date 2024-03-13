@@ -6,6 +6,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
 import { achievementRankValues } from "@/app/constants/games";
 import {
+  emptyScoreObjectString,
   getCharacterFromData,
   getGameNumber,
   getGameString,
@@ -181,6 +182,7 @@ const changeRanking = async (newReplay: Replay) => {
         ),
       },
     };
+
     await prisma.ranking.update({
       where: {
         userIdRankingPoints: newReplay.userId,
@@ -208,4 +210,176 @@ const changeRanking = async (newReplay: Replay) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+type deleteReplayReturns =
+  | "Internal error"
+  | "Deleted"
+  | "Unauthorized"
+  | "Replay is not yours"
+  | "Replay does not exist";
+
+export const deleteReplayAction = async ({
+  replayId,
+}: {
+  replayId: string;
+}): Promise<deleteReplayReturns> => {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session) return "Unauthorized";
+    const utapi = new UTApi();
+    const replayToDelete = await prisma.replay.findFirst({
+      where: {
+        replayId: replayId,
+      },
+      select: {
+        userId: true,
+        filePath: true,
+      },
+    });
+    console.log(session.user.info.id);
+    console.log(replayToDelete?.userId);
+    if (!replayToDelete) {
+      return "Replay does not exist";
+    }
+    if (session.user.info.id !== replayToDelete?.userId) {
+      return "Replay is not yours";
+    }
+
+    const deletedReplay = await prisma.replay.delete({
+      where: {
+        replayId: replayId,
+      },
+    });
+
+    const gameString = getGameString(
+      getGameNumber(deletedReplay.rpy_name)
+    ).toUpperCase();
+
+    const currenntRanking = await prisma.ranking.findFirst({
+      where: {
+        userIdRankingPoints: deletedReplay.userId,
+      },
+      select: {
+        [gameString]: true,
+      },
+    });
+    if (!currenntRanking) {
+      return "Internal error";
+    }
+    const rankingObject = JSON.parse(currenntRanking[gameString]);
+
+    // not in ranking = skip
+    if (
+      rankingObject[deletedReplay.rank.toUpperCase()].id !==
+      deletedReplay.replayId
+    ) {
+      return "Deleted";
+    }
+
+    const newScoreObj: ScoreObject = {
+      ...rankingObject,
+      [deletedReplay.rank.toUpperCase()]: {
+        score: 0,
+        id: "",
+        CC: 0,
+        char: "",
+      },
+    };
+
+    await prisma.ranking.update({
+      where: {
+        userIdRankingPoints: deletedReplay.userId,
+      },
+      data: {
+        [gameString]: JSON.stringify(newScoreObj),
+      },
+    });
+
+    const replayToReplace = await prisma.replay.findFirst({
+      where: {
+        rank: deletedReplay.rank,
+        userId: deletedReplay.userId,
+        game: deletedReplay.game,
+      },
+      orderBy: {
+        points: "desc",
+      },
+    });
+    if (replayToReplace) {
+      await prisma.profile.update({
+        where: {
+          id: deletedReplay.userId,
+        },
+        data: {
+          CCCount: {
+            decrement: 1,
+          },
+          points: {
+            decrement: deletedReplay.points,
+          },
+        },
+      });
+      await changeRanking(replayToReplace);
+      return "Deleted";
+    }
+
+    await prisma.profile.update({
+      where: {
+        id: deletedReplay.userId,
+      },
+      data: {
+        CCCount: {
+          decrement: 1,
+        },
+        points: {
+          decrement: deletedReplay.points,
+        },
+      },
+    });
+    return "Deleted";
+  } catch (error) {
+    console.log(error);
+    return "Internal error";
+  } finally {
+    revalidatePath("/profile");
+  }
+};
+
+export const deletaAllReplays = async ({ userId }: { userId: string }) => {
+  await prisma.replay.deleteMany({
+    where: {
+      userId: userId,
+    },
+  });
+  await prisma.profile.update({
+    where: {
+      id: userId,
+    },
+    data: {
+      points: 0,
+      CCCount: 0,
+    },
+  });
+  await prisma.ranking.update({
+    where: {
+      userIdRankingPoints: userId,
+    },
+    data: {
+      DDC: emptyScoreObjectString,
+      EOSD: emptyScoreObjectString,
+      GFW: emptyScoreObjectString,
+      HSIFS: emptyScoreObjectString,
+      IN: emptyScoreObjectString,
+      LOLK: emptyScoreObjectString,
+      MOF: emptyScoreObjectString,
+      PCB: emptyScoreObjectString,
+      POFV: emptyScoreObjectString,
+      SA: emptyScoreObjectString,
+      TD: emptyScoreObjectString,
+      UM: emptyScoreObjectString,
+      UFO: emptyScoreObjectString,
+      WBAWC: emptyScoreObjectString,
+    },
+  });
 };

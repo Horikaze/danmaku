@@ -42,6 +42,14 @@ export default function ReplaysList({
     setActiveSort(sortType);
   };
 
+  if (replays.length <= 0) {
+    return (
+      <div className="flex text-2xl text-tsecond text-center font-semibold items-center justify-center h-32">
+        <h3>Replays not found</h3>
+      </div>
+    );
+  }
+
   if (searchPlayer !== "") {
     replays = replays.filter((s) =>
       s.Profile!.nickname.toLowerCase().includes(searchPlayer.toLowerCase())
@@ -79,7 +87,7 @@ export default function ReplaysList({
         <div className="flex text-center gap-x-1 justify-between">
           <div className="w-2/12 relative flex">
             <input
-              placeholder="Player"
+              placeholder="Nickname"
               onChange={(e) => setSearchPlayer(e.target.value)}
               value={searchPlayer}
               className="w-full bg-primary placeholder:text-white focus:outline-none focus:bg-hover hover:bg-hover transition-colors p-2 select-none rounded-md"

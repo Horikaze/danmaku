@@ -22,7 +22,7 @@ export default function SearchBar() {
                 <p>Player</p>
                 <InputText
                   type="text"
-                  placeholder="Player"
+                  placeholder="Player(on .rpy)"
                   name="player"
                   className="w-full"
                 />
