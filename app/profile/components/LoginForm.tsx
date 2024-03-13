@@ -8,7 +8,7 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { FaDiscord } from "react-icons/fa";
+import { FaDiscord, FaGithub } from "react-icons/fa";
 const tabs = ["Login", "Register"];
 export default function LoginForm() {
   const [currentTab, setCurrentTab] = useState<"Login" | "Register">("Login");
@@ -112,11 +112,11 @@ export default function LoginForm() {
         </div>
         <div className="relative bg-slate-500/20">
           <div className="text-center bg-primary px-4 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-            or
+            or continue with
           </div>
           <Divider className="" />
         </div>
-        <div className="flex justify-evenly">
+        <div className="flex justify-evenly mt-1">
           <ButtonInput
             type="button"
             onClick={() => {
@@ -127,10 +127,16 @@ export default function LoginForm() {
           >
             <FaDiscord className="size-8" />
           </ButtonInput>
-          {/* <ButtonInput
-           variant={"outline"} className="px-6">
+          <ButtonInput
+            type="button"
+            onClick={() => {
+              socialAction("github");
+            }}
+            variant={"outline"}
+            className="px-6"
+          >
             <FaGithub className="size-8" />
-          </ButtonInput> */}
+          </ButtonInput>
         </div>
       </div>
     </form>

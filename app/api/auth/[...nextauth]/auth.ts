@@ -5,13 +5,17 @@ import { nanoid } from "nanoid";
 import { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import DiscordProvider from "next-auth/providers/discord";
-
+import GitHubProvider from "next-auth/providers/github";
 export const authOptions: AuthOptions = {
   providers: [
     DiscordProvider({
       clientId: process.env.DISCORD_ID as string,
       clientSecret: process.env.DISCORD_SECRET as string,
       authorization: { params: { scope: "identify" } },
+    }),
+    GitHubProvider({
+      clientId: process.env.GITHUB_ID as string,
+      clientSecret: process.env.GITHUB_SECRET as string,
     }),
     CredentialsProvider({
       name: `credentials`,
