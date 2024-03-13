@@ -62,9 +62,7 @@ export default async function ProfileSlug({
             />
           </>
         ) : (
-          <div className="h-12 text-sm bottom-0 text-end pt-[18px] pr-10 opacity-50 ">
-            Select your banner here ➔
-          </div>
+          <div className="h-12" />
         )}
       </div>
       <div className="flex flex-col p-3">

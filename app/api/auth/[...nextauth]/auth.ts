@@ -77,7 +77,7 @@ export const authOptions: AuthOptions = {
               imageUrl: user.image || null,
             },
           });
-          const userRanking = await prisma.ranking.create({
+          await prisma.ranking.create({
             data: {
               DDC: emptyScoreObjectString,
               EOSD: emptyScoreObjectString,
