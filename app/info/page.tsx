@@ -7,7 +7,7 @@ const Info = () => {
   return (
     <div className="flex flex-col gap-y-2">
       <h2 className="text-2xl font-semibold text-center" id="points">
-        How points are calculate?
+        How are points calculated?
       </h2>
       <Divider />
       <p>Points are awarded through a formula:</p>
