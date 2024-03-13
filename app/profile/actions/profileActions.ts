@@ -43,7 +43,7 @@ export const registerUserAction = async (formData: FormData) => {
     const user = await prisma.profile.create({
       data: {
         id: nanoid(10),
-        email: newUser.nickname.replace(/\s/g, "_") + "@dmku.pl",
+        email: newUser.nickname.replace(/\s/g, "_") + "@danmaku.pl",
         hashedPassword,
         nickname: newUser.nickname,
         name: newUser.nickname,

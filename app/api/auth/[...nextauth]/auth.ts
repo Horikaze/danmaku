@@ -28,7 +28,7 @@ export const authOptions: AuthOptions = {
           throw new Error("Invalid credentials");
         const user = await prisma.profile.findUnique({
           where: {
-            email: credentials?.nickname.replace(/\s/g, "_") + "@dmku.pl",
+            email: credentials?.nickname.replace(/\s/g, "_") + "@danmaku.pl",
           },
         });
 
