@@ -7,6 +7,7 @@ import ProfileImage from "@/app/mainComponents/ProfileImage";
 import Image from "next/image";
 import { FaDiscord } from "react-icons/fa";
 import ProfileInfoSlug from "./ProfileInfoSlug";
+import { notFound } from "next/navigation";
 
 export default async function ProfileSlug({
   params,
@@ -34,7 +35,7 @@ export default async function ProfileSlug({
     },
   });
   if (!user) {
-    return null;
+    return notFound();
   }
   return (
     <div className="flex flex-col w-full h-full bg-primary drop-shadow-md overflow-auto min-h-[1200px] gap-y-3">

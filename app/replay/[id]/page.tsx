@@ -11,7 +11,7 @@ import { Divider } from "@/app/mainComponents/Divider";
 import ReplayChart from "@/app/mainComponents/ReplayChart";
 import { Metadata, ResolvingMetadata } from "next";
 import Link from "next/link";
-
+import { notFound } from "next/navigation";
 type Props = {
   params: { id: string };
 };
@@ -57,6 +57,9 @@ export default async function Replay({ params }: { params: { id: string } }) {
       },
     },
   });
+  if (!replay) {
+    return notFound();
+  }
   const replayScores = replay?.stage_score.split("+").map((e) => {
     return Number(e);
   });
@@ -101,10 +104,7 @@ export default async function Replay({ params }: { params: { id: string } }) {
             </span>
           </p>
           <p>
-            Points:{" "}
-            <span className="text-tsecond">
-              {replay?.points}
-            </span>
+            Points: <span className="text-tsecond">{replay?.points}</span>
           </p>
           <p>
             Stage:{" "}
