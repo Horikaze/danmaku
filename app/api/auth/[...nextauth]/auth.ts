@@ -11,7 +11,7 @@ export const authOptions: AuthOptions = {
     DiscordProvider({
       clientId: process.env.DISCORD_ID as string,
       clientSecret: process.env.DISCORD_SECRET as string,
-      authorization: { params: { scope: "identify" } },
+      // authorization: { params: { scope: "identify" } },
     }),
     GitHubProvider({
       clientId: process.env.GITHUB_ID as string,
