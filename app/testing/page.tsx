@@ -35,10 +35,10 @@ export default function Search() {
       //@ts-ignore
       const rankValue = rankValueRecord[selectedRank];
       const scoreValue = (
-        (Number(selectedScore) / scoreWR[selectedGame][selectedRank]) *
+        (Number(selectedScore.replace(/\s/g, "")) /
+          scoreWR[selectedGame][selectedRank]) *
         100
       ).toFixed(2);
-      console.log(Number(selectedScore));
       const totalScore =
         //@ts-ignore
         Number(scoreValue) * rankValue * CCValueRecord[selectedAchiv];
@@ -75,10 +75,10 @@ export default function Search() {
           <InputText
             value={selectedScore}
             onChange={(e) => {
-              if (isNaN(Number(e.target.value.trim()))) {
+              if (isNaN(Number(e.target.value.replace(/\s/g, "")))) {
                 return;
               }
-              setSelectedScore(e.target.value.trim());
+              setSelectedScore(e.target.value);
             }}
             type="text"
             placeholder="Score"
@@ -125,7 +125,7 @@ export default function Search() {
           </div>
           <div className="flex flex-col items-center">
             <p>Score</p>
-            <p>{Number(selectedScore).toLocaleString()}</p>
+            <p>{Number(selectedScore.replace(/\s/g, "")).toLocaleString()}</p>
           </div>
           <div className="flex flex-col justify-center items-center">
             <p className="text-2xl">/</p>
@@ -164,6 +164,9 @@ export default function Search() {
             <p>{CCValueRecord[selectedAchiv]}</p>
           </div>
         </div>
+        <div className="w-[500px] flex gap-x-1 justify-end">
+          Total points: <span className="font-semibold">{points}</span>
+        </div>
       </div>
       <div className="flex flex-row gap-x-4 justify-between">
         <div className="flex flex-col gap-y-2">
@@ -175,12 +178,12 @@ export default function Search() {
                 //@ts-ignore
                 value={rankValueRecord[r]}
                 onChange={(e) => {
-                  if (isNaN(Number(e.target.value.trim()))) {
+                  if (isNaN(Number(e.target.value.replace(/\s/g, "")))) {
                     return;
                   }
                   setRankValueRecord((prevState) => ({
                     ...prevState,
-                    [r]: e.target.value.trim(),
+                    [r]: e.target.value.replace(/\s/g, ""),
                   }));
                 }}
                 type="text"
@@ -198,12 +201,12 @@ export default function Search() {
                 //@ts-ignore
                 value={CCValueRecord[r]}
                 onChange={(e) => {
-                  if (isNaN(Number(e.target.value.trim()))) {
+                  if (isNaN(Number(e.target.value.replace(/\s/g, "")))) {
                     return;
                   }
                   setCCValueRecord((prevState) => ({
                     ...prevState,
-                    [r]: e.target.value.trim(),
+                    [r]: e.target.value.replace(/\s/g, ""),
                   }));
                 }}
                 type="text"
