@@ -29,3 +29,11 @@ dialog:modal {
   max-width: 100vw;
   /* max-height: 100vw; */
 }
+
+@layer base {
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
