@@ -7,6 +7,7 @@ import Image from "next/image";
 import { FaDiscord } from "react-icons/fa";
 import UpdateImages from "./UpdateImages";
 import ProfileInfo from "./ProfileInfo";
+import { notFound } from "next/navigation";
 
 export default async function MainProfile({ userId }: { userId: string }) {
   const user = await prisma.profile.findFirst({
@@ -31,8 +32,19 @@ export default async function MainProfile({ userId }: { userId: string }) {
   });
   console.log("refetched");
   if (!user) {
-    return null;
+    return notFound();
   }
+
+  const modReplays =
+    user.admin === true
+      ? await prisma.replay.findMany({
+          where: {
+            status: {
+              not: true,
+            },
+          },
+        })
+      : null;
 
   return (
     <div className="flex flex-col gap-y-3">
@@ -114,6 +126,7 @@ export default async function MainProfile({ userId }: { userId: string }) {
           replays={user.Replays}
           user={user}
           ranking={user.CCTable!}
+          modReplays={modReplays}
         />
       </div>
     </div>

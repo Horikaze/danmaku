@@ -4,7 +4,7 @@ import { ButtonInput } from "@/app/mainComponents/InputButton";
 import { InputText } from "@/app/mainComponents/InputText";
 import ReplaysList from "@/app/mainComponents/ReplaysList";
 import { replayWithNickname } from "@/app/types/Replay";
-import { Profile, Ranking } from "@prisma/client";
+import { Profile, Ranking, Replay } from "@prisma/client";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import toast from "react-hot-toast";
@@ -12,16 +12,19 @@ import { deleteReplayAction } from "../actions/replayActions";
 import ReplayTable from "./ReplayTable";
 import SendReplay from "./SendReplay";
 import Settings from "./Settings";
+import ModReplays from "./ModReplays";
 
-const tabs = ["Table", "Send", "My replays", "Settings"];
+const tabs = ["Table", "Send", "My replays", "Settings", "Mod"];
 export default function ProfileInfo({
   user,
   replays,
   ranking,
+  modReplays,
 }: {
   user: Profile;
   replays: replayWithNickname[];
   ranking: Ranking;
+  modReplays: Replay[] | null;
 }) {
   const [currentTab, setcurrentTab] = useState(0);
   function TabComponent() {
@@ -65,6 +68,8 @@ export default function ProfileInfo({
         );
       case 3:
         return <Settings favoriteGame={user.favoriteGame || "EOSD"} />;
+      case 4:
+        return <ModReplays replays={modReplays} />;
       default:
         return <ReplayTable tableData={ranking} />;
     }
@@ -72,25 +77,30 @@ export default function ProfileInfo({
   return (
     <div>
       <div className="flex justify-center space-x-1 font-light text-sm md:text-base select-none">
-        {tabs.map((e, idx) => (
-          <div
-            onClick={() => {
-              setcurrentTab(idx);
-            }}
-            key={e}
-            className="relative py-1 px-3.5 rounded-full whitespace-nowrap cursor-pointer"
-          >
-            {currentTab === idx ? (
-              <motion.div
-                layoutId="profile-tab"
-                className="absolute inset-0 bg-white"
-                style={{ borderRadius: 9999 }}
-                transition={{ type: "just", duration: 0.2 }}
-              />
-            ) : null}
-            <span className="relative z-10 mix-blend-exclusion">{e}</span>
-          </div>
-        ))}
+        {tabs.map((e, idx) => {
+          if (idx === 4 && user.admin !== true) {
+            return;
+          }
+          return (
+            <div
+              onClick={() => {
+                setcurrentTab(idx);
+              }}
+              key={e}
+              className="relative py-1 px-3.5 rounded-full whitespace-nowrap cursor-pointer"
+            >
+              {currentTab === idx ? (
+                <motion.div
+                  layoutId="profile-tab"
+                  className="absolute inset-0 bg-white"
+                  style={{ borderRadius: 9999 }}
+                  transition={{ type: "just", duration: 0.2 }}
+                />
+              ) : null}
+              <span className="relative z-10 mix-blend-exclusion">{e}</span>
+            </div>
+          );
+        })}
       </div>
       <Divider className="m-5" />
       <div className="flex justify-center items-center w-full md:px-4 lg:px-24 xl:px-36 overflow-y-scroll">
