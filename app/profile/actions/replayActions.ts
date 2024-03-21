@@ -347,40 +347,80 @@ export const deleteReplayAction = async ({
   }
 };
 
-export const deletaAllReplays = async ({ userId }: { userId: string }) => {
-  await prisma.replay.deleteMany({
-    where: {
-      userId: userId,
-    },
-  });
-  await prisma.profile.update({
-    where: {
-      id: userId,
-    },
-    data: {
-      points: 0,
-      CCCount: 0,
-    },
-  });
-  await prisma.ranking.update({
-    where: {
-      userIdRankingPoints: userId,
-    },
-    data: {
-      DDC: emptyScoreObjectString,
-      EOSD: emptyScoreObjectString,
-      GFW: emptyScoreObjectString,
-      HSIFS: emptyScoreObjectString,
-      IN: emptyScoreObjectString,
-      LOLK: emptyScoreObjectString,
-      MOF: emptyScoreObjectString,
-      PCB: emptyScoreObjectString,
-      POFV: emptyScoreObjectString,
-      SA: emptyScoreObjectString,
-      TD: emptyScoreObjectString,
-      UM: emptyScoreObjectString,
-      UFO: emptyScoreObjectString,
-      WBAWC: emptyScoreObjectString,
-    },
-  });
+// export const resetAcc = async ({ userId }: { userId: string }) => {
+//   await prisma.replay.deleteMany({
+//     where: {
+//       userId: userId,
+//     },
+//   });
+//   await prisma.profile.update({
+//     where: {
+//       id: userId,
+//     },
+//     data: {
+//       points: 0,
+//       CCCount: 0,
+//     },
+//   });
+//   await prisma.ranking.update({
+//     where: {
+//       userIdRankingPoints: userId,
+//     },
+//     data: {
+//       DDC: emptyScoreObjectString,
+//       EOSD: emptyScoreObjectString,
+//       GFW: emptyScoreObjectString,
+//       HSIFS: emptyScoreObjectString,
+//       IN: emptyScoreObjectString,
+//       LOLK: emptyScoreObjectString,
+//       MOF: emptyScoreObjectString,
+//       PCB: emptyScoreObjectString,
+//       POFV: emptyScoreObjectString,
+//       SA: emptyScoreObjectString,
+//       TD: emptyScoreObjectString,
+//       UM: emptyScoreObjectString,
+//       UFO: emptyScoreObjectString,
+//       WBAWC: emptyScoreObjectString,
+//     },
+//   });
+// };
+
+type verifyReplayReturns =
+  | "Internal error"
+  | "Verified"
+  | "Unauthorized"
+  | "You are not admin"
+  | "Replay does not exist";
+
+export const verifyReplay = async ({
+  replayId,
+}: {
+  replayId: string;
+}): Promise<verifyReplayReturns> => {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      return "Unauthorized";
+    }
+    console.log(session.user.info.admin);
+    if (session.user.info.admin !== true) {
+      return "You are not admin";
+    }
+
+    const replay = await prisma.replay.update({
+      where: {
+        replayId: replayId,
+      },
+      data: {
+        status: true,
+      },
+    });
+    if (!replay) {
+      return "Replay does not exist";
+    }
+    return "Verified";
+  } catch (error) {
+    console.log(error);
+    return "Internal error";
+  }
 };

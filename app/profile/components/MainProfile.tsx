@@ -8,6 +8,7 @@ import { FaDiscord } from "react-icons/fa";
 import UpdateImages from "./UpdateImages";
 import ProfileInfo from "./ProfileInfo";
 import { notFound } from "next/navigation";
+import { replayWithNickname } from "@/app/types/Replay";
 
 export default async function MainProfile({ userId }: { userId: string }) {
   const user = await prisma.profile.findFirst({
@@ -37,13 +38,23 @@ export default async function MainProfile({ userId }: { userId: string }) {
 
   const modReplays =
     user.admin === true
-      ? await prisma.replay.findMany({
+      ? ((await prisma.replay.findMany({
           where: {
             status: {
               not: true,
             },
           },
-        })
+          include: {
+            Profile: {
+              select: {
+                nickname: true,
+              },
+            },
+          },
+          orderBy: {
+            uploadedDate: "desc",
+          },
+        })) as replayWithNickname[])
       : null;
 
   return (
