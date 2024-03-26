@@ -1,6 +1,6 @@
 
 export default function EventInfo() {
   return (
-    <div>EventInfo</div>
+    <div>TODO</div>
   )
 }

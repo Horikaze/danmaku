@@ -24,21 +24,23 @@ export default async function NavBar() {
   const session = await getServerSession(authOptions);
   return (
     <nav
-      className="bg-primary w-full h-14 flex justify-between items-center drop-shadow-md fixed top-0 z-10
-    md:px-4 lg:px-24 xl:px-36 2xl:px-72
+      className="bg-primary w-full h-14 flex justify-center items-center drop-shadow-md fixed top-0 z-10
+   
     "
     >
-      <div className="flex items-center gap-x-6">
-        <div className="bg-background h-12 w-20">logo</div>
-        {navItems.map((e) => (
-          <NavbarElement key={e.href} {...e} />
-        ))}
+      <div className="flex justify-between items-center size-full max-w-[2000px] px-2 md:px-4 lg:px-24 xl:px-36 2xl:px-72">
+        <div className="flex items-center gap-x-6 ">
+          <div className="bg-background h-12 w-20">logo</div>
+          {navItems.map((e) => (
+            <NavbarElement key={e.href} {...e} />
+          ))}
+        </div>
+        {session ? (
+          <ProfileLink />
+        ) : (
+          <NavbarElement href="/profile" icon={FaSignInAlt} text="Login" />
+        )}
       </div>
-      {session ? (
-        <ProfileLink />
-      ) : (
-        <NavbarElement href="/profile" icon={FaSignInAlt} text="Login" />
-      )}
     </nav>
   );
 }

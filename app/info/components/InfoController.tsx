@@ -6,6 +6,7 @@ import { useState } from "react";
 const tabs = [
   { href: "/info", label: "Points info" },
   { href: "/info/event", label: "Event info" },
+  { href: "/info/ranking", label: "Ranking" },
 ];
 
 export default function InfoController() {

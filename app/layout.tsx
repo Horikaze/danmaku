@@ -21,7 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <NextAuthProvider>
-        <body className={montserrat.className}>
+        <body className={`${montserrat.className} flex items-center justify-center`}>
           <Toaster
             position="top-center"
             toastOptions={{
@@ -37,7 +37,7 @@ export default function RootLayout({
             }}
           />
           <NavBar />
-          <main className="px-2 md:px-4 lg:px-24 xl:px-36 2xl:px-72 pt-20 w-full h-full">
+          <main className="px-2 md:px-4 lg:px-24 xl:px-36 2xl:px-72 pt-20 w-full h-full max-w-[2000px]">
             {children}
           </main>
         </body>

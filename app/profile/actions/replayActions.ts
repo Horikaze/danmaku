@@ -243,8 +243,11 @@ export const deleteReplayAction = async ({
     if (!replayToDelete) {
       return "Replay does not exist";
     }
-    if (session.user.info.id !== replayToDelete?.userId) {
-      return "Replay is not yours";
+
+    if (session.user.info.admin !== true) {
+      if (session.user.info.id !== replayToDelete?.userId) {
+        return "Replay is not yours";
+      }
     }
 
     const deletedReplay = await prisma.replay.delete({
@@ -252,7 +255,7 @@ export const deleteReplayAction = async ({
         replayId: replayId,
       },
     });
-
+    utapi.deleteFiles(deletedReplay.filePath.split("/").at(-1)!);
     const gameString = getGameString(
       getGameNumber(deletedReplay.rpy_name)
     ).toUpperCase();

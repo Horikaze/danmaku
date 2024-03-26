@@ -40,22 +40,6 @@ const Info = () => {
           ))}
         </div>
       </div>
-      {/* <h2 className="text-2xl font-semibold" id="weekly">
-        How do events work?
-      </h2>
-      <Divider />
-      <p>
-        The competition is held every week and usually ends around 8 pm on
-        Sunday. Points are awarded to the first 10 places only:
-      </p>
-      <div className="flex flex-col">
-        {weeklyPoints.map((ele, idx) => (
-          <div key={ele} className="flex">
-            <p className="w-10">{idx + 1}.</p>
-            <p>{ele} p</p>
-          </div>
-        ))}
-      </div> */}
       <h2 className="text-2xl font-semibold text-center" id="wr">
         WR scores table
       </h2>
