@@ -32,7 +32,7 @@ export default function Ranking({
           <button
             onClick={() => {
               setCurrentTab(idx);
-              scrollRef.current!.scrollTop = 0;
+              scrollRef.current ? (scrollRef.current!.scrollTop = 0) : null;
             }}
             key={e}
             className="relative py-0.5 px-3.5 rounded-full"
