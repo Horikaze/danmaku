@@ -50,14 +50,18 @@ export default function Ranking({
         ))}
       </div>
       <Divider />
-      <div
-        ref={scrollRef}
-        className="flex flex-col h-full gap-y-1 overflow-y-scroll"
-      >
-        {arrayToMap.map((u, idx) => (
-          <RankingElement key={u.id + currentTab} user={u} idx={idx} />
-        ))}
-      </div>
+      {currentTab !== 2 ? (
+        <div
+          ref={scrollRef}
+          className="flex flex-col h-full gap-y-1 overflow-y-scroll"
+        >
+          {arrayToMap.map((u, idx) => (
+            <RankingElement key={u.id + currentTab} user={u} idx={idx} />
+          ))}
+        </div>
+      ) : (
+        <p className="text-center font-semibold text-3xl">Soon...</p>
+      )}
     </div>
   );
 }
