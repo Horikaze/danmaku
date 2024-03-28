@@ -1,3 +1,3 @@
 export default function EventWindow() {
-  return <div className="h-48 w-72 bg-primary shadow-md">Event</div>;
+  return <div className="h-48 lg:w-72 w-full bg-primary shadow-md text-center">Event/Challenge</div>;
 }

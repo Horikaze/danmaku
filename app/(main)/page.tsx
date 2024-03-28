@@ -55,7 +55,10 @@ export default async function Home() {
   }));
   return (
     <div className="flex-col flex gap-y-3">
-      <div className="flex items-center justify-end">
+      <div className="flex lg:flex-row flex-col justify-center gap-3">
+        <div className="lg:grow bg-primary shadow-md text-center min-h-48">
+          other
+        </div>
         <EventWindow />
       </div>
       <h2 className="text-center text-3xl font-semibold">Ranking</h2>

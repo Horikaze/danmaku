@@ -13,7 +13,6 @@ export default function NavbarItem({
   text,
   active,
 }: NavbarItemProp) {
-  console.log(active);
   return (
     <Link
       href={href}
