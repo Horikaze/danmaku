@@ -73,7 +73,10 @@ export const registerUserAction = async (formData: FormData) => {
       data: { password: newUser.password, nickname: newUser.nickname },
     };
   } catch (error) {
-    console.log(error, "REGISTERATION ERROR");
+    //@ts-ignore
+    if (error.code === "P2002") {
+      return { status: "User already exists." };
+    }
     return { status: "Internal Error" };
   }
 };
