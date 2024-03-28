@@ -73,7 +73,7 @@ export default async function Replay({ params }: { params: { id: string } }) {
           </h2>
           <BackButton />
           <div className="text-sm text-tsecond flex items-center gap-x-1 hover:brightness-125 cursor-pointer">
-            <Copy text={replay?.replayId!} /> id
+            <Copy text={"id"} />
           </div>
         </div>
         <Divider />

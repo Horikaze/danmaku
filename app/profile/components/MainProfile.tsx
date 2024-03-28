@@ -102,7 +102,7 @@ export default async function MainProfile({ userId }: { userId: string }) {
               </h2>
               <div className="flex space-x-2">
                 <div className="text-sm text-tsecond flex items-center gap-x-1 hover:brightness-125 cursor-pointer">
-                  <Copy text={user.id} /> uid
+                  <Copy text={"uid"} />
                 </div>
                 {user.discord ? (
                   <div className="space-x-1">

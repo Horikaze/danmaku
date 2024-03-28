@@ -13,7 +13,7 @@ export default function Copy({ text }: { text: string }) {
       className="text-sm text-tsecond flex items-center gap-x-1"
     >
       <FaCopy />
-      <p>Copy</p>
+      <span>Copy {text}</span>
     </div>
   );
 }

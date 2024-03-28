@@ -75,15 +75,17 @@ export default async function ProfileSlug({
               <h2 className="text-2xl font-semibold float-left">
                 {user.nickname}
               </h2>
-              <div className="float-left text-sm text-tsecond flex items-center gap-x-1 hover:brightness-125 cursor-pointer">
-                <Copy text={user.id} /> uid
-              </div>
-              {user.discord ? (
-                <div className="space-x-1">
-                  <FaDiscord className="size-6 float-left" />
-                  <p className="float-right text-sm">{user.discord}</p>
+              <div className="flex space-x-2">
+                <div className="text-sm text-tsecond flex items-center gap-x-1 hover:brightness-125 cursor-pointer">
+                  <Copy text={"uid"} />
                 </div>
-              ) : null}
+                {user.discord ? (
+                  <div className="space-x-1">
+                    <FaDiscord className="size-6 float-left" />
+                    <p className="float-right text-sm">{user.discord}</p>
+                  </div>
+                ) : null}
+              </div>
             </div>
             <Divider />
             <div className="flex flex-col md:flex-row p-2 justify-between text-tsecond space-y-0.5">
