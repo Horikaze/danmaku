@@ -1,4 +1,3 @@
-
 export default function page() {
-  return <div>Ranking</div>;
+  return <div className="text-center font-semibold text-2xl">Soon...</div>;
 }

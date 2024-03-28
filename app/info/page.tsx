@@ -11,14 +11,7 @@ const Info = () => {
       </h2>
       <Divider />
       <p>Points are awarded through a formula:</p>
-      <p>
-        (YourScore /{" "}
-        <a href="/info#wr" className="underline">
-          {" "}
-          WrScore
-        </a>
-        ) * RankScore * AchievementScore
-      </p>
+      <p>(YourScore / WrScore * 100) * Rank * Achievement</p>
       {/* <PointsTesting /> */}
       <div className="flex flex-row gap-x-10">
         <div className="flex flex-col">

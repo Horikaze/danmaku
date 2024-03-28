@@ -1,25 +1,10 @@
-import { FaHome, FaInfo, FaSearch, FaSignInAlt } from "react-icons/fa";
-import NavbarElement from "./NavbarElement";
-import ProfileLink from "./ProfileLink";
-import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
-const navItems = [
-  {
-    href: "/",
-    icon: FaHome,
-    text: "Home",
-  },
-  {
-    href: "/search",
-    icon: FaSearch,
-    text: "Search",
-  },
-  {
-    href: "/info",
-    icon: FaInfo,
-    text: "Info",
-  },
-];
+import { getServerSession } from "next-auth";
+import { FaSignInAlt } from "react-icons/fa";
+import NavBarElements from "./NavBarElements";
+import NavbarItem from "./NavbarItem";
+import ProfileLink from "./ProfileLink";
+
 export default async function NavBar() {
   const session = await getServerSession(authOptions);
   return (
@@ -29,16 +14,11 @@ export default async function NavBar() {
     "
     >
       <div className="flex justify-between items-center size-full max-w-[2000px] px-2 md:px-4 lg:px-24 xl:px-36 2xl:px-72">
-        <div className="flex items-center gap-x-6 ">
-          <div className="bg-background h-12 w-20">logo</div>
-          {navItems.map((e) => (
-            <NavbarElement key={e.href} {...e} />
-          ))}
-        </div>
+        <NavBarElements />
         {session ? (
           <ProfileLink />
         ) : (
-          <NavbarElement href="/profile" icon={FaSignInAlt} text="Login" />
+          <NavbarItem href="/profile" icon={FaSignInAlt} text="Login" />
         )}
       </div>
     </nav>

@@ -4,8 +4,8 @@ import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 
 const tabs = [
-  { href: "/info", label: "Points info" },
-  { href: "/info/event", label: "Event info" },
+  { href: "/info", label: "Points" },
+  { href: "/info/event", label: "Event" },
   { href: "/info/ranking", label: "Ranking" },
 ];
 
