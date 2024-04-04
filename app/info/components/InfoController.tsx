@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const tabs = [
@@ -12,8 +12,6 @@ const tabs = [
 export default function InfoController() {
   const [currentTab, setcurrentTab] = useState(0);
   const router = useRouter();
-  const pathname = usePathname();
-  console.log(pathname);
   return (
     <div className="flex flex-wrap w-full gap-3 justify-center">
       {tabs.map((e, idx) => (

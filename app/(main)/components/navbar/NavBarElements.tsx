@@ -21,16 +21,19 @@ const navItems = [
 ];
 export default function NavBarElements() {
   const pathname = usePathname();
+  const splitedPathname = pathname.split("/")[1];
+  console.log(splitedPathname);
   return (
     <div className="flex items-center gap-x-6 ">
       <div className="bg-background h-12 w-20">logo</div>
       {navItems.map((e) => {
-        let isActive = pathname.includes(e.href);
-        if (pathname !== "/") {
-          isActive = true;
-        }
-        console.log(isActive);
-        return <NavbarItem key={e.href} {...e} active={isActive} />;
+        return (
+          <NavbarItem
+            key={e.href}
+            {...e}
+            active={splitedPathname === e.href.substring(1)}
+          />
+        );
       })}
     </div>
   );
