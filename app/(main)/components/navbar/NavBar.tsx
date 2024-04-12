@@ -13,7 +13,7 @@ export default async function NavBar() {
    
     "
     >
-      <div className="flex justify-between items-center size-full max-w-[2000px] px-2 md:px-4 lg:px-24 xl:px-36 2xl:px-72">
+      <div className="flex justify-between items-center container">
         <NavBarElements />
         {session ? (
           <ProfileLink />

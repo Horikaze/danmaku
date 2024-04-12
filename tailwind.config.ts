@@ -14,6 +14,9 @@ const config: Config = {
         tsecond: "#d8d8d8",
         primary: "#36393F",
       },
+      container: {
+        center: true,
+      },
     },
   },
   plugins: [],

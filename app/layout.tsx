@@ -37,7 +37,7 @@ export default function RootLayout({
             }}
           />
           <NavBar />
-          <main className="px-2 md:px-4 lg:px-24 xl:px-36 2xl:px-72 pt-20 w-full h-full max-w-[2000px]">
+          <main className="container pt-20">
             {children}
           </main>
         </body>
