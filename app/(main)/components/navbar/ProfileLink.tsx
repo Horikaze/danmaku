@@ -1,15 +1,20 @@
 "use client";
 
+import useClickOutside from "@/app/hooks/useClickOutside";
 import ProfileImage from "@/app/mainComponents/ProfileImage";
 import { AnimatePresence, motion } from "framer-motion";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { FaSignInAlt, FaUser } from "react-icons/fa";
 
 export default function ProfileLink() {
   const [isOpen, setIsOpen] = useState(false);
   const session = useSession();
+  const dropdownRef = useRef(null);
+  useClickOutside(dropdownRef, () => {
+    setIsOpen(false);
+  });
   return (
     <>
       <div className="relative z-20" onClick={() => setIsOpen((prev) => !prev)}>
@@ -29,6 +34,7 @@ export default function ProfileLink() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ type: "just", duration: 0.15 }}
+              ref={dropdownRef}
               className="absolute rounded-md w-full flex flex-col p-3 bg-primary drop-shadow-md items-stretch text-center transition-all min-w-36 right-0"
             >
               <Link
@@ -51,14 +57,6 @@ export default function ProfileLink() {
           ) : null}
         </AnimatePresence>
       </div>
-      {isOpen ? (
-        <div
-          className="fixed w-full h-[calc(100vh)] top-0 left-0 z-10"
-          onClick={() => {
-            setIsOpen(false);
-          }}
-        />
-      ) : null}
     </>
   );
 }
