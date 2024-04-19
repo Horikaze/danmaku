@@ -153,9 +153,11 @@ export default function ReplaysList({
               <Link
                 href={`/replay/${r.replayId}`}
                 prefetch={false}
-                className="flex w-full min-w-[600px] py-2 px-1 bg-primary hover:bg-hover transition-colors rounded-md gap-x-1 text-start justify-between whitespace-nowrap"
+                className="flex w-full text-center min-w-[600px] py-2 px-1 bg-primary hover:bg-hover transition-colors rounded-md gap-x-1 justify-between whitespace-nowrap"
               >
-                <div className="w-2/12 px-1">{r.Profile!.nickname}</div>
+                <div className="w-2/12 px-1 text-start">
+                  {r.Profile!.nickname}
+                </div>
                 <div className="w-1/12 px-1">
                   {r.character} {r.shottype}
                 </div>
@@ -166,10 +168,10 @@ export default function ReplaysList({
                   {Object.keys(achievementRankValues)[r.achievement - 1]}
                 </div>
                 <div className="w-[12%] px-1">{r.score.toLocaleString()}</div>
-                <div className="w-[12%] text-center">
+                <div className="w-[12%]">
                   {convertUnixDate(r.uploadedDate as any)}
                 </div>
-                <div className="text-center">
+                <div className="">
                   {r.status ? (
                     <MdVerified className="size-5" />
                   ) : (

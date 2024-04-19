@@ -11,7 +11,6 @@ export const metadata: Metadata = {
   description: "meow",
 };
 
-export const revalidate = 60;
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -21,7 +20,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <NextAuthProvider>
-        <body className={`${montserrat.className} flex items-center justify-center`}>
+        <body
+          className={`${montserrat.className} flex items-center justify-center`}
+        >
           <Toaster
             position="top-center"
             toastOptions={{
@@ -37,9 +38,7 @@ export default function RootLayout({
             }}
           />
           <NavBar />
-          <main className="container pt-20">
-            {children}
-          </main>
+          <main className="container pt-20">{children}</main>
         </body>
       </NextAuthProvider>
     </html>

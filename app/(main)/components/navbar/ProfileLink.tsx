@@ -17,7 +17,13 @@ export default function ProfileLink() {
   });
   return (
     <>
-      <div className="relative z-20" onClick={() => setIsOpen((prev) => !prev)}>
+      <div
+        ref={dropdownRef}
+        className="relative z-20"
+        onClick={(e) => {
+          setIsOpen((p) => !p);
+        }}
+      >
         <div className="flex gap-x-2 items-center hover:bg-hover transition-all py-1 px-3 rounded-md cursor-pointer">
           <div className="size-10 rounded-full bg-background relative overflow-hidden">
             <ProfileImage imageUrl={session.data?.user.image!} />
@@ -34,8 +40,7 @@ export default function ProfileLink() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ type: "just", duration: 0.15 }}
-              ref={dropdownRef}
-              className="absolute rounded-md w-full flex flex-col p-3 bg-primary drop-shadow-md items-stretch text-center transition-all min-w-36 right-0"
+              className="absolute rounded-md w-full flex flex-col p-3 bg-primary drop-shadow-md items-stretch text-center transition-all min-w-36 right-0 top-14"
             >
               <Link
                 href={"/profile"}

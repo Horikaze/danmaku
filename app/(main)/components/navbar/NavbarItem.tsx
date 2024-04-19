@@ -16,7 +16,7 @@ export default function NavbarItem({
   return (
     <Link
       href={href}
-      className={`flex gap-x-2 py-2 px-3 rounded-full  ${
+      className={`flex gap-x-2 py-2 px-2 md:px-3 rounded-full  ${
         active ? "bg-hover" : "bg-primary"
       } hover:bg-hover transition-all cursor-pointer`}
     >

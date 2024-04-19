@@ -35,7 +35,6 @@ export default function ModReplays({
     );
   }
 
-  console.log(replays);
   return (
     <div className="flex w-full flex-col gap-y-3">
       <h2 className="text-center text-2xl">Verify replays</h2>

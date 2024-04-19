@@ -103,7 +103,7 @@ export default function ProfileInfo({
         })}
       </div>
       <Divider className="m-5" />
-      <div className="flex justify-center items-center container overflow-y-scroll">
+      <div className="flex justify-center items-center container px-4 overflow-y-scroll">
         <TabComponent />
       </div>
     </div>

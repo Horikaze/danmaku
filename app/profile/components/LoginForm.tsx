@@ -63,7 +63,7 @@ export default function LoginForm() {
       className="flex flex-col w-full h-full items-center gap-y-10"
     >
       <div className="size-56 bg-primary">image</div>
-      <div className="bg-primary w-full rounded-md md:max-w-[500px] p-3 flex flex-col gap-y-3 drop-shadow-md">
+      <div className="bg-primary w-full rounded-md md:max-w-xl p-3 flex flex-col gap-y-3 drop-shadow-md">
         <div className="flex justify-center space-x-1 font-light">
           {tabs.map((e) => (
             <button

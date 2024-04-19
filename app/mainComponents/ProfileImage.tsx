@@ -1,17 +1,26 @@
+"use client";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 
 export default function ProfileImage({
   imageUrl,
 }: {
   imageUrl: string | null;
 }) {
+  const [hasError, setHasError] = useState(false);
   return (
     <Image
-      src={imageUrl || "/images/placeholder.jpg"}
+      src={
+        hasError
+          ? "/images/placeholder.jpg"
+          : imageUrl || "/images/placeholder.jpg"
+      }
       alt="ProfileImage"
       fill
       style={{ objectFit: "cover" }}
+      onError={() => {
+        setHasError(true);
+      }}
     />
   );
 }

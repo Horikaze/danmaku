@@ -23,7 +23,7 @@ export default function ReplayChart({ scores }: { scores: number[] }) {
       </div>
       {scores && chart ? (
         <div className="flex justify-center items-center w-full">
-          <div className="max-w-[700px] w-full h-72">
+          <div className="max-w-3xl w-full min-h-96">
             <ReplayScoreChart scores={scores!} />
           </div>
         </div>
