@@ -2,8 +2,8 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
 import { getServerSession } from "next-auth";
 import { FaSignInAlt } from "react-icons/fa";
 import NavBarElements from "./NavBarElements";
-import NavbarItem from "./NavbarItem";
 import ProfileLink from "./ProfileLink";
+import NavbarItem from "./NavbarItem";
 
 export default async function NavBar() {
   const session = await getServerSession(authOptions);

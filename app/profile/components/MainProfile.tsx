@@ -97,7 +97,7 @@ export default async function MainProfile({ userId }: { userId: string }) {
           </div>
           <div className="flex-1 overflow-x-hidden">
             <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-semibold float-left">
+              <h2 className="md:text-2xl text-xl font-semibold float-left">
                 {user.nickname}
               </h2>
               <div className="flex space-x-2">

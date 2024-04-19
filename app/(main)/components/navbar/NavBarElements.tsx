@@ -22,10 +22,8 @@ const navItems = [
 export default function NavBarElements() {
   const pathname = usePathname();
   const splitedPathname = pathname.split("/")[1];
-  console.log(splitedPathname);
   return (
-    <div className="flex items-center gap-x-6 ">
-      <div className="bg-background h-12 w-20">logo</div>
+    <div className="flex items-center gap-x-6 w-full justify-center md:justify-start">
       {navItems.map((e) => {
         return (
           <NavbarItem

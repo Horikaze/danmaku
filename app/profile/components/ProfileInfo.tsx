@@ -102,7 +102,7 @@ export default function ProfileInfo({
           );
         })}
       </div>
-      <Divider className="m-5" />
+      <Divider className="my-5" />
       <div className="flex justify-center items-center container px-4 overflow-y-scroll">
         <TabComponent />
       </div>

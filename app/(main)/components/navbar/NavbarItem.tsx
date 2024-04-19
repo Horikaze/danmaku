@@ -16,12 +16,12 @@ export default function NavbarItem({
   return (
     <Link
       href={href}
-      className={`flex gap-x-2 py-2 px-2 md:px-3 rounded-full  ${
+      className={`flex gap-x-2 py-2 px-4 md:px-3 rounded-full  ${
         active ? "bg-hover" : "bg-primary"
       } hover:bg-hover transition-all cursor-pointer`}
     >
-      <Icon className="size-5" />
-      <p className="hidden md:block">{text}</p>
+      <Icon className="size-5 hidden md:block" />
+      <p>{text}</p>
     </Link>
   );
 }
