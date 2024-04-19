@@ -1,7 +1,7 @@
 "use client";
+import { motion } from "framer-motion";
 import Link from "next/link";
 import { useState } from "react";
-import { motion } from "framer-motion";
 import { FaArrowDown, FaArrowUp } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 import { MdOutlineVerified, MdVerified } from "react-icons/md";
@@ -82,8 +82,8 @@ export default function ReplaysList({
   }
 
   return (
-    <div className="flex flex-col w-full min-h-64 p-3 text-xs md:text-sm">
-      <div className="flex flex-col gap-y-3 w-full">
+    <div className="flex flex-col w-full min-h-64 p-3 text-xs md:text-sm overflow-x-scroll">
+      <div className="flex flex-col gap-y-3 w-full min-w-[650px]">
         <div className="flex text-center gap-x-1 justify-between">
           <div className="w-2/12 relative flex">
             <input
@@ -120,29 +120,27 @@ export default function ReplaysList({
                 key={e}
                 className={`${
                   e === "Score" || e === "Date" ? "w-[12%]" : "w-1/12"
-                } px-1 relative hover:bg-hover ${
+                } px-1 hover:bg-hover overflow-hidden ${
                   activeSort === e ? "bg-hover" : ""
-                } transition-colors flex items-center rounded-md p-2 cursor-pointer select-none overflow-x-hidden`}
+                } transition-colors flex items-center rounded-md p-2 cursor-pointer select-none`}
                 onClick={() => {
                   changeSorting(e);
                 }}
               >
-                {activeSort === e ? (
-                  sortDir ? (
-                    <FaArrowDown className="size-5 hidden md:block" />
-                  ) : (
-                    <FaArrowUp className="size-5 hidden md:block" />
-                  )
-                ) : null}
-                <p className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2">
-                  {e}
-                </p>
+                <span className="text-center w-full">{e}</span>
               </div>
             );
           })}
-          <div className="w-5" />
+
+          <div className="w-5 flex items-center justify-center">
+            {sortDir ? (
+              <FaArrowDown className="size-5" />
+            ) : (
+              <FaArrowUp className="size-5" />
+            )}
+          </div>
         </div>
-        <div className="flex flex-col gap-y-2 overflow-x-scroll">
+        <div className="flex flex-col gap-y-2">
           {replays.map((r, idx) => (
             <motion.div
               initial={{ opacity: 0 }}
