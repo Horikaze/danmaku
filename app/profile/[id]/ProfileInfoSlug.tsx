@@ -51,7 +51,7 @@ export default function ProfileInfoSlug({
           </div>
         ))}
       </div>
-      <Divider className="m-5" />
+      <Divider className="my-5" />
       <div className="flex justify-center items-center w-full md:px-4 lg:px-24 xl:px-36 overflow-y-scroll">
         <TabComponent />
       </div>
