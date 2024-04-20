@@ -20,7 +20,7 @@ const navItems = [
   },
 ];
 export default function NavBarElements() {
-  const pathname = usePathname();
+  const pathname = usePathname() || "/"
   const splitedPathname = pathname.split("/")[1];
   return (
     <div className="flex items-center gap-x-6 w-full justify-center md:justify-start">

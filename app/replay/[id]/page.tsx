@@ -65,7 +65,7 @@ export default async function Replay({ params }: { params: { id: string } }) {
   });
 
   return (
-    <div className="bg-primary w-full h-full p-3 rounded-md drop-shadow-md overflow-y-scroll pb-20">
+    <div className="bg-primary w-full h-full p-3 rounded-md drop-shadow-md pb-20">
       <div className="flex flex-col gap-y-2">
         <div className="flex relative justify-between items-center">
           <h2 className="text-xl font-semibold absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 text-tsecond text-center">

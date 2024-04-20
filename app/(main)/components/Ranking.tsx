@@ -53,7 +53,7 @@ export default function Ranking({
       {currentTab !== 2 ? (
         <div
           ref={scrollRef}
-          className="flex flex-col h-full gap-y-1 overflow-y-scroll"
+          className="flex flex-col h-full gap-y-1"
         >
           {arrayToMap.map((u, idx) => (
             <RankingElement key={u.id + currentTab} user={u} idx={idx} />
