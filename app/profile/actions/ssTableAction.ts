@@ -7,7 +7,7 @@ export const takeTableSS = async (url: string) => {
     const page = await browser.newPage();
     await page.setViewport({ width: 500, height: 1080 });
 
-    await page.goto("http://localhost:3000/profile/3_hGZGeY-x", {
+    await page.goto(url, {
       waitUntil: "networkidle0",
     });
     await page.waitForSelector("#table");

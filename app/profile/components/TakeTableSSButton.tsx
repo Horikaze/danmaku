@@ -1,12 +1,14 @@
-import { convertUnixDate } from "@/app/lib/utils";
+import { convertUnixDate, inDevEnvironment } from "@/app/lib/utils";
 import { useSession } from "next-auth/react";
 import { FaCamera, FaSpinner } from "react-icons/fa6";
 import { takeTableSS } from "../actions/ssTableAction";
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 
 export default function TakeTableSSButton() {
   const [isLoading, setIsLoading] = useState(false);
-
+  const pathname = usePathname();
+  console.log(pathname);
   const user = useSession();
   const takeSS = async () => {
     if (isLoading) {
@@ -14,7 +16,11 @@ export default function TakeTableSSButton() {
     }
     try {
       setIsLoading(true);
-      const file = await takeTableSS("");
+      const url = `http://${
+        inDevEnvironment ? "localhost:3000" : "https://danmaku.horikaze.pl/"
+      }${pathname}`;
+
+      const file = await takeTableSS(url);
       console.log(file);
       if (!file) {
         throw new Error("GG");
