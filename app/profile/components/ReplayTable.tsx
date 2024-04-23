@@ -6,6 +6,8 @@ import {
 import { ScoreObject } from "@/app/types/Replay";
 import { Ranking } from "@prisma/client";
 import Link from "next/link";
+import TakeTableSSButton from "./TakeTableSSButton";
+
 type ReplayTableProps = {
   tableData: Ranking;
 };
@@ -41,7 +43,7 @@ export default function ReplayTable({ tableData }: ReplayTableProps) {
   };
 
   return (
-    <div className="overflow-auto grow whitespace-nowrap">
+    <div className="overflow-auto grow whitespace-nowrap group" id="table">
       <table className="text-sm md:text-base w-full">
         <thead>
           <tr>
@@ -110,7 +112,8 @@ export default function ReplayTable({ tableData }: ReplayTableProps) {
           ))}
         </tbody>
       </table>
-      <div className="flex gap-x-1 justify-end mt-2">
+      <div className="flex gap-x-1 justifybe mt-2">
+        <TakeTableSSButton />
         {Object.keys(achievementRankValues).map((e) => (
           <div
             key={e}

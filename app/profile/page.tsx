@@ -1,6 +1,5 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/auth";
-import { searchParamsPropsReplay } from "../types/Replay";
 import LoginForm from "./components/LoginForm";
 import MainProfile from "./components/MainProfile";
 

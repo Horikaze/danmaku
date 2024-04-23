@@ -106,3 +106,5 @@ export function prismaExclude<T extends Entity, K extends Keys<T>>(
   }
   return result;
 }
+
+export const inDevEnvironment = !!process && process.env.NODE_ENV === 'development';

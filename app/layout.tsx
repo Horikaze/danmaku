@@ -1,18 +1,11 @@
 import type { Metadata } from "next";
-import { Montserrat, Poppins, Noto_Sans } from "next/font/google";
+import { Montserrat } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import NavBar from "./(main)/components/navbar/NavBar";
 import "./globals.css";
 import { NextAuthProvider } from "./lib/AuthContext";
 const montserrat = Montserrat({ subsets: ["latin"] });
-const popins = Poppins({
-  subsets: ["latin"],
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
-});
-const notoSans = Noto_Sans({
-  subsets: ["latin"],
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
-});
+
 export const metadata: Metadata = {
   title: "Danmaku",
   description: "meow",
@@ -22,13 +15,12 @@ export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
-  searchParams: any;
 }>) {
   return (
     <html lang="en">
       <NextAuthProvider>
         <body
-          className={`${notoSans.className} flex items-center justify-center`}
+          className={`${montserrat.className} flex items-center justify-center`}
         >
           <Toaster
             position="top-center"
