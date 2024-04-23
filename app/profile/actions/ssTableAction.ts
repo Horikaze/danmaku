@@ -1,9 +1,12 @@
 "use server";
 import puppeteer from "puppeteer-core";
-
+import { executablePath } from "puppeteer";
 export const takeTableSS = async (url: string) => {
   try {
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({
+      headless: true,
+      executablePath: executablePath(),
+    });
     const page = await browser.newPage();
     await page.setViewport({ width: 500, height: 1080 });
 
