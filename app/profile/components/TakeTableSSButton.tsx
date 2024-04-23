@@ -17,7 +17,7 @@ export default function TakeTableSSButton() {
     try {
       setIsLoading(true);
       const url = `http://${
-        inDevEnvironment ? "localhost:3000" : "https://danmaku.horikaze.pl/"
+        inDevEnvironment ? "localhost:3000" : "danmaku.horikaze.pl"
       }${pathname}`;
 
       const file = await takeTableSS(url);
