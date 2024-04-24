@@ -1,12 +1,10 @@
 "use server";
-import puppeteer from "puppeteer-core";
-import { executablePath } from "puppeteer";
+import puppeteerCore from "puppeteer-core";
+import puppeteer from "puppeteer";
+import chromium from "@sparticuz/chromium-min";
 export const takeTableSS = async (url: string) => {
   try {
-    const browser = await puppeteer.launch({
-      headless: true,
-      executablePath: executablePath(),
-    });
+    const browser = await getBrowser();
     const page = await browser.newPage();
     await page.setViewport({ width: 500, height: 1080 });
 
@@ -32,3 +30,20 @@ export const takeTableSS = async (url: string) => {
     console.log(error);
   }
 };
+
+async function getBrowser() {
+  if (process.env.VERCEL_ENV === "production") {
+    const executablePath = await chromium.executablePath();
+
+    const browser = await puppeteerCore.launch({
+      args: chromium.args,
+      defaultViewport: chromium.defaultViewport,
+      executablePath,
+      headless: chromium.headless,
+    });
+    return browser;
+  } else {
+    const browser = await puppeteer.launch();
+    return browser;
+  }
+}
