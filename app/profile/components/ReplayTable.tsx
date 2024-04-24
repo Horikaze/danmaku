@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import {
   achievementRankValues,
   difficultyLevelsTable,
@@ -8,11 +8,13 @@ import { ScoreObject } from "@/app/types/Replay";
 import { Ranking } from "@prisma/client";
 import Link from "next/link";
 import TakeTableSSButton from "./TakeTableSSButton";
+import { useRef } from "react";
 
 type ReplayTableProps = {
   tableData: Ranking;
 };
 export default function ReplayTable({ tableData }: ReplayTableProps) {
+  const tableRef = useRef<HTMLDivElement>(null);
   if (!tableData) return null;
   let forrmatedObject: Record<string, ScoreObject> = {};
   Object.keys(tableData).forEach((key) => {
@@ -42,9 +44,11 @@ export default function ReplayTable({ tableData }: ReplayTableProps) {
         return "";
     }
   };
-
   return (
-    <div className="overflow-auto grow whitespace-nowrap group" id="table">
+    <div
+      className="overflow-auto grow whitespace-nowrap group bg-primary"
+      ref={tableRef!}
+    >
       <table className="text-sm md:text-base w-full">
         <thead>
           <tr>
@@ -114,7 +118,7 @@ export default function ReplayTable({ tableData }: ReplayTableProps) {
         </tbody>
       </table>
       <div className="flex gap-x-1 justifybe mt-2">
-        <TakeTableSSButton />
+        <TakeTableSSButton refTable={tableRef} />
         {Object.keys(achievementRankValues).map((e) => (
           <div
             key={e}
