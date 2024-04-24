@@ -16,6 +16,7 @@ export default function TakeTableSSButton({
         allowTaint: true,
         useCORS: true,
         logging: true,
+        windowWidth: 850,
       });
 
       const dataURL = res.toDataURL();
