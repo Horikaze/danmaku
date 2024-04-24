@@ -1,9 +1,9 @@
 import { convertUnixDate, inDevEnvironment } from "@/app/lib/utils";
+import axios from "axios";
 import { useSession } from "next-auth/react";
-import { FaCamera, FaSpinner } from "react-icons/fa6";
-import { takeTableSS } from "../actions/ssTableAction";
-import { useState } from "react";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
+import { FaCamera, FaSpinner } from "react-icons/fa6";
 
 export default function TakeTableSSButton() {
   const [isLoading, setIsLoading] = useState(false);
@@ -20,11 +20,14 @@ export default function TakeTableSSButton() {
         inDevEnvironment ? "localhost:3000" : "danmaku.horikaze.pl"
       }${pathname}`;
 
-      const file = await takeTableSS(url);
-      console.log(file);
+      const res = await axios.post("/api/table", {
+        url: url,
+      });
+      const file = res.data.data.data;
       if (!file) {
-        throw new Error("GG");
+        throw new Error("Internal Error");
       }
+
       const ui8Array = new Uint8Array(file.toString().split(",").map(Number));
       const blob = new Blob([ui8Array], { type: "image/png" });
       const objectURL = URL.createObjectURL(blob);
