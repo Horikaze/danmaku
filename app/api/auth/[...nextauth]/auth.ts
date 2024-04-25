@@ -71,7 +71,7 @@ export const authOptions: AuthOptions = {
           const newUser = await prisma.profile.create({
             data: {
               id: nanoid(10),
-              email: user.email!,
+              email: user.name!.replace(/\s/g, "_") + "@danmaku.pl",
               nickname: user.name!,
               name: user.name!,
               imageUrl: user.image || null,
