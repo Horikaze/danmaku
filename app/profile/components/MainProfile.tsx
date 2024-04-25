@@ -79,11 +79,11 @@ export default async function MainProfile({ userId }: { userId: string }) {
             />
           </>
         ) : (
-          <div className="h-12 text-sm bottom-0 text-end pt-[18px] pr-10 opacity-50 ">
+          <div className="h-12 text-sm bottom-0 text-end pt-[18px] pr-16 opacity-50 ">
             Select your banner here ➔
           </div>
         )}
-        <div className="absolute bottom-0 right-0 pr-1 opacity-10 hover:opacity-50 transition-opacity">
+        <div className="absolute bottom-0 right-6 pr-1 opacity-10 hover:opacity-50 transition-opacity">
           <UpdateImages endpoint="profileBanner" />
         </div>
       </div>

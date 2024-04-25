@@ -132,7 +132,10 @@ export default function ReplaysList({
             );
           })}
 
-          <div className="w-5 flex items-center justify-center">
+          <div
+            className="w-5 flex items-center justify-center cursor-pointer"
+            onClick={() => setSortDir((prev) => !prev)}
+          >
             {sortDir ? (
               <FaArrowDown className="size-5" />
             ) : (

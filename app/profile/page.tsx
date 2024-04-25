@@ -14,7 +14,7 @@ export default async function Profile() {
   }
   return (
     <>
-      <div className="flex flex-col w-full h-full bg-primary drop-shadow-md overflow-auto min-h-[1200px]">
+      <div className="flex flex-col w-full h-full bg-primary drop-shadow-md overflow-auto min-h-[1200px] rounded-md">
         <MainProfile userId={session.user.info.id} />
       </div>
     </>
