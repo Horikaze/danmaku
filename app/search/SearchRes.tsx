@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import { achievementRankValues } from "../constants/games";
 import { getGameInt } from "../lib/utils";
 import ReplaysList from "../mainComponents/ReplaysList";
-import { replayWithNickname } from "../types/Replay";
+import { replayList } from "../types/Replay";
 import Loading from "./loading";
 export default async function SearchRes({
   searchParams,
@@ -17,8 +17,6 @@ export default async function SearchRes({
         game,
         scoreFrom,
         scoreTo,
-        pointsFrom,
-        pointsTo,
         rank,
         achievement,
         shottype,
@@ -49,19 +47,6 @@ export default async function SearchRes({
           lte: Number((scoreTo as string).replace(/\s/g, "")),
         };
       }
-      if (pointsFrom !== undefined && pointsFrom !== "") {
-        whereClause.points = {
-          ...whereClause.points,
-          gte: Number(pointsFrom),
-        };
-      }
-
-      if (pointsTo !== undefined && pointsTo !== "") {
-        whereClause.points = {
-          ...whereClause.points,
-          lte: Number(pointsTo),
-        };
-      }
 
       if (rank !== undefined && rank !== "All") {
         whereClause.rank = rank;
@@ -87,22 +72,38 @@ export default async function SearchRes({
         whereClause.userId = (userId as string).replace(/\s/g, "");
       }
       const isEmpty = Object.keys(whereClause).length <= 0 ? true : false;
-      const replays = (await prisma.replay.findMany({
+      const replays = await prisma.replay.findMany({
         where: whereClause,
-        include: {
+        orderBy: {
+          uploadedDate: "desc",
+        },
+        select: {
+          replayId: true,
+          character: true,
+          game: true,
+          shottype: true,
+          rank: true,
+          achievement: true,
+          score: true,
+          uploadedDate: true,
+          status: true,
           Profile: {
             select: {
               nickname: true,
             },
           },
         },
-        orderBy: {
-          uploadedDate: "desc",
-        },
         take: isEmpty ? 10 : 50,
-      })) as replayWithNickname[];
+      });
 
-      return replays;
+      const replaysWithNickname = replays.map((r) => {
+        const { Profile, ...rest } = r;
+        return {
+          ...rest,
+          nickname: r.Profile?.nickname!,
+        };
+      });
+      return replaysWithNickname;
     } catch (error) {
       console.log(error);
       return null;

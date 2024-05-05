@@ -12,6 +12,7 @@ import ReplayChart from "@/app/mainComponents/ReplayChart";
 import { Metadata, ResolvingMetadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import DownloadRpy from "./DownloadRpy";
 type Props = {
   params: { id: string };
 };
@@ -73,7 +74,7 @@ export default async function Replay({ params }: { params: { id: string } }) {
           </h2>
           <BackButton />
           <div className="text-sm text-tsecond flex items-center gap-x-1 hover:brightness-125 cursor-pointer">
-            <Copy text={"id"} />
+            <Copy text={"id"} content={replay.replayId} />
           </div>
         </div>
         <Divider />
@@ -102,9 +103,6 @@ export default async function Replay({ params }: { params: { id: string } }) {
             <span className="text-tsecond">
               {replay?.score.toLocaleString()}
             </span>
-          </p>
-          <p>
-            Points: <span className="text-tsecond">{replay?.points}</span>
           </p>
           <p>
             Stage:{" "}
@@ -139,14 +137,10 @@ export default async function Replay({ params }: { params: { id: string } }) {
             Sended by:{" "}
             <span className="text-tsecond">{replay?.Profile?.nickname}</span>
           </Link>
-          <Link
-            href={replay?.filePath!}
-            download
-            prefetch={false}
-            className="underline"
-          >
-            Download .rpy
-          </Link>
+          <DownloadRpy
+            buffer={JSON.parse(JSON.stringify(replay.file))}
+            rpy_name={replay.rpy_name}
+          />
           <div className="absolute right-0 bottom-0 text-xs opacity-60 text-tsecond">
             {replay?.comment ? <p>{replay?.comment || ""}</p> : null}
             {replay?.acceptedBy ? (

@@ -3,7 +3,7 @@ import { Divider } from "@/app/mainComponents/Divider";
 import { ButtonInput } from "@/app/mainComponents/InputButton";
 import { InputText } from "@/app/mainComponents/InputText";
 import ReplaysList from "@/app/mainComponents/ReplaysList";
-import { replayWithNickname } from "@/app/types/Replay";
+import { replayList } from "@/app/types/Replay";
 import { Profile, Ranking } from "@prisma/client";
 import { motion } from "framer-motion";
 import { useState } from "react";
@@ -19,12 +19,10 @@ export default function ProfileInfo({
   user,
   replays,
   ranking,
-  modReplays,
 }: {
   user: Profile;
-  replays: replayWithNickname[];
+  replays: replayList[];
   ranking: Ranking;
-  modReplays: replayWithNickname[] | null;
 }) {
   const [currentTab, setcurrentTab] = useState(0);
   function TabComponent() {
@@ -69,7 +67,7 @@ export default function ProfileInfo({
       case 3:
         return <Settings favoriteGame={user.favoriteGame || "EOSD"} />;
       case 4:
-        return <ModReplays initialReplays={modReplays} />;
+      // return <ModReplays initialReplays={modReplays} />;
       default:
         return <ReplayTable tableData={ranking} />;
     }

@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import { Toaster } from "react-hot-toast";
-import NavBar from "./(main)/components/navbar/NavBar";
 import "./globals.css";
 import { NextAuthProvider } from "./lib/AuthContext";
+import NavBar from "./mainComponents/navbar/NavBar";
 const montserrat = Montserrat({ subsets: ["latin"] });
 
 export const metadata: Metadata = {

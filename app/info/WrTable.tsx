@@ -1,5 +1,5 @@
 import { games618, touhouDifficulty } from "@/app/constants/games";
-import { scoreWR } from "../../constants/wrScores";
+import { scoreWR } from "../constants/wrScores";
 import Link from "next/link";
 import { getGameInt } from "@/app/lib/utils";
 

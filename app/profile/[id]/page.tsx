@@ -20,15 +20,19 @@ export default async function ProfileSlug({
     },
     include: {
       Replays: {
-        include: {
-          Profile: {
-            select: {
-              nickname: true,
-            },
-          },
-        },
         orderBy: {
           uploadedDate: "desc",
+        },
+        select: {
+          replayId: true,
+          character: true,
+          game: true,
+          shottype: true,
+          rank: true,
+          achievement: true,
+          score: true,
+          uploadedDate: true,
+          status: true,
         },
       },
       CCTable: true,
@@ -37,6 +41,12 @@ export default async function ProfileSlug({
   if (!user) {
     return notFound();
   }
+
+  const replaysWithNickname = user.Replays.map((r) => ({
+    ...r,
+    nickname: user.nickname,
+  }));
+
   return (
     <div className="flex flex-col w-full h-full bg-primary drop-shadow-md overflow-auto min-h-[1200px] gap-y-3">
       <div className="w-full relative flex justify-end">
@@ -77,7 +87,7 @@ export default async function ProfileSlug({
               </h2>
               <div className="flex space-x-2">
                 <div className="text-sm text-tsecond flex items-center gap-x-1 hover:brightness-125 cursor-pointer">
-                  <Copy text={"uid"} />
+                  <Copy text={"uid"} content={user.id} />
                 </div>
                 {user.discord ? (
                   <div className="space-x-1">
@@ -91,8 +101,6 @@ export default async function ProfileSlug({
             <div className="flex flex-col md:flex-row p-2 justify-between text-tsecond space-y-0.5">
               <div className="text-sm">
                 <p> CC Count: {user.CCCount}</p>
-                <p> Points: {user.points}</p>
-                <p> Event points: {user.event}</p>
               </div>
 
               <div className="text-xs text-end md:block hidden w-1/2 flex-col items-end space-y-0.5 ">
@@ -109,8 +117,7 @@ export default async function ProfileSlug({
           {user.bio ? <p> Bio: {user.bio}</p> : null}
         </div>
         <ProfileInfoSlug
-          replays={user.Replays}
-          user={user}
+          replays={replaysWithNickname}
           ranking={user.CCTable!}
         />
       </div>

@@ -65,7 +65,7 @@ export const registerUserAction = async (formData: FormData) => {
         UM: emptyScoreObjectString,
         UFO: emptyScoreObjectString,
         WBAWC: emptyScoreObjectString,
-        userIdRankingPoints: user.id,
+        userIdRanking: user.id,
       },
     });
     return {

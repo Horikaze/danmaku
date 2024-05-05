@@ -1,11 +1,6 @@
 "use client";
 import { achievementList } from "@/app/constants/games";
-import { calculatePoints } from "@/app/lib/calculatePoints";
-import {
-  cn,
-  getCharacterFromData,
-  getGameNumber
-} from "@/app/lib/utils";
+import { cn, getCharacterFromData, getGameNumber } from "@/app/lib/utils";
 import ButtonLoader from "@/app/mainComponents/ButtonLoader";
 import { ButtonInput, buttonVariants } from "@/app/mainComponents/InputButton";
 import { ReplayInfo } from "@/app/types/Replay";
@@ -62,17 +57,15 @@ export default function SendReplay() {
   };
   const sendReplay = async (e: React.FormEvent<HTMLFormElement>) => {
     try {
-      const fileDate = replayFile?.get("replay") as File;
       e.preventDefault();
+      const fileDate = replayFile?.get("replay") as File;
       const formData = new FormData(e.currentTarget);
       const comment = formData.get("comment") as string;
-      const points = calculatePoints(replayData!, CC);
       setIsLoading(true);
       const res = await sendReplayAction(replayData!, replayFile!, {
         CC: CC,
         comment: comment,
         fileDate: fileDate.lastModified,
-        points: points,
       });
       toast.success(res.toString());
       setIsLoading(false);
@@ -185,15 +178,7 @@ export default function SendReplay() {
                 className="outline-white/20 resize-none focus:outline-white transition-all outline-none border-none bg-primary py-0.5 px-1 rounded-md"
               />
             </div>
-            <div className="flex flex-col h-full w-full text-center textba justify-center">
-              <h3>
-                You will get:{" "}
-                <span className="font-semibold">
-                  {replayData ? calculatePoints(replayData!, CC) : 0}{" "}
-                </span>
-                points
-              </h3>
-            </div>
+            <div className="flex flex-col h-full w-full text-center textba justify-center"></div>
           </div>
           <div className="flex items-end justify-end text-sm md:text-base gap-x-1">
             <ButtonInput

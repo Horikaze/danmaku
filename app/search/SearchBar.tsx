@@ -44,45 +44,6 @@ export default function SearchBar() {
             </div>
             <div className="flex gap-x-3">
               <div className="flex flex-col gap-1.5 w-full">
-                <p>Points</p>
-                <div className="flex gap-x-2 items-center">
-                  <InputText
-                    type="text"
-                    placeholder="From"
-                    name="pointsFrom"
-                    className="w-full"
-                  />
-                  <p>-</p>
-                  <InputText
-                    type="text"
-                    placeholder="To"
-                    name="pointsTo"
-                    className="w-full"
-                  />
-                </div>
-              </div>
-              <div className="grid gap-1.5 w-full">
-                <p>Shot-type</p>
-                <select
-                  name="shottype"
-                  className="w-full  outline-white/20 focus:outline-white transition-all outline-none border-none bg-primary py-1 px-4 rounded-md"
-                >
-                  <option value={"All"}>All</option>
-
-                  {shotTypeList.map((s) => (
-                    <option key={s} value={s}>
-                      {s}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="flex flex-col w-full ">
-          <div className="flex flex-col gap-y-3">
-            <div className="flex gap-x-3">
-              <div className="flex flex-col gap-1.5 w-full">
                 <p>Score</p>
                 <div className="flex gap-x-2 items-center">
                   <InputText
@@ -100,6 +61,13 @@ export default function SearchBar() {
                   />
                 </div>
               </div>
+              
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-col w-full ">
+          <div className="flex flex-col gap-y-3">
+            <div className="flex gap-x-3">
               <div className="flex flex-col gap-1.5 w-full">
                 <div>
                   <p className="float-left">Rank</p>
@@ -131,6 +99,21 @@ export default function SearchBar() {
                     ))}
                   </select>
                 </div>
+              </div>
+              <div className="grid gap-1.5 w-full">
+                <p>Shot-type</p>
+                <select
+                  name="shottype"
+                  className="w-full  outline-white/20 focus:outline-white transition-all outline-none border-none bg-primary py-1 px-4 rounded-md"
+                >
+                  <option value={"All"}>All</option>
+
+                  {shotTypeList.map((s) => (
+                    <option key={s} value={s}>
+                      {s}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
             <div className="flex gap-x-3">

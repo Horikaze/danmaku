@@ -5,11 +5,10 @@ import { useState } from "react";
 import { FaArrowDown, FaArrowUp } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 import { MdOutlineVerified, MdVerified } from "react-icons/md";
-import { achievementRankValues } from "../constants/games";
+import { achievementRankValues, touhouDifficulty } from "../constants/games";
 import { convertUnixDate, getGameString } from "../lib/utils";
-import { replayWithNickname } from "../types/Replay";
+import { replayList } from "../types/Replay";
 export type sortTypesType =
-  | "Points"
   | "Achievement"
   | "Score"
   | "Game"
@@ -20,17 +19,12 @@ export type sortTypesType =
 const sortTypes: sortTypesType[] = [
   "Game",
   "Rank",
-  "Points",
   "Achievement",
   "Score",
   "Date",
 ];
 
-export default function ReplaysList({
-  replays,
-}: {
-  replays: replayWithNickname[];
-}) {
+export default function ReplaysList({ replays }: { replays: replayList[] }) {
   const [sortDir, setSortDir] = useState<boolean>(true);
   const [activeSort, setActiveSort] = useState<sortTypesType>(null);
   const [searchPlayer, setSearchPlayer] = useState("");
@@ -52,7 +46,7 @@ export default function ReplaysList({
 
   if (searchPlayer !== "") {
     replays = replays.filter((s) =>
-      s.Profile!.nickname.toLowerCase().includes(searchPlayer.toLowerCase())
+      s.nickname.toLowerCase().includes(searchPlayer.toLowerCase())
     );
   }
   if (searchChara !== "") {
@@ -67,8 +61,9 @@ export default function ReplaysList({
       return a.uploadedDate - b.uploadedDate;
     }
     if (activeSort === "Rank") {
-      //@ts-ignore known value
-      return a.slowRate - b.slowRate;
+      const aIndex = touhouDifficulty.indexOf(a.rank);
+      const bIndex = touhouDifficulty.indexOf(b.rank);
+      return aIndex - bIndex;
     }
     return (
       //@ts-ignore known value
@@ -156,15 +151,12 @@ export default function ReplaysList({
                 prefetch={false}
                 className="flex w-full text-center min-w-[600px] py-2 px-1 bg-primary hover:bg-hover transition-colors rounded-md gap-x-1 justify-between whitespace-nowrap"
               >
-                <div className="w-2/12 px-1 text-start">
-                  {r.Profile!.nickname}
-                </div>
+                <div className="w-2/12 px-1 text-start">{r.nickname}</div>
                 <div className="w-1/12 px-1">
                   {r.character} {r.shottype}
                 </div>
                 <div className="w-1/12 px-1">{getGameString(r.game)}</div>
                 <div className="w-1/12 px-1">{r.rank}</div>
-                <div className="w-1/12 px-1 ">{r.points}</div>
                 <div className="w-1/12 px-1">
                   {Object.keys(achievementRankValues)[r.achievement - 1]}
                 </div>

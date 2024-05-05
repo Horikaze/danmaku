@@ -1,5 +1,4 @@
-import { Profile, Replay } from "@prisma/client";
-
+import { Replay } from "@prisma/client";
 export type ReplayInfo = {
   character: string | string[];
   date: string;
@@ -31,7 +30,6 @@ export type ReplayFormData = {
   score?: string;
   fileDate?: string;
   videoLink?: string;
-  points?: string;
 };
 export type ScoreObject = {
   EASY: { score: number; id: string; CC: number; char: string };
@@ -43,15 +41,23 @@ export type ScoreObject = {
   [key: string]: { score: number; id: string; CC: number; char: string };
 };
 
-export type replayWithNickname = Replay & {
-  Profile: { nickname: string } | null;
+export type replayList = {
+  replayId: string;
+  nickname: string;
+  character: string;
+  game: number;
+  shottype: string | null;
+  rank: string;
+  achievement: number;
+  score: number;
+  uploadedDate: Date;
+  status: boolean;
 };
 
 export type searchParamsPropsReplay = {
   tab: string;
 };
 
-export type userWithoutPassowrd = Omit<Profile, "hashedPassword">;
 export type RankingUser = {
   id: string;
   imageUrl?: string;

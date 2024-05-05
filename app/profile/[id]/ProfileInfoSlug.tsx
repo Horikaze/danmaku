@@ -1,7 +1,7 @@
 "use client";
 import { Divider } from "@/app/mainComponents/Divider";
 import ReplaysList from "@/app/mainComponents/ReplaysList";
-import { replayWithNickname } from "@/app/types/Replay";
+import { replayList } from "@/app/types/Replay";
 import { Profile, Ranking } from "@prisma/client";
 import { motion } from "framer-motion";
 import { useState } from "react";
@@ -9,12 +9,10 @@ import ReplayTable from "../components/ReplayTable";
 
 const tabs = ["Table", "My replays"];
 export default function ProfileInfoSlug({
-  user,
   replays,
   ranking,
 }: {
-  user: Profile;
-  replays: replayWithNickname[];
+  replays: replayList[];
   ranking: Ranking;
 }) {
   const [currentTab, setcurrentTab] = useState(0);

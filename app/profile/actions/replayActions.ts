@@ -1,20 +1,18 @@
 "use server";
-import { ReplayInfo, ScoreObject } from "@/app/types/Replay";
-import prisma from "@/app/lib/prismadb";
-import axios from "axios";
-import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
 import { achievementRankValues } from "@/app/constants/games";
+import prisma from "@/app/lib/prismadb";
 import {
-  emptyScoreObjectString,
   getCharacterFromData,
   getGameNumber,
   getGameString,
 } from "@/app/lib/utils";
-import { UTApi } from "uploadthing/server";
-import { Ranking, Replay } from "@prisma/client";
-import { revalidatePath } from "next/cache";
+import { ReplayInfo, ScoreObject } from "@/app/types/Replay";
+import { Replay } from "@prisma/client";
+import axios from "axios";
 import { nanoid } from "nanoid";
+import { getServerSession } from "next-auth";
+import { revalidatePath } from "next/cache";
 export const threp = async (formData: FormData) => {
   try {
     const file = formData.get("replay") as File;
@@ -61,14 +59,13 @@ type sendReplayReturns =
 type additionalReplayInfo = {
   CC: string;
   comment: string | null;
-  points: number;
   fileDate: number;
 };
 
 export const sendReplayAction = async (
   replayData: ReplayInfo,
   formData: FormData,
-  { CC, comment, points, fileDate }: additionalReplayInfo
+  { CC, comment, fileDate }: additionalReplayInfo
 ): Promise<sendReplayReturns> => {
   try {
     const replayFile = formData.get("replay") as File;
@@ -81,11 +78,8 @@ export const sendReplayAction = async (
     if (cheackExist) {
       return "Replay exists";
     }
-    const utapi = new UTApi();
-    const fileUpload = await utapi.uploadFiles(replayFile);
-    if (fileUpload.error) {
-      return "Problem with file upload";
-    }
+    const buffer = await replayFile.arrayBuffer();
+    const fileBuffer = Buffer.from(buffer);
     const newReplay = await prisma.replay.create({
       data: {
         replayId: nanoid(10),
@@ -97,7 +91,7 @@ export const sendReplayAction = async (
         ),
         comment: comment,
         date: replayData.date,
-        filePath: fileUpload.data.url,
+        file: fileBuffer,
         game: getGameNumber(replayData.rpy_name),
         player: replayData.player,
         rank: replayData.rank,
@@ -105,7 +99,6 @@ export const sendReplayAction = async (
         rpy_name: replayFile.name,
         stage: replayData.stage,
         shottype: replayData.shottype,
-        points: points,
         status: false,
         stage_score: replayData.stage_score.join("+"),
         score: replayData.stage_score.at(-1)!,
@@ -133,9 +126,14 @@ const changeRanking = async (newReplay: Replay) => {
           not: newReplay.replayId,
         },
       },
-      orderBy: {
-        points: "desc",
-      },
+      orderBy: [
+        {
+          achievement: "desc",
+        },
+        {
+          score: "desc",
+        },
+      ],
     });
 
     const gameString = getGameString(
@@ -144,7 +142,7 @@ const changeRanking = async (newReplay: Replay) => {
 
     const currenntRanking = await prisma.ranking.findFirst({
       where: {
-        userIdRankingPoints: newReplay.userId,
+        userIdRanking: newReplay.userId,
       },
       select: {
         [gameString]: true,
@@ -152,22 +150,6 @@ const changeRanking = async (newReplay: Replay) => {
     });
     if (!currenntRanking) return;
     const rankingObject = JSON.parse(currenntRanking[gameString]);
-
-    if (sameReplay && sameReplay.points >= newReplay.points) return;
-    if (sameReplay && sameReplay.points <= newReplay.points) {
-      const updatedPoints = newReplay.points - sameReplay.points;
-
-      await prisma.profile.update({
-        where: {
-          id: newReplay.userId,
-        },
-        data: {
-          points: {
-            increment: updatedPoints,
-          },
-        },
-      });
-    }
 
     const newScoreObj: ScoreObject = {
       ...rankingObject,
@@ -183,28 +165,22 @@ const changeRanking = async (newReplay: Replay) => {
       },
     };
 
-    await prisma.ranking.update({
-      where: {
-        userIdRankingPoints: newReplay.userId,
-      },
-      data: {
-        [gameString]: JSON.stringify(newScoreObj),
-      },
-    });
-
     if (!sameReplay) {
       await prisma.profile.update({
-        where: {
-          id: newReplay.userId,
-        },
-        data: {
-          points: {
-            increment: Number(newReplay.points),
-          },
-          CCCount: {
-            increment: 1,
-          },
-        },
+        where: { id: newReplay.userId },
+        data: { CCCount: { increment: 1 } },
+      });
+    }
+
+    const shouldUpdateRanking =
+      !sameReplay ||
+      sameReplay.achievement <= newReplay.achievement ||
+      sameReplay.score <= newReplay.score;
+    console.log(shouldUpdateRanking);
+    if (shouldUpdateRanking) {
+      await prisma.ranking.update({
+        where: { userIdRanking: newReplay.userId },
+        data: { [gameString]: JSON.stringify(newScoreObj) },
       });
     }
   } catch (error) {
@@ -228,18 +204,14 @@ export const deleteReplayAction = async ({
   try {
     const session = await getServerSession(authOptions);
     if (!session) return "Unauthorized";
-    const utapi = new UTApi();
     const replayToDelete = await prisma.replay.findFirst({
       where: {
         replayId: replayId,
       },
       select: {
         userId: true,
-        filePath: true,
       },
     });
-    console.log(session.user.info.id);
-    console.log(replayToDelete?.userId);
     if (!replayToDelete) {
       return "Replay does not exist";
     }
@@ -255,14 +227,13 @@ export const deleteReplayAction = async ({
         replayId: replayId,
       },
     });
-    utapi.deleteFiles(deletedReplay.filePath.split("/").at(-1)!);
     const gameString = getGameString(
       getGameNumber(deletedReplay.rpy_name)
     ).toUpperCase();
 
     const currenntRanking = await prisma.ranking.findFirst({
       where: {
-        userIdRankingPoints: deletedReplay.userId,
+        userIdRanking: deletedReplay.userId,
       },
       select: {
         [gameString]: true,
@@ -293,7 +264,7 @@ export const deleteReplayAction = async ({
 
     await prisma.ranking.update({
       where: {
-        userIdRankingPoints: deletedReplay.userId,
+        userIdRanking: deletedReplay.userId,
       },
       data: {
         [gameString]: JSON.stringify(newScoreObj),
@@ -306,9 +277,14 @@ export const deleteReplayAction = async ({
         userId: deletedReplay.userId,
         game: deletedReplay.game,
       },
-      orderBy: {
-        points: "desc",
-      },
+      orderBy: [
+        {
+          achievement: "desc",
+        },
+        {
+          score: "desc",
+        },
+      ],
     });
     if (replayToReplace) {
       await prisma.profile.update({
@@ -318,9 +294,6 @@ export const deleteReplayAction = async ({
         data: {
           CCCount: {
             decrement: 1,
-          },
-          points: {
-            decrement: deletedReplay.points,
           },
         },
       });
@@ -336,9 +309,6 @@ export const deleteReplayAction = async ({
         CCCount: {
           decrement: 1,
         },
-        points: {
-          decrement: deletedReplay.points,
-        },
       },
     });
     return "Deleted";
@@ -349,44 +319,6 @@ export const deleteReplayAction = async ({
     revalidatePath("/profile");
   }
 };
-
-// export const resetAcc = async ({ userId }: { userId: string }) => {
-//   await prisma.replay.deleteMany({
-//     where: {
-//       userId: userId,
-//     },
-//   });
-//   await prisma.profile.update({
-//     where: {
-//       id: userId,
-//     },
-//     data: {
-//       points: 0,
-//       CCCount: 0,
-//     },
-//   });
-//   await prisma.ranking.update({
-//     where: {
-//       userIdRankingPoints: userId,
-//     },
-//     data: {
-//       DDC: emptyScoreObjectString,
-//       EOSD: emptyScoreObjectString,
-//       GFW: emptyScoreObjectString,
-//       HSIFS: emptyScoreObjectString,
-//       IN: emptyScoreObjectString,
-//       LOLK: emptyScoreObjectString,
-//       MOF: emptyScoreObjectString,
-//       PCB: emptyScoreObjectString,
-//       POFV: emptyScoreObjectString,
-//       SA: emptyScoreObjectString,
-//       TD: emptyScoreObjectString,
-//       UM: emptyScoreObjectString,
-//       UFO: emptyScoreObjectString,
-//       WBAWC: emptyScoreObjectString,
-//     },
-//   });
-// };
 
 type verifyReplayReturns =
   | "Internal error"

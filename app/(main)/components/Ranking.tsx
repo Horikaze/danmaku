@@ -4,29 +4,19 @@ import { RankingUser } from "@/app/types/Replay";
 import { motion } from "framer-motion";
 import { useRef, useState } from "react";
 import RankingElement from "./RankingElement";
-const tabs = ["Points", "1cc", "Challenge"];
+const tabs = ["CC count", "Challenge"];
 
 type RankingProps = {
-  rankingPoints: RankingUser[];
   rankingCC: RankingUser[];
-  rankingEvent: RankingUser[];
 };
 
-export default function Ranking({
-  rankingCC,
-  rankingEvent,
-  rankingPoints,
-}: RankingProps) {
+export default function Ranking({ rankingCC }: RankingProps) {
   const [currentTab, setCurrentTab] = useState(0);
-  const arrayToMap =
-    currentTab === 0
-      ? rankingPoints
-      : currentTab === 1
-      ? rankingCC
-      : rankingEvent;
+  const arrayToMap = rankingCC;
+
   const scrollRef = useRef<HTMLDivElement | null>(null);
   return (
-    <div className="bg-primary flex flex-col h-[500px] w-full drop-shadow-md p-3 gap-y-3">
+    <div className="bg-primary flex flex-col h-[500px] w-full drop-shadow-md p-3 gap-y-3 overflow-auto">
       <div className="flex justify-center space-x-1 font-light">
         {tabs.map((e, idx) => (
           <button
@@ -50,11 +40,8 @@ export default function Ranking({
         ))}
       </div>
       <Divider />
-      {currentTab !== 2 ? (
-        <div
-          ref={scrollRef}
-          className="flex flex-col h-full gap-y-1"
-        >
+      {currentTab !== 1 ? (
+        <div ref={scrollRef} className="flex flex-col h-full gap-y-1">
           {arrayToMap.map((u, idx) => (
             <RankingElement key={u.id + currentTab} user={u} idx={idx} />
           ))}

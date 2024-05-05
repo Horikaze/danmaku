@@ -1,5 +1,5 @@
 import prisma from "@/app/lib/prismadb";
-import { convertUnixDateHours } from "@/app/lib/utils";
+import { convertUnixDateHours, prismaExclude } from "@/app/lib/utils";
 import Copy from "@/app/mainComponents/Copy";
 import { Divider } from "@/app/mainComponents/Divider";
 import ProfileImage from "@/app/mainComponents/ProfileImage";
@@ -8,7 +8,6 @@ import { FaDiscord } from "react-icons/fa";
 import UpdateImages from "./UpdateImages";
 import ProfileInfo from "./ProfileInfo";
 import { notFound } from "next/navigation";
-import { replayWithNickname } from "@/app/types/Replay";
 
 export default async function MainProfile({ userId }: { userId: string }) {
   const user = await prisma.profile.findFirst({
@@ -17,45 +16,33 @@ export default async function MainProfile({ userId }: { userId: string }) {
     },
     include: {
       Replays: {
-        include: {
-          Profile: {
-            select: {
-              nickname: true,
-            },
-          },
-        },
         orderBy: {
           uploadedDate: "desc",
+        },
+        select: {
+          replayId: true,
+          character: true,
+          game: true,
+          shottype: true,
+          rank: true,
+          achievement: true,
+          score: true,
+          uploadedDate: true,
+          status: true,
         },
       },
       CCTable: true,
     },
   });
+
   console.log("refetched");
   if (!user) {
     return notFound();
   }
-
-  const modReplays =
-    user.admin === true
-      ? ((await prisma.replay.findMany({
-          where: {
-            status: {
-              not: true,
-            },
-          },
-          include: {
-            Profile: {
-              select: {
-                nickname: true,
-              },
-            },
-          },
-          orderBy: {
-            uploadedDate: "desc",
-          },
-        })) as replayWithNickname[])
-      : null;
+  const replaysWithNickname = user.Replays.map((r) => ({
+    ...r,
+    nickname: user.nickname,
+  }));
 
   return (
     <div className="flex flex-col gap-y-3">
@@ -89,7 +76,7 @@ export default async function MainProfile({ userId }: { userId: string }) {
       </div>
       <div className="flex flex-col p-3">
         <div className="flex">
-          <div className="size-24 md:size-32 group relative bg-white/10 rounded-full text-center drop-shadow-md mr-3 overflow-hidden">
+          <div className="size-24 md:size-32 group relative bg-white/10 rounded-[100px] hover:rounded-[30px] transition-all text-center drop-shadow-md mr-3 overflow-hidden">
             <ProfileImage imageUrl={user.imageUrl} />
             <div className="absolute left-1/2 -translate-x-1/2 bottom-1/2 translate-y-1/2 opacity-0 group-hover:opacity-50 transition-opacity">
               <UpdateImages endpoint="profileImage" />
@@ -102,7 +89,7 @@ export default async function MainProfile({ userId }: { userId: string }) {
               </h2>
               <div className="flex space-x-2">
                 <div className="text-sm text-tsecond flex items-center gap-x-1 hover:brightness-125 cursor-pointer">
-                  <Copy text={"uid"} />
+                  <Copy text={"uid"} content={user.id} />
                 </div>
                 {user.discord ? (
                   <div className="space-x-1">
@@ -116,8 +103,6 @@ export default async function MainProfile({ userId }: { userId: string }) {
             <div className="flex flex-col md:flex-row p-2 justify-between text-tsecond space-y-0.5">
               <div className="text-sm">
                 <p> CC Count: {user.CCCount}</p>
-                <p> Points: {user.points}</p>
-                <p> Event points: {user.event}</p>
               </div>
 
               <div className="text-xs text-end md:block hidden w-1/2 flex-col items-end space-y-0.5 ">
@@ -134,10 +119,9 @@ export default async function MainProfile({ userId }: { userId: string }) {
           {user.bio ? <p> Bio: {user.bio}</p> : null}
         </div>
         <ProfileInfo
-          replays={user.Replays}
+          replays={replaysWithNickname}
           user={user}
           ranking={user.CCTable!}
-          modReplays={modReplays}
         />
       </div>
     </div>

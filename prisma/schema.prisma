@@ -2,9 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  provider = "mysql"
+  url      = env("DATABASE_URL")
 }
 
 generator client {
@@ -24,31 +23,29 @@ model Profile {
   discord        String?
   favoriteGame   String?
   bio            String?  @db.VarChar(250)
-  points         Int?     @default(0)
   CCTable        Ranking?
-  event          Int?     @default(0)
   hashedPassword String?
   profileBanner  String?
   Replays        Replay[]
 }
 
 model Ranking {
-  EOSD                String   @db.Text
-  PCB                 String   @db.Text
-  IN                  String   @db.Text
-  POFV                String   @db.Text
-  MOF                 String   @db.Text
-  SA                  String   @db.Text
-  UFO                 String   @db.Text
-  GFW                 String   @db.Text
-  TD                  String   @db.Text
-  DDC                 String   @db.Text
-  LOLK                String   @db.Text
-  HSIFS               String   @db.Text
-  WBAWC               String   @db.Text
-  UM                  String   @db.Text
-  userIdRankingPoints String   @unique
-  Profile             Profile? @relation(fields: [userIdRankingPoints], references: [id])
+  EOSD          String   @db.Text
+  PCB           String   @db.Text
+  IN            String   @db.Text
+  POFV          String   @db.Text
+  MOF           String   @db.Text
+  SA            String   @db.Text
+  UFO           String   @db.Text
+  GFW           String   @db.Text
+  TD            String   @db.Text
+  DDC           String   @db.Text
+  LOLK          String   @db.Text
+  HSIFS         String   @db.Text
+  WBAWC         String   @db.Text
+  UM            String   @db.Text
+  userIdRanking String   @unique
+  Profile       Profile? @relation(fields: [userIdRanking], references: [id])
 }
 
 model Replay {
@@ -64,9 +61,8 @@ model Replay {
   date         String?
   rpy_name     String
   slowRate     String?
-  points       Int
   acceptedBy   String?
-  filePath     String
+  file         Bytes
   comment      String?
   uploadedDate DateTime  @default(now())
   fileDate     DateTime?

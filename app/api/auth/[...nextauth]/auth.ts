@@ -93,7 +93,7 @@ export const authOptions: AuthOptions = {
               UM: emptyScoreObjectString,
               UFO: emptyScoreObjectString,
               WBAWC: emptyScoreObjectString,
-              userIdRankingPoints: newUser.id,
+              userIdRanking: newUser.id,
             },
           });
 
@@ -113,7 +113,7 @@ export const authOptions: AuthOptions = {
     },
   },
 
-  // debug: process.env.NODE_ENV === "development",
+  debug: process.env.NODE_ENV === "development",
   session: {
     strategy: "jwt",
   },

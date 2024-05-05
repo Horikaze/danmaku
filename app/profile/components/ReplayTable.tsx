@@ -18,7 +18,7 @@ export default function ReplayTable({ tableData }: ReplayTableProps) {
   if (!tableData) return null;
   let forrmatedObject: Record<string, ScoreObject> = {};
   Object.keys(tableData).forEach((key) => {
-    if (key === "userIdRankingPoints") {
+    if (key === "userIdRanking") {
       return;
     }
     // @ts-ignore known values

@@ -22,9 +22,7 @@ export default function RankingElement({ idx, user }: RankingElementProps) {
           <ProfileImage imageUrl={user.imageUrl!} />
         </div>
         <div className="font-semibold">{user.nickname}</div>
-        <div className="absolute right-2 top-1/2 -translate-y-1/2">
-          {user.value.toLocaleString()}
-        </div>
+        <p className="ml-auto">{user.value.toLocaleString()}</p>
       </motion.div>
     </Link>
   );
