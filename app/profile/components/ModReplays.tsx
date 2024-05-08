@@ -1,6 +1,6 @@
 "use client";
 import ReplaysList from "@/app/mainComponents/ReplaysList";
-import { replayWithNickname } from "@/app/types/Replay";
+import { replayList } from "@/app/types/Replay";
 import { verifyReplay } from "../actions/replayActions";
 import toast from "react-hot-toast";
 import { ButtonInput } from "@/app/mainComponents/InputButton";
@@ -10,7 +10,7 @@ import { useState } from "react";
 export default function ModReplays({
   initialReplays,
 }: {
-  initialReplays: replayWithNickname[] | null;
+  initialReplays: replayList[] | null;
 }) {
   const [replays, setReplays] = useState(initialReplays || null);
   const sendToVer = async (e: React.FormEvent<HTMLFormElement>) => {
