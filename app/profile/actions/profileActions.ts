@@ -7,6 +7,7 @@ import { authOptions } from "../../api/auth/[...nextauth]/auth";
 import { revalidatePath } from "next/cache";
 import { emptyScoreObjectString } from "@/app/lib/utils";
 import { nanoid } from "nanoid";
+import { UTApi } from "uploadthing/server";
 const registerSchema = z.object({
   nickname: z
     .string()
@@ -138,5 +139,27 @@ export const changeUserAction = async (formData: FormData) => {
   } catch (error) {
     console.log(error, "CHANGE PROFILE ERROR");
     return { status: "Internal Error" };
+  }
+};
+
+export const updateImage = async (formData: FormData) => {
+  try {
+    const ACCEPT_FILES = [".png", ".jpeg", ".webp", ".jpg"];
+
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      return;
+    }
+
+    const file = formData.get("file") as File;
+    const ext = "." + file.name.split(".").at(-1)?.toLowerCase();
+    if (!ACCEPT_FILES.includes(ext)) {
+      return;
+    }
+    if (file.size < 100) console.log("dayo");
+    return;
+    const utapi = new UTApi();
+  } catch (error) {
+    console.log(error);
   }
 };

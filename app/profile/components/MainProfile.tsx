@@ -8,6 +8,7 @@ import { FaDiscord } from "react-icons/fa";
 import UpdateImages from "./UpdateImages";
 import ProfileInfo from "./ProfileInfo";
 import { notFound } from "next/navigation";
+import { FaImage } from "react-icons/fa6";
 
 export default async function MainProfile({ userId }: { userId: string }) {
   const user = await prisma.profile.findFirst({
@@ -46,7 +47,7 @@ export default async function MainProfile({ userId }: { userId: string }) {
 
   return (
     <div className="flex flex-col gap-y-3">
-      <div className="w-full relative flex justify-end">
+      <div className="w-full relative flex justify-end min-h-[32px]">
         {user.profileBanner ? (
           <>
             <div
@@ -65,22 +66,19 @@ export default async function MainProfile({ userId }: { userId: string }) {
               className="z-0 object-cover object-center h-full pointer-events-none"
             />
           </>
-        ) : (
-          <div className="h-12 text-sm bottom-0 text-end pt-[18px] pr-16 opacity-50 ">
-            Select your banner here ➔
-          </div>
-        )}
-        <div className="absolute bottom-0 right-6 pr-1 opacity-10 hover:opacity-50 transition-opacity">
-          <UpdateImages endpoint="profileBanner" />
+        ) : null}
+        <div className="absolute bottom-0 right-6 pr-1 p-1">
+          <UpdateImages endpoint="profileImage">
+            <FaImage className="size-6" />
+          </UpdateImages>
         </div>
       </div>
       <div className="flex flex-col p-3">
         <div className="flex">
           <div className="size-24 md:size-32 group relative bg-white/10 rounded-[100px] hover:rounded-[30px] transition-all text-center drop-shadow-md mr-3 overflow-hidden">
-            <ProfileImage imageUrl={user.imageUrl} />
-            <div className="absolute left-1/2 -translate-x-1/2 bottom-1/2 translate-y-1/2 opacity-0 group-hover:opacity-50 transition-opacity">
-              <UpdateImages endpoint="profileImage" />
-            </div>
+            <UpdateImages endpoint="profileImage">
+              <ProfileImage imageUrl={user.imageUrl} />
+            </UpdateImages>
           </div>
           <div className="flex-1 overflow-x-hidden">
             <div className="flex items-center justify-between">
