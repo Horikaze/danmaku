@@ -68,7 +68,7 @@ export default async function MainProfile({ userId }: { userId: string }) {
           </>
         ) : null}
         <div className="absolute bottom-0 right-6 pr-1 p-1">
-          <UpdateImages endpoint="profileImage">
+          <UpdateImages endpoint="profileBanner">
             <FaImage className="size-6" />
           </UpdateImages>
         </div>

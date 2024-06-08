@@ -17,39 +17,21 @@ export default function UpdateImages({
       if (!file || file.size < 10) return;
       const formData = new FormData();
       formData.append("file", file);
-      const res = await updateImage(formData);
-      console.log(res);
-      return
-      await update({ image: res });
+      const res = await updateImage(formData, endpoint);
+      if (res.Error) {
+        toast.error(`${res.Error.errorMsg}`);
+        return;
+      }
+      if (endpoint === "profileImage") {
+        await update({ image: res.data?.imageUrl });
+      }
     } catch (error) {
-      console.log(error);
-      toast.error("Error");
+      toast.error(`Error: ${error}`);
     }
   };
 
   const { update } = useSession();
   return (
-    // <UploadButton
-    //   content={{
-    //     button({}) {
-    //       return <FaImage className="size-8 cursor-pointer z-10" />;
-    //     },
-    //     allowedContent(arg) {
-    //       return <div className="hidden" />;
-    //     },
-    //   }}
-    //   endpoint={endpoint}
-    //   onClientUploadComplete={async (res) => {
-    //     if (endpoint === "profileImage") {
-    //       await update({ image: res[0].url });
-    //     }
-    //     toast.success("Updated");
-    //   }}
-    //   onUploadError={(error: Error) => {
-    //     // Do something with the error.
-    //     toast.error("Error");
-    //   }}
-    // />
     <>
       <input
         type="file"

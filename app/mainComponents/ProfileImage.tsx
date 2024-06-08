@@ -10,11 +10,7 @@ export default function ProfileImage({
   const [hasError, setHasError] = useState(false);
   return (
     <Image
-      src={
-        hasError
-          ? "/images/placeholder.jpg"
-          : imageUrl || "/images/placeholder.jpg"
-      }
+      src={hasError || !imageUrl ? "/images/placeholder.jpg" : imageUrl}
       alt="ProfileImage"
       fill
       style={{ objectFit: "cover" }}

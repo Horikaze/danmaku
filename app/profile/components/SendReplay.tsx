@@ -18,7 +18,6 @@ export default function SendReplay() {
   const [replayFile, setReplayFile] = useState<FormData | null>(null);
   const [CC, setCC] = useState("CC");
   const clearAll = () => {
-    console.log("as");
     setreplayData(null);
     setReplayFile(null);
     setIsLoading(false);

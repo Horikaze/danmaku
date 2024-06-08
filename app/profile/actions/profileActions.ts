@@ -142,24 +142,84 @@ export const changeUserAction = async (formData: FormData) => {
   }
 };
 
-export const updateImage = async (formData: FormData) => {
+type updateImageReturns = {
+  Error?: {
+    errorMsg: string;
+  };
+  data?: {
+    imageUrl: string;
+  };
+};
+
+export const updateImage = async (
+  formData: FormData,
+  endpoint: string
+): Promise<updateImageReturns> => {
   try {
     const ACCEPT_FILES = [".png", ".jpeg", ".webp", ".jpg"];
 
     const session = await getServerSession(authOptions);
     if (!session) {
-      return;
+      return {
+        Error: {
+          errorMsg: "Unauthorized",
+        },
+      };
     }
 
     const file = formData.get("file") as File;
     const ext = "." + file.name.split(".").at(-1)?.toLowerCase();
     if (!ACCEPT_FILES.includes(ext)) {
-      return;
+      return {
+        Error: {
+          errorMsg: "Invalid image extension",
+        },
+      };
     }
-    if (file.size < 100) console.log("dayo");
-    return;
     const utapi = new UTApi();
+    const res = await utapi.uploadFiles(file);
+    if (res.error) {
+      return {
+        Error: {
+          errorMsg: "Internal server error",
+        },
+      };
+    }
+    const { url } = res.data;
+    const endpointString =
+      endpoint === "profileBanner" ? "profileBanner" : "imageUrl";
+    await prisma.profile.update({
+      where: {
+        id: session.user.info.id,
+      },
+      data: {
+        [endpointString]: url,
+      },
+    });
+
+    try {
+      if (session.user.info[endpointString]) {
+        const parts = session.user.info[endpointString]!.split("/");
+        const fileName = parts[parts.length - 1];
+        console.log(fileName);
+        const res = await utapi.deleteFiles(fileName);
+        console.log(res);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    revalidatePath("/profile");
+    return {
+      data: {
+        imageUrl: res.data.url,
+      },
+    };
   } catch (error) {
     console.log(error);
+    return {
+      Error: {
+        errorMsg: `${error}`,
+      },
+    };
   }
 };
