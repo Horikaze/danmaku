@@ -1,100 +1,33 @@
-import prisma from "@/app/lib/prismadb";
-import { getServerSession } from "next-auth";
 import { createUploadthing, type FileRouter } from "uploadthing/next";
-import { UTApi } from "uploadthing/server";
-import { revalidatePath } from "next/cache";
-import { authOptions } from "../auth/[...nextauth]/auth";
+import { UploadThingError } from "uploadthing/server";
+
 const f = createUploadthing();
-const utapi = new UTApi();
 
+const auth = (req: Request) => ({ id: "fakeId" }); // Fake auth function
+
+// FileRouter for your app, can contain multiple FileRoutes
 export const ourFileRouter = {
-  profileImage: f({ image: { maxFileSize: "2MB" } })
+  // Define as many FileRoutes as you like, each with a unique routeSlug
+  imageUploader: f({ image: { maxFileSize: "4MB" } })
+    // Set permissions and file types for this FileRoute
     .middleware(async ({ req }) => {
-      const session = await getServerSession(authOptions);
-      if (!session) throw new Error("Unauthorized");
+      // This code runs on your server before upload
+      const user = await auth(req);
 
-      const user = await prisma.profile.findFirst({
-        where: {
-          id: session?.user.info.id,
-        },
-        select: {
-          imageUrl: true,
-          email: true,
-        },
-      });
+      // If you throw, the user will not be able to upload
+      if (!user) throw new UploadThingError("Unauthorized");
 
-      return {
-        email: user?.email,
-        currentProfileImage: user?.imageUrl,
-      };
+      // Whatever is returned here is accessible in onUploadComplete as `metadata`
+      return { userId: user.id };
     })
     .onUploadComplete(async ({ metadata, file }) => {
-      if (metadata.email == undefined) {
-        throw new Error("Problem with auth");
-      }
-      await prisma.profile.update({
-        where: {
-          email: metadata.email,
-        },
-        data: {
-          imageUrl: file.url,
-        },
-      });
-      try {
-        if (metadata.currentProfileImage) {
-          const parts = metadata.currentProfileImage.split("/");
-          const fileName = parts[parts.length - 1];
-          await utapi.deleteFiles(`${fileName}`);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-      revalidatePath("/profile");
-      return { image: file.url };
-    }),
-  profileBanner: f({ image: { maxFileSize: "4MB" } })
-    .middleware(async ({ req }) => {
-      const session = await getServerSession(authOptions);
-      if (!session) throw new Error("Unauthorized");
-      const user = await prisma.profile.findFirst({
-        where: {
-          id: session?.user.info.id,
-        },
-        select: {
-          profileBanner: true,
-          email: true,
-        },
-      });
+      // This code RUNS ON YOUR SERVER after upload
+      console.log("Upload complete for userId:", metadata.userId);
 
-      return {
-        email: user?.email!,
-        currentProfileBanner: user?.profileBanner!,
-      };
-    })
-    .onUploadComplete(async ({ metadata, file }) => {
-      if (metadata.email == undefined) {
-        throw new Error("Problem with auth");
-      }
+      console.log("file url", file.url);
 
-      await prisma.profile.update({
-        where: {
-          email: metadata.email,
-        },
-        data: {
-          profileBanner: file.url,
-        },
-      });
-      try {
-        if (metadata.currentProfileBanner) {
-          const parts = metadata.currentProfileBanner.split("/");
-          const fileName = parts[parts.length - 1];
-          await utapi.deleteFiles(fileName);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-      revalidatePath("/profile");
-      return { image: file.url };
+      // !!! Whatever is returned here is sent to the clientside `onClientUploadComplete` callback
+      return { uploadedBy: metadata.userId };
     }),
 } satisfies FileRouter;
 
