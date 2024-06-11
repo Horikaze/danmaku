@@ -56,7 +56,7 @@ export const authOptions: AuthOptions = {
       if (user) {
         const isUserExists = await prisma.profile.findUnique({
           where: {
-            email: user.email!,
+            email: user.name!.replace(/\s/g, "_") + "@danmaku.pl",
           },
         });
 
