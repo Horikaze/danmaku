@@ -23,7 +23,7 @@ export default function NavBarElements() {
   const pathname = usePathname() || "/"
   const splitedPathname = pathname.split("/")[1];
   return (
-    <div className="flex items-center gap-x-6 w-full justify-center md:justify-start">
+    <div className="flex items-center md:gap-x-6 gap-x-2 w-full justify-center md:justify-start">
       {navItems.map((e) => {
         return (
           <NavbarItem
