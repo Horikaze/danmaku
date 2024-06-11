@@ -158,7 +158,7 @@ export default function SendReplay() {
                 onChange={(e) => setCC(e.target.value)}
                 value={CC}
                 id="CC"
-                className="outline-white/20 focus:outline-white transition-all outline-none border-none bg-primary py-0.5 px-1 rounded-full cursor-pointer"
+                className="outline-white/20 focus:outline-white transition-all outline-none rounded-md border-none bg-primary py-0.5 px-1  cursor-pointer"
               >
                 {achievementList.map((e) => (
                   <option key={e} value={e}>

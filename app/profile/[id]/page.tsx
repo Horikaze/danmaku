@@ -68,6 +68,7 @@ export default async function ProfileSlug({
               src={user.profileBanner}
               alt="banner"
               fill
+              sizes="auto"
               className="z-0 object-cover object-center h-full pointer-events-none"
             />
           </>

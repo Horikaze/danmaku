@@ -17,6 +17,7 @@ export default function Settings({ favoriteGame }: { favoriteGame: string }) {
           if (nickname?.length! >= 3) {
             update({ name: nickname });
           }
+          toast.success("Updated");
           return;
         }
         toast.error(`${status}`);

@@ -13,7 +13,7 @@ export default function UpdateImages({
   const ACCEPT_FILES = [".png", ".jpeg", ".webp", ".jpg"];
   const id = useId();
   const updateImageFn = async (file: File) => {
-    const toastId = toast.loading("Loading...");
+    const toastId = toast.loading("Uploading...");
     try {
       if (!file || file.size < 10) return;
       const formData = new FormData();

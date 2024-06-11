@@ -63,6 +63,7 @@ export default async function MainProfile({ userId }: { userId: string }) {
               src={user.profileBanner}
               alt="banner"
               fill
+              sizes="auto"
               className="z-0 object-cover object-center h-full pointer-events-none"
             />
           </>

@@ -203,15 +203,16 @@ export const updateImage = async (
         [endpoint]: url,
       },
     });
-
+    console.log(imageToDelete);
     try {
-      if (session.user.info[endpoint]) {
+      if (imageToDelete![endpoint]) {
         const parts = (imageToDelete![endpoint] as unknown as string).split(
           "/"
         );
         const fileName = parts[parts.length - 1];
         console.log(fileName);
         const res = await utapi.deleteFiles(fileName);
+        console.log(res);
       }
     } catch (error) {
       console.log(error);

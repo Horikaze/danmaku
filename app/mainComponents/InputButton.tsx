@@ -8,6 +8,7 @@ export const buttonVariants = cva(
     variants: {
       variant: {
         default: "bg-white text-black hover:opacity-60 transition-all py-1",
+        delete: "bg-red-500 text-white hover:opacity-60 transition-all py-1",
         outline:
           "border-white border-2 disabled:border-white/60 border-solid text-white hover:bg-white hover:text-black transition-all py-0.5",
       },

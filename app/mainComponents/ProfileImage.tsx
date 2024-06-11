@@ -13,6 +13,7 @@ export default function ProfileImage({
       src={hasError || !imageUrl ? "/images/placeholder.jpg" : imageUrl}
       alt="ProfileImage"
       fill
+      sizes="auto"
       style={{ objectFit: "cover" }}
       onError={() => {
         setHasError(true);

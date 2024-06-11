@@ -52,12 +52,12 @@ export default function ProfileInfo({
               className="flex gap-x-2 items-center justify-end w-full"
             >
               <InputText
-                className="max-w-32 py-0 px-1 h-7 text-sm rounded-sm"
-                placeholder="replayId"
+                className="max-w-32 py-0 px-1 h-6 text-sm rounded-sm"
+                placeholder="your replayId"
                 id="replayId"
                 name="replayId"
               />
-              <ButtonInput variant={"outline"} className="rounded-sm">
+              <ButtonInput variant={"delete"} className="rounded-md">
                 Delete
               </ButtonInput>
             </form>
