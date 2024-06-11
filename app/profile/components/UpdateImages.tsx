@@ -7,27 +7,35 @@ export default function UpdateImages({
   endpoint,
   children,
 }: {
-  endpoint: "profileBanner" | "profileImage";
+  endpoint: "profileBanner" | "imageUrl";
   children: React.ReactNode;
 }) {
   const ACCEPT_FILES = [".png", ".jpeg", ".webp", ".jpg"];
   const id = useId();
   const updateImageFn = async (file: File) => {
+    const toastId = toast.loading("Loading...");
     try {
       if (!file || file.size < 10) return;
       const formData = new FormData();
       formData.append("file", file);
       const res = await updateImage(formData, endpoint);
       if (res.Error) {
-        toast.error(`${res.Error.errorMsg}`);
+        toast.error(`Error: ${res.Error.errorMsg}`, {
+          id: toastId,
+        });
         return;
       }
-      if (endpoint === "profileImage") {
+      if (endpoint === "imageUrl") {
         await update({ image: res.data?.imageUrl });
       }
     } catch (error) {
-      toast.error(`Error: ${error}`);
+      toast.error(`Error: ${error}`, {
+        id: toastId,
+      });
     }
+    toast.success(`Updated :3`, {
+      id: toastId,
+    });
   };
 
   const { update } = useSession();

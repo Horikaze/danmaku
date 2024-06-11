@@ -153,7 +153,7 @@ type updateImageReturns = {
 
 export const updateImage = async (
   formData: FormData,
-  endpoint: string
+  endpoint: "profileBanner" | "imageUrl"
 ): Promise<updateImageReturns> => {
   try {
     const ACCEPT_FILES = [".png", ".jpeg", ".webp", ".jpg"];
@@ -186,24 +186,32 @@ export const updateImage = async (
       };
     }
     const { url } = res.data;
-    const endpointString =
-      endpoint === "profileBanner" ? "profileBanner" : "imageUrl";
+
+    const imageToDelete = await prisma.profile.findFirst({
+      where: {
+        id: session.user.info.id,
+      },
+      select: {
+        [endpoint]: true,
+      },
+    });
     await prisma.profile.update({
       where: {
         id: session.user.info.id,
       },
       data: {
-        [endpointString]: url,
+        [endpoint]: url,
       },
     });
 
     try {
-      if (session.user.info[endpointString]) {
-        const parts = session.user.info[endpointString]!.split("/");
+      if (session.user.info[endpoint]) {
+        const parts = (imageToDelete![endpoint] as unknown as string).split(
+          "/"
+        );
         const fileName = parts[parts.length - 1];
         console.log(fileName);
         const res = await utapi.deleteFiles(fileName);
-        console.log(res);
       }
     } catch (error) {
       console.log(error);

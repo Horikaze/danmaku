@@ -76,7 +76,7 @@ export default async function MainProfile({ userId }: { userId: string }) {
       <div className="flex flex-col p-3">
         <div className="flex">
           <div className="size-24 md:size-32 group relative bg-white/10 rounded-[100px] hover:rounded-[30px] transition-all text-center drop-shadow-md mr-3 overflow-hidden">
-            <UpdateImages endpoint="profileImage">
+            <UpdateImages endpoint="imageUrl">
               <ProfileImage imageUrl={user.imageUrl} />
             </UpdateImages>
           </div>
