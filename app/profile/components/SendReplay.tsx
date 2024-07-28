@@ -170,7 +170,7 @@ export default function SendReplay() {
             <div className="flex flex-col items-end gap-y-1">
               <p>Comment</p>
               <textarea
-                placeholder="e.g. need x patch to be play correctly"
+                placeholder="e.g. need x patch to be played correctly"
                 name="comment"
                 maxLength={50}
                 id="comment"
