@@ -1,13 +1,12 @@
 "use server";
 import prisma from "@/app/lib/prismadb";
-import bcrypt from "bcrypt";
-import * as z from "zod";
-import { getServerSession } from "next-auth";
-import { authOptions } from "../../api/auth/[...nextauth]/auth";
-import { revalidatePath } from "next/cache";
 import { emptyScoreObjectString } from "@/app/lib/utils";
+import { auth } from "@/auth";
+import bcrypt from "bcrypt";
 import { nanoid } from "nanoid";
+import { revalidatePath } from "next/cache";
 import { UTApi } from "uploadthing/server";
+import * as z from "zod";
 const registerSchema = z.object({
   nickname: z
     .string()
@@ -90,7 +89,7 @@ const changeSchema = z.object({
 });
 export const changeUserAction = async (formData: FormData) => {
   try {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
 
     if (!session) {
       return { status: "Unauthorized" };
@@ -158,7 +157,7 @@ export const updateImage = async (
   try {
     const ACCEPT_FILES = [".png", ".jpeg", ".webp", ".jpg"];
 
-    const session = await getServerSession(authOptions);
+    const session = await auth()
     if (!session) {
       return {
         Error: {

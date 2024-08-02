@@ -1,19 +1,21 @@
+import NextAuth from "next-auth";
+import GitHub from "next-auth/providers/github";
+import Discord from "next-auth/providers/discord";
+import CredentialsProvider from "next-auth/providers/credentials";
 import prisma from "@/app/lib/prismadb";
 import { emptyScoreObjectString } from "@/app/lib/utils";
 import bcrypt from "bcrypt";
 import { nanoid } from "nanoid";
-import { AuthOptions } from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
-import DiscordProvider from "next-auth/providers/discord";
-import GitHubProvider from "next-auth/providers/github";
-export const authOptions: AuthOptions = {
+
+export const { auth, handlers, signIn, signOut } = NextAuth({
+  session: { strategy: "jwt" },
   providers: [
-    DiscordProvider({
+    Discord({
       clientId: process.env.DISCORD_ID as string,
       clientSecret: process.env.DISCORD_SECRET as string,
-      // authorization: { params: { scope: "identify" } },
+      authorization: { params: { scope: "identify" } },
     }),
-    GitHubProvider({
+    GitHub({
       clientId: process.env.GITHUB_ID as string,
       clientSecret: process.env.GITHUB_SECRET as string,
     }),
@@ -28,7 +30,9 @@ export const authOptions: AuthOptions = {
           throw new Error("Invalid credentials");
         const user = await prisma.profile.findUnique({
           where: {
-            email: credentials?.nickname.replace(/\s/g, "_") + "@danmaku.pl",
+            email:
+              (credentials?.nickname as string).replace(/\s/g, "_") +
+              "@danmaku.pl",
           },
         });
 
@@ -36,7 +40,7 @@ export const authOptions: AuthOptions = {
           throw new Error("Invalid credentials");
 
         const isCorrectPassword = await bcrypt.compare(
-          credentials.password,
+          credentials.password as string,
           user.hashedPassword
         );
         if (!isCorrectPassword) throw new Error("Invalid credentials");
@@ -114,8 +118,4 @@ export const authOptions: AuthOptions = {
   },
 
   debug: process.env.NODE_ENV === "development",
-  session: {
-    strategy: "jwt",
-  },
-  secret: process.env.NEXTAUTH_SECRET,
-};
+});

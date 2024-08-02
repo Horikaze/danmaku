@@ -1,5 +1,4 @@
 "use server";
-import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
 import { achievementRankValues } from "@/app/constants/games";
 import prisma from "@/app/lib/prismadb";
 import {
@@ -8,10 +7,10 @@ import {
   getGameString,
 } from "@/app/lib/utils";
 import { ReplayInfo, ScoreObject } from "@/app/types/Replay";
+import { auth } from "@/auth";
 import { Replay } from "@prisma/client";
 import axios from "axios";
 import { nanoid } from "nanoid";
-import { getServerSession } from "next-auth";
 import { revalidatePath } from "next/cache";
 export const threp = async (formData: FormData) => {
   try {
@@ -29,7 +28,7 @@ export const threp = async (formData: FormData) => {
 
 export const checkReplayExist = async (replayData: ReplayInfo) => {
   try {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     if (!session) {
       return false;
     }
@@ -72,7 +71,7 @@ export const sendReplayAction = async (
     if (replayFile.size === 0) {
       return "Problem with replay file";
     }
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     if (!session) return "Unauthorized";
     const cheackExist = await checkReplayExist(replayData);
     if (cheackExist) {
@@ -202,7 +201,7 @@ export const deleteReplayAction = async ({
 }): Promise<deleteReplayReturns> => {
   console.log(replayId);
   try {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     if (!session) return "Unauthorized";
     const replayToDelete = await prisma.replay.findFirst({
       where: {
@@ -333,7 +332,7 @@ export const verifyReplay = async ({
   replayId: string;
 }): Promise<verifyReplayReturns> => {
   try {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     if (!session) {
       return "Unauthorized";
     }

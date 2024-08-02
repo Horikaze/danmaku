@@ -1,10 +1,9 @@
-import { getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]/auth";
+import { auth } from "@/auth";
 import LoginForm from "./components/LoginForm";
 import MainProfile from "./components/MainProfile";
 
 export default async function Profile() {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   if (!session) {
     return (
       <div className="flex flex-col w-full h-full items-center justify-center">
