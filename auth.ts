@@ -1,11 +1,16 @@
 import NextAuth from "next-auth";
 import GitHub from "next-auth/providers/github";
 import Discord from "next-auth/providers/discord";
-import CredentialsProvider from "next-auth/providers/credentials";
+import Credentials from "next-auth/providers/credentials";
 import prisma from "@/app/lib/prismadb";
 import { emptyScoreObjectString } from "@/app/lib/utils";
 import bcrypt from "bcrypt";
 import { nanoid } from "nanoid";
+
+type Credentials = {
+  nickname: string;
+  password: string;
+};
 
 export const { auth, handlers, signIn, signOut } = NextAuth({
   session: { strategy: "jwt" },
@@ -19,20 +24,19 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       clientId: process.env.GITHUB_ID as string,
       clientSecret: process.env.GITHUB_SECRET as string,
     }),
-    CredentialsProvider({
+    Credentials({
       name: `credentials`,
       credentials: {
         nickname: { label: `nickname`, type: "text" },
         password: { label: "password", type: "password" },
       },
+
       async authorize(credentials) {
-        if (!credentials?.nickname || !credentials.password)
-          throw new Error("Invalid credentials");
+        const { nickname, password } = credentials as Partial<Credentials>;
+        if (!nickname || !password) throw new Error("Invalid credentials");
         const user = await prisma.profile.findUnique({
           where: {
-            email:
-              (credentials?.nickname as string).replace(/\s/g, "_") +
-              "@danmaku.pl",
+            email: nickname.replace(/\s/g, "_") + "@danmaku.pl",
           },
         });
 
@@ -40,7 +44,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
           throw new Error("Invalid credentials");
 
         const isCorrectPassword = await bcrypt.compare(
-          credentials.password as string,
+          password,
           user.hashedPassword
         );
         if (!isCorrectPassword) throw new Error("Invalid credentials");

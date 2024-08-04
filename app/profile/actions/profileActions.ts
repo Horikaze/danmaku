@@ -49,7 +49,7 @@ export const registerUserAction = async (formData: FormData) => {
         name: newUser.nickname,
       },
     });
-    const userRanking = await prisma.ranking.create({
+    await prisma.ranking.create({
       data: {
         DDC: emptyScoreObjectString,
         EOSD: emptyScoreObjectString,
@@ -157,7 +157,7 @@ export const updateImage = async (
   try {
     const ACCEPT_FILES = [".png", ".jpeg", ".webp", ".jpg"];
 
-    const session = await auth()
+    const session = await auth();
     if (!session) {
       return {
         Error: {
